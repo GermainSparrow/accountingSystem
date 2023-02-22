@@ -1,5 +1,6 @@
 import React from "react"
-import { Button, Checkbox, Form, Input } from "antd"
+import { Button, Checkbox, Form, Input } from "antd";
+import request from "../utils/apis/request";
 const onFinish = (values: any) => {
     console.log('Success:', values);
 };
@@ -9,6 +10,7 @@ const onFinishFailed = (errorInfo: any) => {
 };
 const Login: React.FC = () => (
     <div>
+        <button onClick={()=>{request.getUserInfo()}}>测试</button>
         <Form
             name="basic"
             labelCol={{ span: 8 }}
