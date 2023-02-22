@@ -10,21 +10,14 @@ const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
 };
 
-function test(){
-    const str = 'hello world';
-    console.log(str.endsWith('world'));
-    
+function test() {
+  const num = 0b11111;
+  console.log(Math.sign(999));
 }
 
 const Login: React.FC = () => (
   <div>
-    <button
-      onClick={() => {
-        request.getUserInfo();
-      }}
-    >
-      测试
-    </button>
+    <button onClick={test}>测试</button>
     <Form
       name="basic"
       labelCol={{ span: 8 }}
