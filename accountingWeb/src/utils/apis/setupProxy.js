@@ -1,8 +1,5 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
-module.exports = function (app) {
-    app.use(createProxyMiddleware('/api',
-        {
-            "target": "https://getman.cn",
-            "changeOrigin": true,
-        }))
+
+function test({a}){
+    console.log(a);
 }
+test({a:1});

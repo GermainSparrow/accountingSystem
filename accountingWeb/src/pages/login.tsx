@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import request from "../utils/apis/request";
+import _ from "lodash";
 
 const onFinish = (values: any) => {
   console.log("Success:", values);
@@ -10,14 +11,24 @@ const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
 };
 
+//测试函数
 function test() {
-  const num = 0b11111;
-  console.log(Math.sign(999));
+  function test1<T>(val: T) {
+    console.log(val);
+  }
+  test1(123);
+  test1("123");
 }
 
 const Login: React.FC = () => (
   <div>
-    <button onClick={test}>测试</button>
+    <button
+      onClick={() => {
+        test();
+      }}
+    >
+      测试
+    </button>
     <Form
       name="basic"
       labelCol={{ span: 8 }}
