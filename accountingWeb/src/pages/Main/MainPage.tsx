@@ -15,11 +15,13 @@ const MainPage: React.FC = () => {
 
   return (
     <div>
+        {/* 头部 */}
       <Layout>
         <Header style={{ padding: 0, background: '#031429',color:'white',fontSize:'16px' }} >
             <span style={{marginLeft:'50px'}}>宏粤会计信息系统</span>
         </Header>
       </Layout>
+      {/* 侧边栏 */}
       <Layout style={{ height: "100vh" }}>
         <Sider
           breakpoint="lg"
@@ -44,7 +46,7 @@ const MainPage: React.FC = () => {
             ].map((icon, index) => ({
               key: String(index + 1),
               icon: React.createElement(icon),
-              label: `nav ${index + 1}`,
+              label: `菜单 ${index + 1}`,
             }))}
           />
         </Sider>
@@ -60,6 +62,7 @@ const MainPage: React.FC = () => {
               content
             </div>
           </Content>
+          {/* 底部 */}
           <Footer style={{ textAlign: "center" }}>
             Ant Design ©2023 Created by Ant UED
           </Footer>
