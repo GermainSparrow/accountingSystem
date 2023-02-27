@@ -12,5 +12,8 @@ export default {
     },
     updateFinancialList(obj:{}){
         return request.post('/financial/updateFinancialList',obj)
+    },
+    getOliList(){
+        return request.get('/oil/',{})
     }
 }

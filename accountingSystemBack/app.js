@@ -6,7 +6,7 @@ app.use(cors()); //使用跨域
 app.use(express.json());  
 const user = require('./routes/users')
 const financial = require('./routes/financial')
-
+const oil_sale = require('./routes/oil')
 
 // 定义路由(说白了就是网址)     
 app.get('/demo', (req, res) => {
@@ -22,6 +22,7 @@ app.get('/demo', (req, res) => {
 
 app.use('/user', user)
 app.use('/financial', financial)
+app.use('/oil', oil_sale)
 
 // 开启服务器
 app.listen(3000, () => {

@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from "react";
 import apis from "../../utils/apis/apis";
-import { Form, Input, InputNumber, Popconfirm, Table, Typography ,message} from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Table,
+  Typography,
+  message,
+} from "antd";
 
 //单个数组元素对象接口
 interface Item {
-  key: string;
-  time: string;
-  month: null | string;
-  payer: null | string;
-  payee: null | string;
-  payWay: null | string;
-  in: null | string;
-  usefor: string | null;
-  reimbursers: string | null;
-  category: string | null;
-  out: string | number | null;
+  key: any;
+  time: any;
+  head: any;
+  unit: any;
+  model: any;
+  count: any;
+  price: any;
+  Plan_sales: any;
+  real_sales: any;
+  Discounts: any;
+  getTime: any;
+  getMonth: any;
+  collection: any;
+  payway: any;
+  payee: any;
+  Uncollected_amount: any;
+  off_price: any;
+  remark: any;
 }
 //创建一个数组
 
@@ -66,7 +81,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 //组件使用
 const App: React.FC = () => {
   useEffect(() => {
-    apis.getFinancialList().then((res) => {
+    apis.getOliList().then((res) => {
       setData(res.data.data);
     });
   }, []);
@@ -80,16 +95,24 @@ const App: React.FC = () => {
   //编辑函数 设置数组的值和 正在修改的key
   const edit = (record: Partial<Item> & { key: React.Key }) => {
     form.setFieldsValue({
+      key: "",
       time: "",
-      month: "",
-      payer: "",
+      head: "",
+      unit: "",
+      model: "",
+      count: "",
+      price: "",
+      Plan_sales: "",
+      real_sales: "",
+      Discounts: "",
+      getTime: "",
+      getMonth: "",
+      collection: "",
+      payway: "",
       payee: "",
-      payWay: "",
-      in: "",
-      usefor: "",
-      reimbursers: "",
-      category: "",
-      out: "",
+      Uncollected_amount: "",
+      off_price: "",
+      remark: "",
       ...record,
     });
     setEditingKey(record.key);
@@ -108,28 +131,26 @@ const App: React.FC = () => {
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
-
         newData.splice(index, 1, {
           ...item,
           ...row,
         });
 
         //发送数据到后台
-        apis.updateFinancialList({ ...item, ...row }).then(res=>{
-            if(res.data.code === 200){
-                message.open({
-                    content: '修改成功',
-                    duration: 1,
-                    type:'success'
-                })
-            }else{
-                message.open({
-                    content: '修改失败',
-                    duration: 1,
-                    type:'error'
-
-                })
-            }
+        apis.updateFinancialList({ ...item, ...row }).then((res) => {
+          if (res.data.code === 200) {
+            message.open({
+              content: "修改成功",
+              duration: 1,
+              type: "success",
+            });
+          } else {
+            message.open({
+              content: "修改失败",
+              duration: 1,
+              type: "error",
+            });
+          }
         });
 
         setData(newData);
@@ -146,26 +167,26 @@ const App: React.FC = () => {
 
   const columns = [
     {
-      title: "付款时间",
+      title: "进厂日期",
       dataIndex: "time",
-      width: "15%",
-      editable: true,
-    },
-    {
-      title: "月份",
-      dataIndex: "month",
       width: "10%",
       editable: true,
     },
     {
-      title: "付款人",
-      dataIndex: "payer",
+      title: "负责人",
+      dataIndex: "head",
       width: "5%",
       editable: true,
     },
     {
-      title: "收款人",
-      dataIndex: "payee",
+      title: "单位",
+      dataIndex: "unit",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "型号",
+      dataIndex: "model",
       width: "5%",
       editable: true,
     },
