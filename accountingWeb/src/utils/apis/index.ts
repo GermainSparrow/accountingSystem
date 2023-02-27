@@ -15,7 +15,7 @@ export default {
         return axios({
             url: url,
             method: 'GET',
-            params: JSON.stringify(params)
+            params:params
         })
     }
 }
