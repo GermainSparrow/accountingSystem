@@ -15,10 +15,17 @@ const MainPage: React.FC = () => {
 
   return (
     <div>
-        {/* 头部 */}
+      {/* 头部 */}
       <Layout>
-        <Header style={{ padding: 0, background: '#031429',color:'white',fontSize:'16px' }} >
-            <span style={{marginLeft:'50px'}}>宏粤会计信息系统</span>
+        <Header
+          style={{
+            padding: 0,
+            background: "#031429",
+            color: "white",
+            fontSize: "16px",
+          }}
+        >
+          <span style={{ marginLeft: "50px" }}>宏粤会计信息系统</span>
         </Header>
       </Layout>
       {/* 侧边栏 */}
@@ -46,7 +53,7 @@ const MainPage: React.FC = () => {
             ].map((icon, index) => ({
               key: String(index + 1),
               icon: React.createElement(icon),
-              label: `菜单 ${index + 1}`,
+              label: `nav ${index + 1}`,
             }))}
           />
         </Sider>

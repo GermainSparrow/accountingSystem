@@ -3,7 +3,7 @@ const app = express()
 const db = require('./src/db')
 const cors = require('cors'); //引入跨域 
 app.use(cors()); //使用跨域
-
+app.use(express.json());  
 const user = require('./routes/users')
 
 // 定义路由(说白了就是网址)     

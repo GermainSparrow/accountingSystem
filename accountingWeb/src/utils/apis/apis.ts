@@ -4,10 +4,7 @@ export default {
     getUserInfo() {
         request.get('/demo', {})
     },
-    Login() {
-        request.post('/demo', {
-            account: Number,
-            password: Number,
-        })
+    Login(obj: { userName: string, password: string }): any {
+        return request.post('/user/login', obj)
     }
 }
