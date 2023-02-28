@@ -7,14 +7,22 @@ import {
   LaptopOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme, Radio } from "antd";
 import { useState } from "react";
-import { Outlet,useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import events from "../../utils/events/events";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 const MainPage: React.FC = () => {
+  //默认选中油品表展示
+  const [selectedKey, setSelectedKey] = useState("financeList");
+  function changeMenu(key: string) {
+    setSelectedKey(key);
+    navigate(`/Main/${key}`);
+  }
   const navigate = useNavigate();
-  
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -57,9 +65,20 @@ const MainPage: React.FC = () => {
   });
   //设置菜单点击事件
   function menuClick({ item, key, keyPath, selectedKeys, domEvent }) {
-    console.log('items',item, 'key',key, 'keyPath',keyPath, 'selectedKeys',selectedKeys, 'domEvent',domEvent,item.props.children[keyPath[0]-1]);
-    navigate(`/Main/${keyPath[0]}`)
-
+    console.log(
+      "items",
+      item,
+      "key",
+      key,
+      "keyPath",
+      keyPath,
+      "selectedKeys",
+      selectedKeys,
+      "domEvent",
+      domEvent,
+      item.props.children[keyPath[0] - 1]
+    );
+    navigate(`/Main/${keyPath[0]}`);
   }
   return (
     <div>
@@ -107,6 +126,16 @@ const MainPage: React.FC = () => {
                 background: colorBgContainer,
               }}
             >
+              <Radio.Group
+                value={selectedKey}
+                onChange={(e) => changeMenu(e.target.value)}
+                style={{ position:'relative',left:'50%',translate:'-70%',marginBottom:'16px' }}
+              >
+                <Radio.Button value="financeList">备用金明细</Radio.Button>
+                <Radio.Button value="oil">油品销售表</Radio.Button>
+                <Radio.Button value="waveBox">波箱维修表</Radio.Button>
+              </Radio.Group>
+              {/* 路由出口 */}
               <Outlet />
             </div>
           </Content>

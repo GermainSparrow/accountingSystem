@@ -137,7 +137,7 @@ const App: React.FC = () => {
         });
 
         //发送数据到后台
-        apis.updateFinancialList({ ...item, ...row }).then((res) => {
+        apis.updateOliList({ ...item, ...row }).then((res) => {
           if (res.data.code === 200) {
             message.open({
               content: "修改成功",
@@ -181,7 +181,7 @@ const App: React.FC = () => {
     {
       title: "单位",
       dataIndex: "unit",
-      width: "5%",
+      width: "10%",
       editable: true,
     },
     {
@@ -191,38 +191,80 @@ const App: React.FC = () => {
       editable: true,
     },
     {
+      title: "数量(单位L)",
+      dataIndex: "count",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "价格",
+      dataIndex: "price",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "计划销售金额",
+      dataIndex: "Plan_sales",
+      width: "8%",
+      editable: true,
+    },
+    {
+      title: "实际销售金额",
+      dataIndex: "real_sales",
+      width: "8%",
+      editable: true,
+    },
+    {
+      title: "优惠折扣",
+      dataIndex: "Discounts",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "收款时间",
+      dataIndex: "getTime",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "收款金额",
+      dataIndex: "collection",
+      width: "7%",
+      editable: true,
+    },
+    {
       title: "付款方式",
-      dataIndex: "payWay",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "备用金收入",
-      dataIndex: "in",
+      dataIndex: "payway",
       width: "5%",
       editable: true,
     },
     {
-      title: "备用金指出",
-      dataIndex: "out",
+      title: "付款方式",
+      dataIndex: "payway",
+      width: "7%",
+      editable: true,
+    },
+    {
+      title: "收款人",
+      dataIndex: "payee",
       width: "5%",
       editable: true,
     },
     {
-      title: "报销人",
-      dataIndex: "reimbursers",
+      title: "未收款金额",
+      dataIndex: "Uncollected_amount",
       width: "5%",
       editable: true,
     },
     {
-      title: "类别",
-      dataIndex: "category",
-      width: "10%",
+      title: "备注",
+      dataIndex: "remark",
+      width: "5%",
       editable: true,
     },
     {
-      title: "用途",
-      dataIndex: "usefor",
+      title: "冲抵贷款",
+      dataIndex: "off_price",
       width: "10%",
       editable: true,
     },

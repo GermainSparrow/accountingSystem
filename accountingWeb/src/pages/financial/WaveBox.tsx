@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
 import apis from "../../utils/apis/apis";
-import { Form, Input, InputNumber, Popconfirm, Table, Typography ,message} from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Table,
+  Typography,
+  message,
+} from "antd";
 
 //单个数组元素对象接口
 interface Item {
   key: string;
-  time: string;
-  month: null | string;
-  payer: null | string;
-  payee: null | string;
-  payWay: null | string;
-  in: null | string;
-  usefor: string | null;
-  reimbursers: string | null;
-  category: string | null;
-  out: string | number | null;
+  in_time: string;
+  Head: string;
+  owner: string;
+  model: string;
+  Gearbox_model: string;
+  license_plate: string;
+  cost: string;
+  detail: string;
+  out_time: string;
+  Collection: string;
+  getMoneyTime: string;
+  getMoneyMonth: string;
+  payway: string;
+  payee: string;
 }
 //创建一个数组
 
@@ -65,32 +77,38 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 //组件使用
 const App: React.FC = () => {
-    //在每次页面创建时获取后台参数
   useEffect(() => {
-    apis.getFinancialList().then((res) => {
-      setData(res.data.data);
+    apis.getWavesList().then((res) => {
+      console.log("xxxx", res);
+
+      setData(res.data);
     });
   }, []);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
-  
+
   //判断是否是正在修改的数据
   const isEditing = (record: Item) => record.key === editingKey;
 
   //编辑函数 设置数组的值和 正在修改的key
   const edit = (record: Partial<Item> & { key: React.Key }) => {
     form.setFieldsValue({
-      time: "",
-      month: "",
-      payer: "",
+      key: "",
+      in_time: "",
+      Head: "",
+      owner: "",
+      model: "",
+      Gearbox_model: "",
+      license_plate: "",
+      cost: "",
+      detail: "",
+      out_time: "",
+      Collection: "",
+      getMoneyTime: "",
+      getMoneyMonth: "",
+      payway: "",
       payee: "",
-      payWay: "",
-      in: "",
-      usefor: "",
-      reimbursers: "",
-      category: "",
-      out: "",
       ...record,
     });
     setEditingKey(record.key);
@@ -109,28 +127,26 @@ const App: React.FC = () => {
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
-
         newData.splice(index, 1, {
           ...item,
           ...row,
         });
 
         //发送数据到后台
-        apis.updateFinancialList({ ...item, ...row }).then(res=>{
-            if(res.data.code === 200){
-                message.open({
-                    content: '修改成功',
-                    duration: 1,
-                    type:'success'
-                })
-            }else{
-                message.open({
-                    content: '修改失败',
-                    duration: 1,
-                    type:'error'
-
-                })
-            }
+        apis.updateWavesList({ ...item, ...row }).then((res) => {
+          if (res.data.code === 200) {
+            message.open({
+              content: "修改成功",
+              duration: 1,
+              type: "success",
+            });
+          } else {
+            message.open({
+              content: "修改失败",
+              duration: 1,
+              type: "error",
+            });
+          }
         });
 
         setData(newData);
@@ -147,20 +163,80 @@ const App: React.FC = () => {
 
   const columns = [
     {
-      title: "付款时间",
-      dataIndex: "time",
-      width: "15%",
-      editable: true,
-    },
-    {
-      title: "月份",
-      dataIndex: "month",
+      title: "进厂日期",
+      dataIndex: "in_time",
       width: "10%",
       editable: true,
     },
     {
-      title: "付款人",
-      dataIndex: "payer",
+      title: "负责人",
+      dataIndex: "Head",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "HUA",
+      dataIndex: "owner",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "型号",
+      dataIndex: "model",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "变速箱型号",
+      dataIndex: "Gearbox_model",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "车牌",
+      dataIndex: "license_plate",
+      width: "7%",
+      editable: true,
+    },
+    {
+      title: "金额",
+      dataIndex: "cost",
+      width: "8%",
+      editable: true,
+    },
+    {
+      title: "细节",
+      dataIndex: "detail",
+      width: "15%",
+      editable: true,
+    },
+    {
+      title: "出场日期",
+      dataIndex: "out_time",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "收款金额",
+      dataIndex: "Collection",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "收款时间",
+      dataIndex: "getMoneyTime",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "收款月份",
+      dataIndex: "getMoneyMonth",
+      width: "7%",
+      editable: true,
+    },
+    {
+      title: "付款方式",
+      dataIndex: "payway",
       width: "5%",
       editable: true,
     },
@@ -168,42 +244,6 @@ const App: React.FC = () => {
       title: "收款人",
       dataIndex: "payee",
       width: "5%",
-      editable: true,
-    },
-    {
-      title: "付款方式",
-      dataIndex: "payWay",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "备用金收入",
-      dataIndex: "in",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "备用金指出",
-      dataIndex: "out",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "报销人",
-      dataIndex: "reimbursers",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "类别",
-      dataIndex: "category",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "用途",
-      dataIndex: "usefor",
-      width: "10%",
       editable: true,
     },
     {

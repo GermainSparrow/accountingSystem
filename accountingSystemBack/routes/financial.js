@@ -11,7 +11,6 @@ router.get('/getFinancialList', function(req, res, next) {
         msg: "success",
         data: result
     });
-    console.log(result);
   })
 });
 //修改表
@@ -19,12 +18,11 @@ router.post('/updateFinancialList', function(req, res, next) {
     let sqlHead = "UPDATE reserves SET ";
     let sqlTail = "WHERE `key` = ";
     for(key in req.body){
-        if(key!="key"&&key!='time') {sqlHead += `\`${key}\` = '${req.body[key]}' ,`;}
+        if(key!="key") {sqlHead += `\`${key}\` = '${req.body[key]}' ,`;}
     }
     //拼装一下sql语句
     sqlHead = sqlHead.substring(0,sqlHead.length-1);
     sqlHead += sqlTail+=req.body['key'];
-    console.log(sqlHead);
     db.query(sqlHead,(err,result)=>{
         if (err) {
             res.send({

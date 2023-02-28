@@ -3,10 +3,12 @@ import Container from "./pages/container";
 import TestNode from "./pages/test";
 import Main from "./pages/Main/MainPage";
 import React from "react";
-const Finance = React.lazy(()=>import('./pages/financial/financialList'))
-const Visual = React.lazy(()=>import('./pages/financial/visual'));
-const Manager =React.lazy(()=>import('./pages/Manager/Manage'))
-const ManagerList =React.lazy(()=>import('./pages/Manager/ManagerList'))
+const Finance = React.lazy(() => import("./pages/financial/financialList"));
+const Visual = React.lazy(() => import("./pages/financial/visual"));
+const Manager = React.lazy(() => import("./pages/Manager/Manage"));
+const ManagerList = React.lazy(() => import("./pages/Manager/ManagerList"));
+const Oil = React.lazy(() => import("./pages/financial/oliSale"));
+const WaveBox = React.lazy(() => import("./pages/financial/WaveBox"));
 //引入路由依赖
 
 import { Routes, Route, HashRouter } from "react-router-dom";
@@ -24,6 +26,8 @@ function App() {
               <Route path="visual" element={<Visual />} />
               <Route path="manager" element={<Manager />} />
               <Route path="managerList" element={<ManagerList />} />
+              <Route path="oil" element={<Oil />} />
+              <Route path="waveBox" element={<WaveBox />} />
             </Route>
           </Routes>
         </HashRouter>
