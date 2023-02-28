@@ -79,8 +79,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
 const App: React.FC = () => {
   useEffect(() => {
     apis.getWavesList().then((res) => {
-      console.log("xxxx", res);
-
       setData(res.data);
     });
   }, []);

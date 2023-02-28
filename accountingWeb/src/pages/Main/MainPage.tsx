@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import type { MenuProps } from "antd";
 import {
   UploadOutlined,
@@ -7,19 +8,29 @@ import {
   LaptopOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, theme, Radio } from "antd";
-import { useState } from "react";
+import { Layout, Menu, theme, Radio, Button } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
-import events from "../../utils/events/events";
-
+import Form from "../Tools/From";
+import Container from "../Tools/Container";
 const { Header, Content, Footer, Sider } = Layout;
 
 const MainPage: React.FC = () => {
+  //获取路由
+  const location = useLocation();
+
+  //设置中间切换按钮依赖数据
+  const [activeKey, setActiveKey] = useState(true);
+  const [activeKey2, setActiveKey2] = useState(false);
+  const [activeKey3, setActiveKey3] = useState("financeList");
   //默认选中油品表展示
   const [selectedKey, setSelectedKey] = useState("financeList");
+  //中间三按钮事件
   function changeMenu(key: string) {
     setSelectedKey(key);
     navigate(`/Main/${key}`);
+    // console.log("key", key, "selectedKey", selectedKey);
+    setActiveKey3(key);
+    setActiveKey2(false);
   }
   const navigate = useNavigate();
 
@@ -65,19 +76,12 @@ const MainPage: React.FC = () => {
   });
   //设置菜单点击事件
   function menuClick({ item, key, keyPath, selectedKeys, domEvent }) {
-    console.log(
-      "items",
-      item,
-      "key",
-      key,
-      "keyPath",
-      keyPath,
-      "selectedKeys",
-      selectedKeys,
-      "domEvent",
-      domEvent,
-      item.props.children[keyPath[0] - 1]
-    );
+    if (keyPath[0].trim() == "financeList") {
+      setActiveKey(true);
+    } else {
+      setActiveKey(false);
+    }
+
     navigate(`/Main/${keyPath[0]}`);
   }
   return (
@@ -126,17 +130,40 @@ const MainPage: React.FC = () => {
                 background: colorBgContainer,
               }}
             >
-              <Radio.Group
-                value={selectedKey}
-                onChange={(e) => changeMenu(e.target.value)}
-                style={{ position:'relative',left:'50%',translate:'-70%',marginBottom:'16px' }}
-              >
-                <Radio.Button value="financeList">备用金明细</Radio.Button>
-                <Radio.Button value="oil">油品销售表</Radio.Button>
-                <Radio.Button value="waveBox">波箱维修表</Radio.Button>
-              </Radio.Group>
+              <Container isShow={activeKey}>
+                <div>
+                  <Radio.Group
+                    value={selectedKey}
+                    onChange={(e) => changeMenu(e.target.value)}
+                    style={{
+                      position: "relative",
+                      left: "50%",
+                      translate: "-70%",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    <Radio.Button value="financeList">备用金明细</Radio.Button>
+                    <Radio.Button value="oil">油品销售表</Radio.Button>
+                    <Radio.Button value="waveBox">波箱维修表</Radio.Button>
+                  </Radio.Group>
+
+                  {/* 控制组件 */}
+                  <Button
+                    onClick={() => {
+                      setActiveKey2(!activeKey2);
+                    }}
+                  >
+                    {" "}
+                    点击添加
+                  </Button>
+                  <Container isShow={activeKey2}>
+                    <Form x={activeKey3} setShow={setActiveKey2} />
+                  </Container>
+                </div>
+              </Container>
               {/* 路由出口 */}
               <Outlet />
+              <div style={{ clear: "both" }}></div>
             </div>
           </Content>
           {/* 底部 */}

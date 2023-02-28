@@ -9,6 +9,7 @@ const Manager = React.lazy(() => import("./pages/Manager/Manage"));
 const ManagerList = React.lazy(() => import("./pages/Manager/ManagerList"));
 const Oil = React.lazy(() => import("./pages/financial/oliSale"));
 const WaveBox = React.lazy(() => import("./pages/financial/WaveBox"));
+const Test = React.lazy(() => import("./pages/Tools/From"));
 //引入路由依赖
 
 import { Routes, Route, HashRouter } from "react-router-dom";
