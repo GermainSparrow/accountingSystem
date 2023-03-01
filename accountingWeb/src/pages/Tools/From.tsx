@@ -11,7 +11,9 @@ import {
   DatePicker,
   InputNumber,
   TreeSelect,
+  Switch,
   Checkbox,
+  Upload,
   message,
 } from "antd";
 import apis from "../../utils/apis/apis";
@@ -32,12 +34,31 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
   const onFinish = (values: any) => {
     //处理时间格式
     if (values.time) {
-      values.time = moment(values.time).format("YYYY-MM-DD");
-    } else if (values.month) {
-      values.month = moment(values.month).format("YYYY-MM");
+      values.time = values.time.format("YYYY-MM-DD");
+    }
+    if (values.month) {
+      values.month = values.month.format("YYYY-MM");
+    }
+    if (values.getTime) {
+      values.getTime = values.getTime.format("YYYY-MM-DD");
+    }
+    if (values.getMonth) {
+      values.getMonth = values.getMonth.format("YYYY-MM");
+    }
+    if (values.in_time) {
+      values.in_time = values.in_time.format("YYYY-MM-DD");
+    }
+    if (values.out_time) {
+      values.out_time = values.out_time.format("YYYY-MM-DD");
+    }
+    if (values.getMoneyTime) {
+      values.getMoneyTime = values.getMoneyTime.format("YYYY-MM-DD");
+    }
+    if (values.getMoneyMonth) {
+      values.getMoneyMonth = values.getMoneyMonth.format("YYYY-MM");
     }
     console.log("Success:", values);
-    //根据取得的key值调用接口
+    // 根据取得的key值调用接口
     switch (props.x.trim()) {
       case "financeList":
         apis.addFinancialList(values).then((res) => {
@@ -130,11 +151,11 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           >
             {/* 选择时间 */}
             <Form.Item label="选择时间" name="time">
-              <DatePicker format={"YYYY-QQ"} />
+              <DatePicker format={"YYYY/MM/DD"} />
             </Form.Item>
             {/* 选择月份 */}
             <Form.Item label="选择月份" name="month">
-              <DatePicker picker="month" format={"YYYY-MM"} />
+              <DatePicker picker="month" />
             </Form.Item>
             {/* 选择付款人 */}
             <Form.Item label="选择付款人" name="payer">
@@ -219,7 +240,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           >
             {/* 选择时间 */}
             <Form.Item label="销售时间" name="time">
-              <DatePicker format={"YYYY-QQ"} />
+              <DatePicker />
             </Form.Item>
             {/* 选择负责人 */}
             <Form.Item label="选择负责人" name="head">
@@ -327,7 +348,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           >
             {/* 选择时间 */}
             <Form.Item label="进厂日期" name="in_time">
-              <DatePicker format={"YYYY-QQ"} />
+              <DatePicker />
             </Form.Item>
             {/* 负责人 */}
             <Form.Item label="负责人" name="Head">
@@ -363,7 +384,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             </Form.Item>
             {/* 出厂日期 */}
             <Form.Item label="出厂日期" name="out_time">
-              <DatePicker format={"YYYY-QQ"} />
+              <DatePicker />
             </Form.Item>
             {/* 还款金额 */}
             <Form.Item label="还款金额" name="Collection">
@@ -371,11 +392,11 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             </Form.Item>
             {/* 还款时间 */}
             <Form.Item label="还款时间" name="getMoneyTime">
-              <DatePicker format={"YYYY-QQ"} />
+              <DatePicker />
             </Form.Item>
             {/* 还款月份 */}
             <Form.Item label="还款月份" name="getMoneyMonth">
-              <DatePicker format={"YYYY-QQ"} picker={"month"} />
+              <DatePicker picker={"month"} />
             </Form.Item>
             <Form.Item label="还款方式" name="Head">
               <Select>
@@ -415,7 +436,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           >
             {/* 选择时间 */}
             <Form.Item label="选择时间" name="time">
-              <DatePicker format={"YYYY-QQ"} />
+              <DatePicker />
             </Form.Item>
             {/* 选择月份 */}
             <Form.Item label="选择月份" name="month">
