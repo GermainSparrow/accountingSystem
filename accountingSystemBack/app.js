@@ -28,5 +28,5 @@ app.use('/waveBox', waveBox)
 
 // 开启服务器
 app.listen(3001, () => {
-  console.log('服务器在3000端口开启。。。。。');
+  console.log('服务器在3001端口开启。。。。。');
 })
