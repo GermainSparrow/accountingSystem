@@ -98,6 +98,9 @@ const App: React.FC = () => {
   }, []);
   const deleteData = (x) => {
     console.log(x);
+    apis.deleteFinancialList({
+      key: x.key,
+    })
   };
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
