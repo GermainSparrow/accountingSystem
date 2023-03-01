@@ -71,4 +71,22 @@ router.post("/addFinancialList", function (req, res, next) {
     });
   });
 });
+//删除表
+router.post("/delete", function (req, res, next) {
+  let sqlHead = `DELETE FROM reserves WHERE \`key\` =${req.body.key}`;
+  db.query(sqlHead, (err, result) => {
+    if (err) {
+      res.send({
+        code: 500,
+        msg: "数据库添加失败 服务器暂停",
+      });
+      throw err;
+    }
+    res.send({
+      code: 200,
+      msg: "success",
+      data: result,
+    });
+  });
+});
 module.exports = router;
