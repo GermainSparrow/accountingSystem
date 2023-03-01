@@ -27,6 +27,7 @@ app.use('/oil', oil_sale)
 app.use('/waveBox', waveBox)
 
 // 开启服务器
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log('服务器在3000端口开启。。。。。');
 })
+module.exports = app
