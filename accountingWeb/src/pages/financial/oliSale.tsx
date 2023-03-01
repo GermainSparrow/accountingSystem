@@ -81,17 +81,41 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 //组件使用
 const App: React.FC = () => {
-  useEffect(() => {
+  function reload() {
     apis.getOliList().then((res) => {
       setData(res.data.data);
     });
+  }
+  const deleteData = (x) => {
+    console.log(x);
+    apis
+      .deleteOliList({
+        key: x.key,
+      })
+      .then((res) => {
+        if (res.data.code === 200) {
+          message.open({
+            content: "删除成功",
+            duration: 1.5,
+            type: "success",
+          });
+          reload();
+        } else {
+          message.open({
+            content: "删除失败",
+            duration: 1.5,
+            type: "error",
+          });
+        }
+      });
+  };
+  useEffect(() => {
+    reload();
     //侦听add函数
     events.addListener("oil", (x) => {
       console.log("i heard", x);
 
-      apis.getOliList().then((res) => {
-        setData(res.data.data);
-      });
+      reload();
     });
     return () => {
       console.log("o-销毁函数执行");
@@ -285,7 +309,7 @@ const App: React.FC = () => {
       editable: true,
     },
     {
-      title: "operation",
+      title: "操作",
       dataIndex: "operation",
       width: "20%",
       render: (_: any, record: Item) => {
@@ -303,12 +327,20 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
-          >
-            编辑
-          </Typography.Link>
+          <div>
+            <Typography.Link
+              disabled={editingKey !== ""}
+              onClick={() => edit(record)}
+            >
+              编辑
+            </Typography.Link>
+            <Typography.Link
+              style={{ marginLeft: "15px", color: "red" }}
+              onClick={() => deleteData(record)}
+            >
+              删除
+            </Typography.Link>
+          </div>
         );
       },
     },

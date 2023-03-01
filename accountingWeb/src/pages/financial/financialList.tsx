@@ -75,18 +75,18 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 //组件使用
 const App: React.FC = () => {
-  //在每次页面创建时获取后台参数
-  useEffect(() => {
+  function reload() {
     apis.getFinancialList().then((res) => {
       setData(res.data.data);
     });
+  }
+  //在每次页面创建时获取后台参数
+  useEffect(() => {
+    reload();
     //侦听add函数
     events.addListener("financeList", (x) => {
       console.log("i heard", x);
-
-      apis.getFinancialList().then((res) => {
-        setData(res.data.data);
-      });
+      reload();
     });
     return () => {
       console.log("f-销毁函数执行");
@@ -98,9 +98,26 @@ const App: React.FC = () => {
   }, []);
   const deleteData = (x) => {
     console.log(x);
-    apis.deleteFinancialList({
-      key: x.key,
-    })
+    apis
+      .deleteFinancialList({
+        key: x.key,
+      })
+      .then((res) => {
+        if (res.data.code === 200) {
+          message.open({
+            content: "删除成功",
+            duration: 1.5,
+            type: "success",
+          });
+          reload();
+        } else {
+          message.open({
+            content: "删除失败",
+            duration: 1.5,
+            type: "error",
+          });
+        }
+      });
   };
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
@@ -237,7 +254,7 @@ const App: React.FC = () => {
       editable: true,
     },
     {
-      title: "operation",
+      title: "操作",
       dataIndex: "operation",
       width: "20%",
       render: (_: any, record: Item) => {
