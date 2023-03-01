@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import apis from "../../utils/apis/apis";
-import { Form, Input, InputNumber, Popconfirm, Table, Typography ,message} from "antd";
+import events from "../../utils/events/events";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Table,
+  Typography,
+  message,
+  Button,
+} from "antd";
 
 //单个数组元素对象接口
 interface Item {
@@ -65,16 +75,34 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 //组件使用
 const App: React.FC = () => {
-    //在每次页面创建时获取后台参数
+  //在每次页面创建时获取后台参数
   useEffect(() => {
     apis.getFinancialList().then((res) => {
       setData(res.data.data);
     });
+    //侦听add函数
+    events.addListener("financeList", (x) => {
+      console.log("i heard", x);
+
+      apis.getFinancialList().then((res) => {
+        setData(res.data.data);
+      });
+    });
+    return () => {
+      console.log("f-销毁函数执行");
+
+      events.removeListener("financeList", () => {
+        console.log("总线侦听事件已经移除");
+      });
+    };
   }, []);
+  const deleteData = (x) => {
+    console.log(x);
+  };
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
-  
+
   //判断是否是正在修改的数据
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -116,21 +144,20 @@ const App: React.FC = () => {
         });
 
         //发送数据到后台
-        apis.updateFinancialList({ ...item, ...row }).then(res=>{
-            if(res.data.code === 200){
-                message.open({
-                    content: '修改成功',
-                    duration: 1,
-                    type:'success'
-                })
-            }else{
-                message.open({
-                    content: '修改失败',
-                    duration: 1,
-                    type:'error'
-
-                })
-            }
+        apis.updateFinancialList({ ...item, ...row }).then((res) => {
+          if (res.data.code === 200) {
+            message.open({
+              content: "修改成功",
+              duration: 1,
+              type: "success",
+            });
+          } else {
+            message.open({
+              content: "修改失败",
+              duration: 1,
+              type: "error",
+            });
+          }
         });
 
         setData(newData);
@@ -225,12 +252,20 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
-          >
-            编辑
-          </Typography.Link>
+          <div>
+            <Typography.Link
+              disabled={editingKey !== ""}
+              onClick={() => edit(record)}
+            >
+              编辑
+            </Typography.Link>
+            <Typography.Link
+              style={{ marginLeft: "15px", color: "red" }}
+              onClick={() => deleteData(record)}
+            >
+              删除
+            </Typography.Link>
+          </div>
         );
       },
     },

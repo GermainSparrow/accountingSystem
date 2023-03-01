@@ -15,7 +15,7 @@ router.get("/", function (req, res, next) {
     }
     res.send({
       code: 200,
-      data: result,
+      data: result.reverse(),
     });
   });
 });

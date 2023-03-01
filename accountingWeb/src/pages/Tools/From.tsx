@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 import moment from "moment";
+import events from "../../utils/events/events";
 import {
   Form,
   Input,
@@ -41,6 +41,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
     switch (props.x.trim()) {
       case "financeList":
         apis.addFinancialList(values).then((res) => {
+          events.emit(`${props.x.trim()}`, "add");
           if (res.data.code == 200) {
             message.open({
               content: res.data.msg,
@@ -73,6 +74,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               type: "error",
             });
           }
+          events.emit(`${props.x.trim()}`, "add");
         });
         console.log("ooooo");
 
@@ -92,8 +94,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               type: "error",
             });
           }
+          events.emit(`${props.x.trim()}`, "add");
         });
-        console.log("wwwwww");
 
         break;
       default:
@@ -340,7 +342,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               <TextArea rows={1} />
             </Form.Item>
             {/* 型号 */}
-            <Form.Item label="型号" name="mode">
+            <Form.Item label="型号" name="model">
               <TextArea rows={1} />
             </Form.Item>
             {/* 波箱型号 */}
@@ -375,22 +377,11 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             <Form.Item label="还款月份" name="getMoneyMonth">
               <DatePicker format={"YYYY-QQ"} picker={"month"} />
             </Form.Item>
-            {/* 报销人 */}
-            <Form.Item label="报销人" name="reimbursers">
+            <Form.Item label="还款方式" name="Head">
               <Select>
-                <Select.Option value="赖敏">赖敏</Select.Option>
-                <Select.Option value="蔡强">蔡强</Select.Option>
-                <Select.Option value="周树文">周树文</Select.Option>
-                <Select.Option value="刘浪">刘浪</Select.Option>
-                <Select.Option value="方晓勇">方晓勇</Select.Option>
-                <Select.Option value="王从林">王从林</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item label="类别" name="category">
-              <Select>
-                <Select.Option value="管理费用">管理费用</Select.Option>
-                <Select.Option value="贷款">贷款</Select.Option>
-                <Select.Option value="运费">运费</Select.Option>
+                <Select.Option value="微信">微信</Select.Option>
+                <Select.Option value="支付宝">支付宝</Select.Option>
+                <Select.Option value="现金">现金</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item label="点击添加">

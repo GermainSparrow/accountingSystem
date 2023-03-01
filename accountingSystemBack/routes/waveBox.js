@@ -12,7 +12,7 @@ router.get('/getWaveBoxList',function(req,res,next){
             })
             throw err;
         }
-        res.send(result);
+        res.send(result.reverse());
     });
 })
 //修改表

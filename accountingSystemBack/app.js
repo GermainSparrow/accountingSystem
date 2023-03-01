@@ -14,7 +14,7 @@ app.get('/demo', (req, res) => {
   let sqlStr = "SELECT * FROM reserves"
   //执行mysql 语句
   conn.query(sqlStr, (err, result) => {
-    console.log(err, '如果为null，sql语句执行成功');
+    console.log(err, '如果为null,sql语句执行成功');
     console.log(result);
     res.send(result)
   })
@@ -30,4 +30,3 @@ app.use('/waveBox', waveBox)
 app.listen(3001, () => {
   console.log('服务器在3000端口开启。。。。。');
 })
-module.exports = app

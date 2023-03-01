@@ -9,6 +9,7 @@ import {
   Typography,
   message,
 } from "antd";
+import events from "../../utils/events/events";
 
 //单个数组元素对象接口
 interface Item {
@@ -84,6 +85,21 @@ const App: React.FC = () => {
     apis.getOliList().then((res) => {
       setData(res.data.data);
     });
+    //侦听add函数
+    events.addListener("oil", (x) => {
+      console.log("i heard", x);
+
+      apis.getOliList().then((res) => {
+        setData(res.data.data);
+      });
+    });
+    return () => {
+      console.log("o-销毁函数执行");
+
+      events.removeListener("oil", () => {
+        console.log("总线侦听事件已经移除");
+      });
+    };
   }, []);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
