@@ -46,5 +46,19 @@ export default {
     },
     deleteWavesList(obj: {}): any {
         return request.post('/waveBox/delete', obj)
+    },
+    //获取所有的可视化数据
+    getVisualData(name: string) {
+        switch (name) {
+            case 'oil':
+                return request.get('/oil/getVisualData', {})
+
+            case 'waveBox':
+                return request.get('/waveBox/getVisualData', {})
+
+            case 'financial':
+                return request.get('/financial/getVisualData', {})
+
+        }
     }
 }
