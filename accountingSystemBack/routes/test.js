@@ -7,4 +7,4 @@ let temp = ''
 for(let key in p){
     temp+=`'${key}' = '${p[key]}' `
 }
-console.log(temp)
+console.log(temp,0-'100')

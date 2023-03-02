@@ -52,11 +52,11 @@ router.post("/addFinancialList", function (req, res, next) {
   }
   //拼装一下sql语句
   sqlHead = sqlHead.substring(0, sqlHead.length - 1);
-  sqlHead +=')'
+  sqlHead += ")";
   sqlTail = sqlTail.substring(0, sqlTail.length - 1);
-  sqlTail+=')'
-  
-  db.query(sqlHead+sqlTail, (err, result) => {
+  sqlTail += ")";
+
+  db.query(sqlHead + sqlTail, (err, result) => {
     if (err) {
       res.send({
         code: 500,
@@ -86,6 +86,35 @@ router.post("/delete", function (req, res, next) {
       code: 200,
       msg: "success",
       data: result,
+    });
+  });
+});
+//获取可视化数据（预处理表格）
+router.get("/getVisualData", function (req, res, next) {
+  let sqlHead = "SELECT * FROM reserves";
+  db.query(sqlHead, (err, result) => {
+    if (err) throw err;
+    //对获取的数据处理一下
+    const temp = result.map((item, index) => {
+      if (item.in) {
+        return {
+          name: item.payee,
+          month: item.month,
+          count: Number(item.in),
+        };
+      } else {
+        return {
+          name: item.reimbursers,
+          month: item.month,
+          count: 0 - Number(item.out),
+        };
+      }
+    });
+
+    res.send({
+      code: 200,
+      msg: "success",
+      data: temp,
     });
   });
 });

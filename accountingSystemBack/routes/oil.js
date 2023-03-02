@@ -95,4 +95,25 @@ router.post("/delete", function (req, res, next) {
     });
   });
 });
+//获取可视化数据
+router.get("/getVisualData", function (req, res, next) {
+  let sqlHead = "SELECT * FROM oil_sale";
+
+  db.query(sqlHead, function (err, result) {
+    let temp = result.map((item) => {
+      return {
+        name: item.head,
+        month: item.getMonth,
+        count: item.real_sales,
+      };
+    });
+    if (err) {
+      throw err;
+    }
+    res.send({
+      code: 200,
+      data: temp,
+    });
+  });
+});
 module.exports = router;

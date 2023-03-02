@@ -10,6 +10,8 @@ const ManagerList = React.lazy(() => import("./pages/Manager/ManagerList"));
 const Oil = React.lazy(() => import("./pages/financial/oliSale"));
 const WaveBox = React.lazy(() => import("./pages/financial/WaveBox"));
 const Test = React.lazy(() => import("./pages/Tools/From"));
+const AntG2 = React.lazy(() => import("./pages/visual/AntG2"));
+
 //引入路由依赖
 
 import { Routes, Route, HashRouter } from "react-router-dom";
@@ -24,7 +26,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/Main" element={<Main />}>
               <Route path="financeList" element={<Finance />} />
-              <Route path="visual" element={<Visual />} />
+              <Route path="visual" element={<AntG2 />} />
               <Route path="manager" element={<Manager />} />
               <Route path="managerList" element={<ManagerList />} />
               <Route path="oil" element={<Oil />} />

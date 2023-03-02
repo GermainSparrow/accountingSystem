@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import apis from "../utils/apis/apis";
+
+
 import _ from "lodash";
 
 const onFinishFailed = (errorInfo: any) => {
@@ -30,7 +32,14 @@ const Login: React.FC = () => {
     });
   };
   return (
-    <div>
+    <div
+      style={{
+        position: "absolute",
+        top: "30%",
+        left: "50%",
+        translate: "-50% -50%",
+      }}
+    >
       <Form
         name="basic"
         labelCol={{ span: 8 }}
