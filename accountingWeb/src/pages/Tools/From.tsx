@@ -31,7 +31,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-  const onFinish = (values: any) => {
+
+  const onFinish = async (values: any) => {
     //处理时间格式
     if (values.time) {
       values.time = values.time.format("YYYY-MM-DD");
@@ -58,72 +59,119 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
       values.getMoneyMonth = values.getMoneyMonth.format("YYYY-MM");
     }
     console.log("Success:", values);
-    // 根据取得的key值调用接口
-    switch (props.x.trim()) {
-      case "financeList":
-        apis.addFinancialList(values).then((res) => {
-          if (res.data.code == 200) {
-            message.open({
-              content: res.data.msg,
-              duration: 1.5,
-              type: "success",
-            });
-          } else {
-            message.open({
-              content: res.data.msg,
-              duration: 1.5,
-              type: "error",
-            });
-          }
-        });
-        console.log("fffff");
 
-        break;
-      case "oil":
-        apis.addOliList(values).then((res) => {
-          if (res.data.code == 200) {
-            message.open({
-              content: res.data.msg,
-              duration: 1.5,
-              type: "success",
-            });
-          } else {
-            message.open({
-              content: res.data.msg,
-              duration: 1.5,
-              type: "error",
-            });
-          }
-        });
-        console.log("ooooo");
+    if (values.choice == "添加数据") {
+      delete values.choice;
+      // 根据取得的key值调用接口
+      switch (props.x.trim()) {
+        case "financeList":
+          await apis.addFinancialList(values).then((res) => {
+            if (res.data.code == 200) {
+              message.open({
+                content: res.data.msg,
+                duration: 1.5,
+                type: "success",
+              });
+            } else {
+              message.open({
+                content: res.data.msg,
+                duration: 1.5,
+                type: "error",
+              });
+            }
+          });
+          console.log("fffff");
 
-        break;
-      case "waveBox":
-        apis.addWavesList(values).then((res) => {
-          if (res.data.code == 200) {
-            message.open({
-              content: res.data.msg,
-              duration: 1.5,
-              type: "success",
-            });
-          } else {
-            message.open({
-              content: res.data.msg,
-              duration: 1.5,
-              type: "error",
-            });
-          }
-        });
+          break;
+        case "oil":
+          await apis.addOliList(values).then((res) => {
+            if (res.data.code == 200) {
+              message.open({
+                content: res.data.msg,
+                duration: 1.5,
+                type: "success",
+              });
+            } else {
+              message.open({
+                content: res.data.msg,
+                duration: 1.5,
+                type: "error",
+              });
+            }
+          });
+          console.log("ooooo");
 
-        break;
-      default:
-        console.log("dddd");
-        break;
+          break;
+        case "waveBox":
+          await apis.addWavesList(values).then((res) => {
+            if (res.data.code == 200) {
+              message.open({
+                content: res.data.msg,
+                duration: 1.5,
+                type: "success",
+              });
+            } else {
+              message.open({
+                content: res.data.msg,
+                duration: 1.5,
+                type: "error",
+              });
+            }
+          });
+
+          break;
+        default:
+          console.log("dddd");
+          break;
+      }
+      events.emit(`${props.x.trim()}`, "add");
+    } else {
+      delete values.choice;
+      let p: any;
+      switch (props.x.trim()) {
+        case "financeList": {
+          p = apis.searchData({
+            table: "reserves",
+            ...values,
+          });
+          break;
+        }
+        case "oil": {
+          p = apis.searchData({
+            table: "oil_sale",
+            ...values,
+          });
+          break;
+        }
+        case "waveBox": {
+          p = apis.searchData({
+            table: "wavebox",
+            ...values,
+          });
+          break;
+        }
+      }
+      await p.then((res) => {
+        if (res.data.code == 200) {
+          message.open({
+            content: res.data.msg,
+            duration: 1.5,
+            type: "success",
+          });
+        } else {
+          message.open({
+            content: res.data.msg,
+            duration: 1.5,
+            type: "error",
+          });
+        }
+        events.emit("searchEnd", res.data.data);
+      });
     }
-    events.emit(`${props.x.trim()}`, "add");
+
     props.setShow(false);
   };
-
+  //渲染列表
   switch (key) {
     case "financeList ":
       return (
@@ -147,6 +195,12 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
+            <Form.Item label="添加数据/搜索数据" name="choice">
+              <Select>
+                <Select.Option value="添加数据">添加数据</Select.Option>
+                <Select.Option value="搜索数据">搜索数据</Select.Option>
+              </Select>
+            </Form.Item>
             {/* 选择时间 */}
             <Form.Item label="选择时间" name="time">
               <DatePicker format={"YYYY/MM/DD"} />
@@ -209,7 +263,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             </Form.Item>
             <Form.Item label="点击添加">
               <Button type="primary" htmlType="submit">
-                点击添加
+                点击提交
               </Button>
             </Form.Item>
           </Form>
@@ -236,6 +290,12 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
+            <Form.Item label="添加数据/搜索数据" name="choice">
+              <Select>
+                <Select.Option value="添加数据">添加数据</Select.Option>
+                <Select.Option value="搜索数据">搜索数据</Select.Option>
+              </Select>
+            </Form.Item>
             {/* 选择时间 */}
             <Form.Item label="销售时间" name="time">
               <DatePicker />
@@ -316,7 +376,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             </Form.Item>
             <Form.Item label="点击添加">
               <Button type="primary" htmlType="submit">
-                点击添加
+                点击提交
               </Button>
             </Form.Item>
           </Form>
@@ -344,7 +404,12 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
-            {/* 选择时间 */}
+            <Form.Item label="添加数据/搜索数据" name="choice">
+              <Select>
+                <Select.Option value="添加数据">添加数据</Select.Option>
+                <Select.Option value="搜索数据">搜索数据</Select.Option>
+              </Select>
+            </Form.Item>
             <Form.Item label="进厂日期" name="in_time">
               <DatePicker />
             </Form.Item>
@@ -405,7 +470,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             </Form.Item>
             <Form.Item label="点击添加">
               <Button type="primary" htmlType="submit">
-                点击添加
+                点击提交
               </Button>
             </Form.Item>
           </Form>
@@ -432,6 +497,12 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
+            <Form.Item label="添加数据/搜索数据" name="choice">
+              <Select>
+                <Select.Option value="添加数据">添加数据</Select.Option>
+                <Select.Option value="搜索数据">搜索数据</Select.Option>
+              </Select>
+            </Form.Item>
             {/* 选择时间 */}
             <Form.Item label="选择时间" name="time">
               <DatePicker />
@@ -491,7 +562,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             </Form.Item>
             <Form.Item label="点击添加">
               <Button type="primary" htmlType="submit">
-                点击添加
+                点击提交
               </Button>
             </Form.Item>
           </Form>

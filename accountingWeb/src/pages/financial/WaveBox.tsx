@@ -112,6 +112,9 @@ const App: React.FC = () => {
     events.addListener("waveBox", (x) => {
       reload();
     });
+    events.addListener('searchEnd',(x)=>{
+      setData(x)
+    })
     return () => {
       console.log("w-销毁函数执行");
 

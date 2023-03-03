@@ -8,6 +8,7 @@ const user = require('./routes/users')
 const financial = require('./routes/financial')
 const oil_sale = require('./routes/oil')
 const waveBox = require('./routes/waveBox')
+const crud = require('./routes/crud')
 
 // 定义路由(说白了就是网址)     
 app.get('/demo', (req, res) => {
@@ -25,7 +26,7 @@ app.use('/user', user)
 app.use('/financial', financial)
 app.use('/oil', oil_sale)
 app.use('/waveBox', waveBox)
-
+app.use('/crud', crud)
 // 开启服务器
 app.listen(3001, () => {
   console.log('服务器在3001端口开启。。。。。');

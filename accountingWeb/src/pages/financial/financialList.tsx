@@ -88,6 +88,9 @@ const App: React.FC = () => {
       console.log("i heard", x);
       reload();
     });
+    events.addListener('searchEnd',(x)=>{
+      setData(x)
+    })
     return () => {
       console.log("f-销毁函数执行");
 

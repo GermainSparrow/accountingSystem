@@ -117,6 +117,9 @@ const App: React.FC = () => {
 
       reload();
     });
+    events.addListener('searchEnd',(x)=>{
+      setData(x)
+    })
     return () => {
       console.log("o-销毁函数执行");
 

@@ -60,5 +60,9 @@ export default {
                 return request.get('/financial/getVisualData', {})
 
         }
+    },
+    //crud
+    searchData(obj: {table:string,[key:string] : any}) {
+        return request.post('/crud/search', obj)
     }
 }
