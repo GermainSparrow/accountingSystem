@@ -18,6 +18,7 @@ const Login: React.FC = () => {
 
     apis.Login(values).then((res) => {
       if (res.data.code === 200) {
+        localStorage.setItem('token',res.data.data.token)
         message.open({
           type: "success",
           content: "登录成功 欢迎您",
