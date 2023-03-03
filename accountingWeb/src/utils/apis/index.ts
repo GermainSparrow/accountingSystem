@@ -1,11 +1,30 @@
-import axios, { AxiosPromise } from 'axios';
+import { message } from 'antd';
+import axios from 'axios';
+
+
+
 axios.defaults.baseURL = 'http://127.0.0.1:3001';
 //设置请求拦截器
-axios.interceptors.request.use((res) => {
+axios.interceptors.request.use((req) => {
     let token = localStorage.getItem('token');
-    res.headers['Authorization'] = 'Bearer ' + token;
-    return res;
+    req.headers['Authorization'] = 'Bearer ' + token;
+    return req;
 })
+//设置响应拦截器
+axios.interceptors.response.use((res => {
+    return res
+}), async function (error) {
+    if (error.response.status == 401) {
+        message.open({
+            content: '登录过期请重新登录',
+            type: 'error',
+            duration: 3
+        })
+        localStorage.removeItem('token');
+    }
+
+})
+
 export default {
     post(url: string, data: {}) {
 

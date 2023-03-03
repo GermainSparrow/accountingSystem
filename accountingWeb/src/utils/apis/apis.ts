@@ -1,4 +1,3 @@
-import Login from '../../pages/login'
 import request from './index'
 export default {
     //登录

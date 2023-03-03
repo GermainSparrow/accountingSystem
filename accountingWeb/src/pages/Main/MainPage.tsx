@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import type { MenuProps } from "antd";
+import { MenuProps, message } from "antd";
 import { UserOutlined, LaptopOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme, Radio, Button } from "antd";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Form from "../Tools/From";
 import Container from "../Tools/Container";
 const { Header, Content, Footer, Sider } = Layout;
@@ -25,7 +24,12 @@ const MainPage: React.FC = () => {
   //中间三按钮事件
   function changeMenu(key: string) {
     setSelectedKey(key);
-    navigate(`/Main/${key}`);
+    if (localStorage.getItem("token")) {
+      navigate(`/Main/${key}`);
+    } else {
+      navigate("/");
+      message.error("请先登录");
+    }
     // console.log("key", key, "selectedKey", selectedKey);
     setActiveKey3(key);
     setActiveKey2(false);
