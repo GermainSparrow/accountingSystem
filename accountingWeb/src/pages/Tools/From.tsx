@@ -62,7 +62,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
     switch (props.x.trim()) {
       case "financeList":
         apis.addFinancialList(values).then((res) => {
-          events.emit(`${props.x.trim()}`, "add");
           if (res.data.code == 200) {
             message.open({
               content: res.data.msg,
@@ -95,7 +94,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               type: "error",
             });
           }
-          events.emit(`${props.x.trim()}`, "add");
         });
         console.log("ooooo");
 
@@ -115,7 +113,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               type: "error",
             });
           }
-          events.emit(`${props.x.trim()}`, "add");
         });
 
         break;
@@ -123,6 +120,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
         console.log("dddd");
         break;
     }
+    events.emit(`${props.x.trim()}`, "add");
     props.setShow(false);
   };
 

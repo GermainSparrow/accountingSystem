@@ -9,7 +9,6 @@ router.get("/a", function (req, res, next) {
 router.post("/login", async function (req, resp, next) {
   let selectCode = `select * from user where name ='${req.body.userName}' and password ='${req.body.password}' `;
   await db.query(selectCode, function (err, result) {
-    console.log(req.body, "result", result, "err",err);
     if (!err) {
       //如果查询到的数据不为空
       if (result.length > 0) {

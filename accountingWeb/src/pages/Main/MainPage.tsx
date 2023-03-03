@@ -1,13 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import type { MenuProps } from "antd";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, LaptopOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme, Radio, Button } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import Form from "../Tools/From";
@@ -24,6 +18,10 @@ const MainPage: React.FC = () => {
   const [activeKey3, setActiveKey3] = useState("financeList");
   //默认选中油品表展示
   const [selectedKey, setSelectedKey] = useState("financeList");
+  //设置默认选中的按钮依赖menuop
+  const [selectedKeys, setSelectedKeys] = useState(["financeList"]);
+  const [open, setOpen] = useState(["sub1"]);
+
   //中间三按钮事件
   function changeMenu(key: string) {
     setSelectedKey(key);
@@ -32,6 +30,24 @@ const MainPage: React.FC = () => {
     setActiveKey3(key);
     setActiveKey2(false);
   }
+  //设置useEffect 刷新设置key
+  useEffect(() => {
+    let path = location.pathname.substring(6, location.pathname.length);
+    setSelectedKeys([`${path}`]);
+    path == "financeList" || path == "visual"
+      ? setOpen(() => {
+        let temp = ['sub1']
+        
+        
+          return temp;
+        })
+      : setOpen(() => {
+        let temp = ['sub2']
+        console.log('x');
+        return temp;
+        });
+
+  }, []);
   const navigate = useNavigate();
 
   const {
@@ -42,6 +58,7 @@ const MainPage: React.FC = () => {
     {
       name: "财务管理",
       icon: LaptopOutlined,
+      key: "sub1",
       children: [
         { name: "财务报表", path: "financeList" },
         { name: "数据可视化", path: "visual" },
@@ -50,6 +67,7 @@ const MainPage: React.FC = () => {
     {
       name: "管理员管理",
       icon: UserOutlined,
+      key: "sub2",
       children: [
         { name: "管理员列表", path: "ManagerList" },
         { name: "人员管理", path: "Manager" },
@@ -61,7 +79,7 @@ const MainPage: React.FC = () => {
     const key = String(index + 1);
 
     return {
-      key: `lv1${key}`,
+      key: `${items.key}`,
       icon: React.createElement(items.icon),
       label: ` ${items.name}`,
 
@@ -75,7 +93,8 @@ const MainPage: React.FC = () => {
     };
   });
   //设置菜单点击事件
-  function menuClick({ item, key, keyPath, selectedKeys, domEvent }) {
+  function menuClick({ item, key, keyPath, selectedKeys, domEvent, openKeys }) {
+    setSelectedKeys(selectedKeys);
     if (keyPath[0].trim() == "financeList") {
       setActiveKey(true);
     } else {
@@ -114,10 +133,10 @@ const MainPage: React.FC = () => {
           <div className="logo" />
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
             items={menuItems2}
+            defaultOpenKeys={open}
+            selectedKeys={selectedKeys}
             onSelect={menuClick}
           />
         </Sider>
