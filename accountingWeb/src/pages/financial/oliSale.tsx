@@ -212,7 +212,7 @@ const App: React.FC = () => {
     {
       title: "进厂日期",
       dataIndex: "time",
-      width: "10%",
+      width: "8%",
       editable: true,
     },
     {
@@ -236,7 +236,7 @@ const App: React.FC = () => {
     {
       title: "数量(单位L)",
       dataIndex: "count",
-      width: "10%",
+      width: "5%",
       editable: true,
     },
     {
@@ -248,31 +248,31 @@ const App: React.FC = () => {
     {
       title: "计划销售金额",
       dataIndex: "Plan_sales",
-      width: "8%",
+      width: "5%",
       editable: true,
     },
     {
       title: "实际销售金额",
       dataIndex: "real_sales",
-      width: "8%",
+      width: "5%",
       editable: true,
     },
     {
       title: "优惠折扣",
       dataIndex: "Discounts",
-      width: "10%",
+      width: "5%",
       editable: true,
     },
     {
       title: "收款时间",
       dataIndex: "getTime",
-      width: "10%",
+      width: "8%",
       editable: true,
     },
     {
       title: "收款金额",
       dataIndex: "collection",
-      width: "7%",
+      width: "5%",
       editable: true,
     },
     {
@@ -308,13 +308,13 @@ const App: React.FC = () => {
     {
       title: "冲抵贷款",
       dataIndex: "off_price",
-      width: "10%",
+      width: "5%",
       editable: true,
     },
     {
       title: "操作",
       dataIndex: "operation",
-      width: "20%",
+      width: "10%",
       render: (_: any, record: Item) => {
         const editable = isEditing(record);
         return editable ? (
@@ -330,7 +330,7 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <div>
+          <div style={{display:'flex',flexDirection:'row'}}>
             <Typography.Link
               disabled={editingKey !== ""}
               onClick={() => edit(record)}

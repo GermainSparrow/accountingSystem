@@ -19,7 +19,6 @@ router.get("/getWaveBoxList", function (req, res, next) {
 router.post("/updateWaveBox", function (req, res, next) {
   let sqlHead = "UPDATE wavebox SET ";
   let sqlTail = "WHERE `key` = ";
-  console.log(req.body);
 
   for (key in req.body) {
     if (key != "key") {

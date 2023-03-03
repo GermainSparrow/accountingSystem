@@ -211,19 +211,19 @@ const App: React.FC = () => {
     {
       title: "付款人",
       dataIndex: "payer",
-      width: "5%",
+      width: "8%",
       editable: true,
     },
     {
       title: "收款人",
       dataIndex: "payee",
-      width: "5%",
+      width: "8%",
       editable: true,
     },
     {
       title: "付款方式",
       dataIndex: "payWay",
-      width: "10%",
+      width: "5%",
       editable: true,
     },
     {
@@ -241,7 +241,7 @@ const App: React.FC = () => {
     {
       title: "报销人",
       dataIndex: "reimbursers",
-      width: "5%",
+      width: "10%",
       editable: true,
     },
     {
@@ -259,7 +259,7 @@ const App: React.FC = () => {
     {
       title: "操作",
       dataIndex: "operation",
-      width: "20%",
+      width: "15%",
       render: (_: any, record: Item) => {
         const editable = isEditing(record);
         return editable ? (

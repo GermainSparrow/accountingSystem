@@ -304,7 +304,7 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <div>
+          <div style={{display:'flex',flexDirection:'row'}}>
             <Typography.Link
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
