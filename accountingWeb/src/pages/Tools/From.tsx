@@ -195,7 +195,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
-            <Form.Item label="添加数据/搜索数据" name="choice">
+            <Form.Item label="模式选择" name="choice">
               <Select>
                 <Select.Option value="添加数据">添加数据</Select.Option>
                 <Select.Option value="搜索数据">搜索数据</Select.Option>
@@ -290,7 +290,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
-            <Form.Item label="添加数据/搜索数据" name="choice">
+            <Form.Item label="模式选择" name="choice">
               <Select>
                 <Select.Option value="添加数据">添加数据</Select.Option>
                 <Select.Option value="搜索数据">搜索数据</Select.Option>
@@ -404,7 +404,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
-            <Form.Item label="添加数据/搜索数据" name="choice">
+            <Form.Item label="模式选择" name="choice">
               <Select>
                 <Select.Option value="添加数据">添加数据</Select.Option>
                 <Select.Option value="搜索数据">搜索数据</Select.Option>
@@ -497,7 +497,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
-            <Form.Item label="添加数据/搜索数据" name="choice">
+            <Form.Item label="模式选择" name="choice">
               <Select>
                 <Select.Option value="添加数据">添加数据</Select.Option>
                 <Select.Option value="搜索数据">搜索数据</Select.Option>

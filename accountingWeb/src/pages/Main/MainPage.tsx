@@ -36,17 +36,15 @@ const MainPage: React.FC = () => {
     setSelectedKeys([`${path}`]);
     path == "financeList" || path == "visual"
       ? setOpen(() => {
-        let temp = ['sub1']
-        
-        
+          let temp = ["sub1"];
+
           return temp;
         })
       : setOpen(() => {
-        let temp = ['sub2']
-        console.log('x');
-        return temp;
+          let temp = ["sub2"];
+          console.log("x");
+          return temp;
         });
-
   }, []);
   const navigate = useNavigate();
 
@@ -119,7 +117,7 @@ const MainPage: React.FC = () => {
         </Header>
       </Layout>
       {/* 侧边栏 */}
-      <Layout style={{ height: "100vh" }}>
+      <Layout style={{}}>
         <Sider
           breakpoint="lg"
           collapsedWidth="0"
@@ -147,6 +145,7 @@ const MainPage: React.FC = () => {
                 padding: 24,
                 minHeight: 360,
                 background: colorBgContainer,
+                overflow: "hidden",
               }}
             >
               <Container isShow={activeKey}>
@@ -173,7 +172,7 @@ const MainPage: React.FC = () => {
                     }}
                   >
                     {" "}
-                    点击添加
+                    点击添加/查询
                   </Button>
                   <Container isShow={activeKey2}>
                     <Form x={activeKey3} setShow={setActiveKey2} />
