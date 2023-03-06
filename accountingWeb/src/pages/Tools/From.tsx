@@ -33,6 +33,10 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
   };
 
   const onFinish = async (values: any) => {
+    if (values.choice == undefined) {
+      message.error("请选择添加/查询数据");
+      return;
+    }
     //处理时间格式
     if (values.time) {
       values.time = values.time.format("YYYY-MM-DD");
@@ -58,8 +62,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
     if (values.getMoneyMonth) {
       values.getMoneyMonth = values.getMoneyMonth.format("YYYY-MM");
     }
-    console.log("Success:", values);
-
     if (values.choice == "添加数据") {
       delete values.choice;
       // 根据取得的key值调用接口

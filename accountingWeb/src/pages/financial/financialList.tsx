@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import apis from "../../utils/apis/apis";
 import events from "../../utils/events/events";
 import {
@@ -81,16 +81,18 @@ const App: React.FC = () => {
     });
   }
   //在每次页面创建时获取后台参数
+  const [isSearch, setIsSearch] = useState(true);
   useEffect(() => {
     reload();
     //侦听add函数
     events.addListener("financeList", (x) => {
-      console.log("i heard", x);
       reload();
     });
-    events.addListener('searchEnd',(x)=>{
-      setData(x)
-    })
+    //侦听搜擦函数
+    events.addListener("searchEnd", (x) => {
+      setData(x);
+    });
+    setIsSearch(false)
     return () => {
       console.log("f-销毁函数执行");
 
@@ -98,7 +100,12 @@ const App: React.FC = () => {
         console.log("总线侦听事件已经移除");
       });
     };
-  }, []);
+  }, [isSearch]);
+  //用useCallBack缓存函数
+  
+  // useCallback(() => {
+  //   reload();
+  // }, [isSearch]);
   const deleteData = (x) => {
     console.log(x);
     apis
@@ -125,7 +132,7 @@ const App: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
-
+  const [searchData, setSearchData] = useState([]);
   //判断是否是正在修改的数据
   const isEditing = (record: Item) => record.key === editingKey;
 

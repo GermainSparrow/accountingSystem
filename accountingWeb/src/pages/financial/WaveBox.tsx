@@ -83,6 +83,7 @@ const App: React.FC = () => {
     apis.getWavesList().then((res) => {
       setData(res.data);
     });
+    setSearchData([]);
   };
   const deleteData = (x) => {
     console.log(x);
@@ -115,6 +116,7 @@ const App: React.FC = () => {
     });
     events.addListener("searchEnd", (x) => {
       setData(x);
+      setSearchData(x);
     });
     return () => {
       console.log("w-销毁函数执行");
@@ -127,13 +129,14 @@ const App: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
+  const [searchData, setSearchData] = useState([]);
   //默认不展示未收款
   const [showUncollected, setShowUncollected] = useState(false);
   //点击切换显示收款与未收款
   const uncollectedControl = function () {
     // true->false 未收款切换到已收款
     if (showUncollected) {
-      reload();
+      searchData ? reload() : setData(searchData);
       setShowUncollected(false);
     } else {
       setData(
