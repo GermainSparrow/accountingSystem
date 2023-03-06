@@ -8,9 +8,10 @@ import {
   Table,
   Typography,
   message,
+  Button,
 } from "antd";
 import events from "../../utils/events/events";
-
+import Container from "../Tools/Container";
 //单个数组元素对象接口
 interface Item {
   key: any;
@@ -117,9 +118,11 @@ const App: React.FC = () => {
 
       reload();
     });
-    events.addListener('searchEnd',(x)=>{
-      setData(x)
-    })
+    events.addListener("searchEnd", (x) => {
+      //把查询到的数据零时存储起来
+      setSearchData(x);
+      setData(x);
+    });
     return () => {
       console.log("o-销毁函数执行");
 
@@ -131,7 +134,26 @@ const App: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
-
+  const [searchData, setSearchData] = useState([]);
+  //默认不展示未收款
+  const [showUncollected, setShowUncollected] = useState(false);
+  //点击切换显示收款与未收款
+  const uncollectedControl = function () {
+    // true->false 未收款切换到已收款
+    if (showUncollected) {
+      apis.getOliList().then((res) => {
+        setData(res.data.data);
+      });
+      setShowUncollected(false);
+    } else {
+      setData(
+        [...data].filter((items) => {
+          return items.Uncollected_amount > 0;
+        })
+      );
+      setShowUncollected(true);
+    }
+  };
   //判断是否是正在修改的数据
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -330,7 +352,7 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <div style={{display:'flex',flexDirection:'row'}}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
             <Typography.Link
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
@@ -366,22 +388,43 @@ const App: React.FC = () => {
   });
 
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
+    <div>
+      <Button
+        onClick={uncollectedControl}
+        style={{
+          position: "absolute",
+          left: "100%",
+          top: "12%",
+          translate: "-400%",
         }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+      >
+        {showUncollected ? "点击展示全部数据" : "点击展示未收款"}
+      </Button>
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+      <Container isShow={showUncollected}>
+        <span style={{ position: "absolute", top: "13%", left: "77%" }}>
+          全部未收款金额是
+          {data.reduce((previousVal, currentVal) => {
+            return (previousVal += currentVal.Uncollected_amount);
+          }, 0)}
+        </span>
+      </Container>
+    </div>
   );
 };
 

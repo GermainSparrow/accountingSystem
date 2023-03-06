@@ -1,10 +1,15 @@
-let p ={
-    a:'123',
-    b:'456',
-    c:'789'
-}
-let temp = ''
-for(let key in p){
-    temp+=`'${key}' = '${p[key]}' `
-}
-console.log(temp,0-'100')
+let p =[
+    {
+        cost:10,
+        collection:5
+    },
+    {
+        cost:20,
+        collection:5
+    },
+    {
+        cost:30,
+        collection:5
+    }
+]
+console.log(p.reduce((previous,current)=>{return previous+=current.collection-current.cost},0));
