@@ -24,6 +24,7 @@ router.post("/login", async function (req, resp, next) {
           msg: "登录成功",
           data: {
             token,
+            ...result[0]
           },
         });
       }

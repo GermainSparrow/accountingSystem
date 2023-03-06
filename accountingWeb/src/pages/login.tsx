@@ -3,7 +3,6 @@ import { Button, Checkbox, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import apis from "../utils/apis/apis";
 
-
 import _ from "lodash";
 
 const onFinishFailed = (errorInfo: any) => {
@@ -14,15 +13,15 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   //登录函数
   const onFinish = (values: any) => {
-    console.log("Success:", values);
-
     apis.Login(values).then((res) => {
       if (res.data.code === 200) {
-        localStorage.setItem('token',res.data.data.token)
+        localStorage.setItem("token", res.data.data.token);
         message.open({
           type: "success",
           content: "登录成功 欢迎您",
         });
+        res.data.data.auth == "edit" ? localStorage.setItem("auth", "true") : localStorage.removeItem("auth");
+
         navigate("/Main");
       } else {
         message.open({

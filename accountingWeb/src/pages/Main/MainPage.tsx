@@ -20,6 +20,7 @@ const MainPage: React.FC = () => {
   //设置默认选中的按钮依赖menuop
   const [selectedKeys, setSelectedKeys] = useState(["financeList"]);
   const [open, setOpen] = useState(["sub1"]);
+  const [activeKey4, setActiveKey4] = useState(false);
 
   //中间三按钮事件
   function changeMenu(key: string) {
@@ -49,6 +50,8 @@ const MainPage: React.FC = () => {
           console.log("x");
           return temp;
         });
+
+    localStorage.getItem("auth") ? setActiveKey4(true) : null;
   }, []);
   const navigate = useNavigate();
 
@@ -170,14 +173,16 @@ const MainPage: React.FC = () => {
                   </Radio.Group>
 
                   {/* 控制组件 */}
-                  <Button
-                    onClick={() => {
-                      setActiveKey2(!activeKey2);
-                    }}
-                  >
-                    {" "}
-                    点击添加/查询
-                  </Button>
+                  <Container isShow={activeKey4} style={{display:'inline-block'}}>
+                    <Button 
+                      onClick={() => {
+                        setActiveKey2(!activeKey2);
+                      }}
+                    >
+                      {" "}
+                      点击添加/查询
+                    </Button>
+                  </Container>
                   <Container isShow={activeKey2}>
                     <Form x={activeKey3} setShow={setActiveKey2} />
                   </Container>
