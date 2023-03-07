@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Container from "../Tools/Container";
 import apis from "../../utils/apis/apis";
+import CancelButton from '../Tools/CancelButton'
 import {
   Form,
   Input,
@@ -322,7 +323,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Container isShow={searchState.isSearch}>
+      {/* <Container isShow={searchState.isSearch}>
         <Button
           style={{ position: "relative", top: "-48px", left: "75%" }}
           type="text"
@@ -334,7 +335,8 @@ const App: React.FC = () => {
         >
           取消查询
         </Button>
-      </Container>
+      </Container> */}
+      <CancelButton isSow={searchState.isSearch} name='financeList'/>
       <Form form={form} component={false}>
         <Table
           components={{
