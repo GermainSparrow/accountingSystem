@@ -103,11 +103,11 @@ const App: React.FC = () => {
     }
   }, [editState.financeList]);
   //如果是再次查询直接给新的结果
-  useEffect(()=>{
-    if(searchState.isSearch){
+  useEffect(() => {
+    if (searchState.isSearch) {
       setData(searchState.data);
     }
-  },[searchState.data])
+  }, [searchState.data]);
 
   const deleteData = (x) => {
     console.log(x);
@@ -322,9 +322,18 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Container isShow = {searchState.isSearch}>
-      <Button style={{position:'relative',top:'-48px',left:'75%'}} type='text' danger onClick={()=>{dispatch(searchEnd({name:'financeList'})),console.log('search ENd');
-     }}>取消查询</Button>
+      <Container isShow={searchState.isSearch}>
+        <Button
+          style={{ position: "relative", top: "-48px", left: "75%" }}
+          type="text"
+          danger
+          onClick={() => {
+            dispatch(searchEnd({ name: "financeList" })),
+              console.log("search ENd");
+          }}
+        >
+          取消查询
+        </Button>
       </Container>
       <Form form={form} component={false}>
         <Table
@@ -332,7 +341,7 @@ const App: React.FC = () => {
             body: {
               cell: EditableCell,
             },
-          }}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+          }}
           bordered
           dataSource={data}
           columns={mergedColumns}
