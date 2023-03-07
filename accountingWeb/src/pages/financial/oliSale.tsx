@@ -401,9 +401,7 @@ const App: React.FC = () => {
         onClick={uncollectedControl}
         style={{
           position: "absolute",
-          left: "100%",
-          top: "12%",
-          translate: "-400%",
+          top:'11.5%'
         }}
       >
         {showUncollected ? "点击展示全部数据" : "点击展示未收款"}
@@ -425,7 +423,7 @@ const App: React.FC = () => {
         />
       </Form>
       <Container isShow={showUncollected}>
-        <span style={{ position: "absolute", top: "13%", left: "77%" }}>
+        <span style={{ position: "absolute", top: "16%", left: "66%" }}>
           全部未收款金额是
           {data.reduce((previousVal, currentVal) => {
             return (previousVal += currentVal.Uncollected_amount);

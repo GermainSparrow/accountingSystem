@@ -10,7 +10,6 @@ import {
   message,
   Button,
 } from "antd";
-import events from "../../utils/events/events";
 import Container from "../Tools/Container";
 //引入取消按钮
 import CancelButton from "../Tools/CancelButton";
@@ -371,14 +370,12 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <CancelButton isSow={searchState.isSearch} name='waveBox'/>
+      <CancelButton isSow={searchState.isSearch} name="waveBox" />
       <Button
         onClick={uncollectedControl}
         style={{
           position: "absolute",
-          left: "100%",
-          top: "12%",
-          translate: "-400%",
+          top:'11.9%'
         }}
       >
         {showUncollected ? "点击展示全部数据" : "点击展示未收款"}
@@ -401,7 +398,7 @@ const App: React.FC = () => {
       </Form>
 
       <Container isShow={showUncollected}>
-        <span style={{ position: "absolute", top: "13%", left: "77%" }}>
+        <span style={{ position: "absolute", top: "16%", left: "66%" }}>
           全部未收款金额是
           {data.reduce((previousVal, currentVal) => {
             return (previousVal += currentVal.Collection - currentVal.cost);

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Container from "./Container";
-import events from "../../utils/events/events";
 import {
   Form,
   Input,
