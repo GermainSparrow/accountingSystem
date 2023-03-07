@@ -89,8 +89,6 @@ const App: React.FC = () => {
   }
   //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
   useEffect(() => {
-    console.log(searchState);
-
     if (!searchState.isSearch) {
       reload();
     } else {
@@ -104,7 +102,12 @@ const App: React.FC = () => {
       reload();
     }
   }, [editState.financeList]);
-  //用useCallBack缓存函数
+  //如果是再次查询直接给新的结果
+  useEffect(()=>{
+    if(searchState.isSearch){
+      setData(searchState.data);
+    }
+  },[searchState.data])
 
   const deleteData = (x) => {
     console.log(x);
