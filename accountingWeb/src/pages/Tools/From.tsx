@@ -469,7 +469,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             <Form.Item label="还款月份" name="getMoneyMonth">
               <DatePicker picker={"month"} />
             </Form.Item>
-            <Form.Item label="还款方式" name="Head">
+            <Form.Item label="还款方式" name="payway">
               <Select>
                 <Select.Option value="微信">微信</Select.Option>
                 <Select.Option value="支付宝">支付宝</Select.Option>

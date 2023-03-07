@@ -12,6 +12,10 @@ import {
 } from "antd";
 import events from "../../utils/events/events";
 import Container from "../Tools/Container";
+//引入取消按钮
+import CancelButton from "../Tools/CancelButton";
+//redux-toolkit
+import { useSelector, useDispatch } from "react-redux";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -79,6 +83,9 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 //组件使用
 const App: React.FC = () => {
+  //redux-toolkit
+  const editState = useSelector((state: { edit: any }) => state.edit);
+  const searchState = useSelector((state: { search: any }) => state.search[2]);
   const reload = () => {
     apis.getWavesList().then((res) => {
       setData(res.data);
@@ -108,24 +115,27 @@ const App: React.FC = () => {
         }
       });
   };
+  //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
   useEffect(() => {
-    //侦听add函数
-    reload();
-    events.addListener("waveBox", (x) => {
+    if (!searchState.isSearch) {
       reload();
-    });
-    events.addListener("searchEnd", (x) => {
-      setData(x);
-      setSearchData(x);
-    });
-    return () => {
-      console.log("w-销毁函数执行");
+    } else {
+      setData(searchState.data);
+    }
+  }, [searchState.isSearch]);
 
-      events.removeListener("waveBox", () => {
-        console.log("总线侦听事件已经移除");
-      });
-    };
-  }, []);
+  //当侦听到保存完结的时候执行修改
+  useEffect(() => {
+    if (!searchState.isSearch) {
+      reload();
+    }
+  }, [editState.financeList]);
+  //如果是再次查询直接给新的结果
+  useEffect(() => {
+    if (searchState.isSearch) {
+      setData(searchState.data);
+    }
+  }, [searchState.data]);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
@@ -361,6 +371,7 @@ const App: React.FC = () => {
 
   return (
     <div>
+      <CancelButton isSow={searchState.isSearch} name='waveBox'/>
       <Button
         onClick={uncollectedControl}
         style={{
