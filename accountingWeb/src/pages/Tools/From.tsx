@@ -17,10 +17,14 @@ import {
   message,
 } from "antd";
 import apis from "../../utils/apis/apis";
-
+//react-toolkit
+import { useDispatch } from "react-redux";
+import { toggle } from "../../store/counterEdit/counterEdit";
+import { searchEnd, setSearchState } from "../../store/counterSearch/counterSearch";
 const { TextArea } = Input;
 
 const FormDisabledDemo = function (props: { x: string; setShow: any }) {
+  const dispatch = useDispatch();
   const [key, setKey] = useState("financeList");
   useEffect(() => {
     console.log("props.x", props.x);
@@ -126,7 +130,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           console.log("dddd");
           break;
       }
-      events.emit(`${props.x.trim()}`, "add");
+      dispatch(toggle({ name: props.x.trim() }));
+      dispatch( searchEnd({name:props.x.trim()}))
     } else {
       delete values.choice;
       let p: any;
@@ -167,7 +172,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             type: "error",
           });
         }
-        events.emit("searchEnd", res.data.data);
+        //把查询到的数据传给状态机
+        dispatch(setSearchState({name:props.x.trim(),data:res.data.data}));
       });
     }
 

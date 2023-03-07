@@ -21,6 +21,7 @@ function App() {
       <React.Suspense fallback={<div>正在加载中</div>}>
         <HashRouter>
           <Routes>
+            <Route path="test" element={<Test />} />
             <Route path="/" element={<Login />} />
             <Route path="/Main" element={<Main />}>
               <Route path="financeList" element={<Finance />} />
@@ -29,7 +30,6 @@ function App() {
               <Route path="managerList" element={<ManagerList />} />
               <Route path="oil" element={<Oil />} />
               <Route path="waveBox" element={<WaveBox />} />
-              <Route path="test" element={<Test />} />
             </Route>
           </Routes>
         </HashRouter>

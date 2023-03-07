@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import Container from "../Tools/Container";
 import apis from "../../utils/apis/apis";
-import events from "../../utils/events/events";
 import {
   Form,
   Input,
@@ -11,7 +11,9 @@ import {
   message,
   Button,
 } from "antd";
-
+//redux-toolkit
+import { useSelector, useDispatch } from "react-redux";
+import { searchEnd } from "../../store/counterSearch/counterSearch";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -75,37 +77,35 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 //组件使用
 const App: React.FC = () => {
+  //redux-toolkit
+  const editState = useSelector((state: { edit: any }) => state.edit);
+  const searchState = useSelector((state: { search: any }) => state.search[0]);
+  const dispatch = useDispatch();
+
   function reload() {
     apis.getFinancialList().then((res) => {
       setData(res.data.data);
     });
   }
-  //在每次页面创建时获取后台参数
-  const [isSearch, setIsSearch] = useState(true);
+  //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
   useEffect(() => {
-    reload();
-    //侦听add函数
-    events.addListener("financeList", (x) => {
-      reload();
-    });
-    //侦听搜擦函数
-    events.addListener("searchEnd", (x) => {
-      setData(x);
-    });
-    setIsSearch(false)
-    return () => {
-      console.log("f-销毁函数执行");
+    console.log(searchState);
 
-      events.removeListener("financeList", () => {
-        console.log("总线侦听事件已经移除");
-      });
-    };
-  }, [isSearch]);
+    if (!searchState.isSearch) {
+      reload();
+    } else {
+      setData(searchState.data);
+    }
+  }, [searchState.isSearch]);
+
+  //当侦听到保存完结的时候执行修改
+  useEffect(() => {
+    if (!searchState.isSearch) {
+      reload();
+    }
+  }, [editState.financeList]);
   //用useCallBack缓存函数
-  
-  // useCallback(() => {
-  //   reload();
-  // }, [isSearch]);
+
   const deleteData = (x) => {
     console.log(x);
     apis
@@ -318,22 +318,28 @@ const App: React.FC = () => {
   });
 
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+    <div>
+      <Container isShow = {searchState.isSearch}>
+      <Button style={{position:'relative',top:'-48px',left:'75%'}} type='text' danger onClick={()=>{dispatch(searchEnd({name:'financeList'})),console.log('search ENd');
+     }}>取消查询</Button>
+      </Container>
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+          bordered
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    </div>
   );
 };
 
