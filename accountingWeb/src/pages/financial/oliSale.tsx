@@ -409,8 +409,10 @@ const App: React.FC = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel,
-            total :data.length,
+            total: data.length,
             showTotal: (total, range) => `共 ${total} 条`,
+            defaultPageSize: 8,
+            pageSizeOptions: [5, 10, 15, 20],
           }}
         />
       </Form>

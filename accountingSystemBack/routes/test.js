@@ -12,4 +12,4 @@ let p =[
         collection:5
     }
 ]
-console.log(p.reduce((previous,current)=>{return previous+=current.collection-current.cost},0));
+console.log(p.forEach((items)=>{return items.cost*2}));

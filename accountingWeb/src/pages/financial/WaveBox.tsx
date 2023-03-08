@@ -121,7 +121,7 @@ const App: React.FC = () => {
   };
   //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
   useEffect(() => {
-    if (!searchState.isSearch&&!uncollectedState.isShow) {
+    if (!searchState.isSearch && !uncollectedState.isShow) {
       reload();
     } else {
       setData(searchState.data);
@@ -130,7 +130,11 @@ const App: React.FC = () => {
 
   //当侦听到保存完结的时候执行修改
   useEffect(() => {
-    if (!searchState.isSearch&&!uncollectedState.isShow&&!uncollectedState.isShow) {
+    if (
+      !searchState.isSearch &&
+      !uncollectedState.isShow &&
+      !uncollectedState.isShow
+    ) {
       reload();
     }
   }, [editState.financeList]);
@@ -386,8 +390,10 @@ const App: React.FC = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel,
-            total :data.length,
+            total: data.length,
             showTotal: (total, range) => `共 ${total} 条`,
+            defaultPageSize: 6,
+            pageSizeOptions: [5, 10, 15, 20],
           }}
         />
       </Form>
