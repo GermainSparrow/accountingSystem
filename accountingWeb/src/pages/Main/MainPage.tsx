@@ -162,7 +162,7 @@ const MainPage: React.FC = () => {
                     onChange={(e) => changeMenu(e.target.value)}
                     style={{
                       position: "relative",
-                      left: "50%",
+                      left: "55%",
                       translate: "-70%",
                       marginBottom: "16px",
                     }}
@@ -170,10 +170,11 @@ const MainPage: React.FC = () => {
                     <Radio.Button value="financeList">备用金明细</Radio.Button>
                     <Radio.Button value="oil">油品销售表</Radio.Button>
                     <Radio.Button value="waveBox">波箱维修表</Radio.Button>
+                    <Radio.Button value="cash">每日现金表</Radio.Button>
                   </Radio.Group>
 
                   {/* 控制组件 */}
-                  <Container isShow={activeKey4} style={{display:'inline-block'}}>
+                  <Container isShow={activeKey4} style={{display:'inline-block',position:'relative',left:'-130px'}}>
                     <Button 
                       onClick={() => {
                         setActiveKey2(!activeKey2);

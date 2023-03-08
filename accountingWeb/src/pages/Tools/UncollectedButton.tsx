@@ -32,9 +32,8 @@ const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit }) => {
         </Button>
         <Container isShow={isShow}>
           <span style={{ position: "absolute", top: "13%", left: "24%",fontSize:'12px',color:'red'}}>
-            全部未收款金额是
             {name=='oil'?(data.reduce((previousVal, currentVal) => {
-              return (previousVal += currentVal.Uncollected_amount);
+              return (previousVal += Number(currentVal.Uncollected_amount));
             }, 0)):data.reduce((previousVal, currentVal) => {
               return (previousVal += currentVal.Collection -currentVal.cost);
             }, 0)}

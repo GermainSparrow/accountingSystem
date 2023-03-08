@@ -10,7 +10,7 @@ const Oil = React.lazy(() => import("./pages/financial/oliSale"));
 const WaveBox = React.lazy(() => import("./pages/financial/WaveBox"));
 const Test = React.lazy(() => import("./pages/test"));
 const AntG2 = React.lazy(() => import("./pages/visual/AntG2"));
-
+const Cash = React.lazy(() => import("./pages/cash/Cash"));
 //引入路由依赖
 
 import { Routes, Route, HashRouter } from "react-router-dom";
@@ -30,6 +30,7 @@ function App() {
               <Route path="managerList" element={<ManagerList />} />
               <Route path="oil" element={<Oil />} />
               <Route path="waveBox" element={<WaveBox />} />
+              <Route path="cash" element={<Cash />} />
             </Route>
           </Routes>
         </HashRouter>

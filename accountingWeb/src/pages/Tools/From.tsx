@@ -218,8 +218,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             {/* 选择付款人 */}
             <Form.Item label="选择付款人" name="payer">
               <Select>
-                <Select.Option value="lai">赖敏</Select.Option>
-                <Select.Option value="cai">蔡强</Select.Option>
+                <Select.Option value="赖敏">赖敏</Select.Option>
+                <Select.Option value="蔡强">蔡强</Select.Option>
               </Select>
             </Form.Item>
             {/* 选择收款人 */}
@@ -309,8 +309,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             {/* 选择负责人 */}
             <Form.Item label="选择负责人" name="head">
               <Select>
-                <Select.Option value="lai">赖敏</Select.Option>
-                <Select.Option value="cai">蔡强</Select.Option>
+                <Select.Option value="赖敏">赖敏</Select.Option>
+                <Select.Option value="蔡强">蔡强</Select.Option>
               </Select>
             </Form.Item>
             {/* 单位 */}
@@ -424,7 +424,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               <Select>
                 <Select.Option value="方晓勇">方晓勇</Select.Option>
                 <Select.Option value="蔡强">蔡强</Select.Option>
-                <Select.Option value="张">张</Select.Option>
+                <Select.Option value="张胖">张胖</Select.Option>
               </Select>
             </Form.Item>
             {/* 车主 */}
@@ -520,8 +520,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             {/* 选择付款人 */}
             <Form.Item label="选择付款人" name="payer">
               <Select>
-                <Select.Option value="lai">赖敏</Select.Option>
-                <Select.Option value="cai">蔡强</Select.Option>
+                <Select.Option value="赖敏">赖敏</Select.Option>
+                <Select.Option value="蔡强">蔡强</Select.Option>
               </Select>
             </Form.Item>
             {/* 选择收款人 */}
@@ -563,7 +563,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               <Select>
                 <Select.Option value="方晓勇">方晓勇</Select.Option>
                 <Select.Option value="蔡强">蔡强</Select.Option>
-                <Select.Option value="张">张</Select.Option>
+                <Select.Option value="张胖">张胖</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item label="点击添加">
