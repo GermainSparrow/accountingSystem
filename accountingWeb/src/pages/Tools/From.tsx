@@ -474,6 +474,9 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
                 <Select.Option value="现金">现金</Select.Option>
               </Select>
             </Form.Item>
+            <Form.Item label="票据" name="invoice">
+              <TextArea rows={1} />
+            </Form.Item>
             <Form.Item label="点击添加">
               <Button type="primary" htmlType="submit">
                 点击提交

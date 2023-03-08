@@ -17,7 +17,7 @@ import CancelButton from "../Tools/CancelButton";
 import UncollectedButton from "../Tools/UncollectedButton";
 //redux-toolkit
 import { useSelector } from "react-redux";
-import { range } from "lodash";
+import deleteIf from "../Tools/utils";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -35,6 +35,7 @@ interface Item {
   getMoneyMonth: string;
   payway: string;
   payee: string;
+  invoice: string;
 }
 //创建一个数组
 
@@ -104,12 +105,18 @@ const App: React.FC = () => {
       })
       .then((res) => {
         if (res.data.code === 200) {
+          deleteIf(
+            reload,
+            "waveBox",
+            searchState.isSearch,
+            uncollectedState.isShow,
+            data.filter((items) => items.key != x.key)
+          );
           message.open({
             content: "删除成功",
             duration: 1.5,
             type: "success",
           });
-          reload();
         } else {
           message.open({
             content: "删除失败",
@@ -130,14 +137,10 @@ const App: React.FC = () => {
 
   //当侦听到保存完结的时候执行修改
   useEffect(() => {
-    if (
-      !searchState.isSearch &&
-      !uncollectedState.isShow &&
-      !uncollectedState.isShow
-    ) {
+    if (!searchState.isSearch && !uncollectedState.isShow) {
       reload();
     }
-  }, [editState.financeList]);
+  }, [editState.waveBox]);
   //如果是再次查询直接给新的结果
   useEffect(() => {
     if (searchState.isSearch) {
@@ -152,6 +155,12 @@ const App: React.FC = () => {
       reload();
     }
   }, [uncollectedState.isShow]);
+  //当侦听到在展示未收款的情况下删除数据
+  useEffect(() => {
+    if (uncollectedState.isShow) {
+      setData(uncollectedState.data);
+    }
+  }, [uncollectedState.data]);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
@@ -311,6 +320,12 @@ const App: React.FC = () => {
     {
       title: "收款人",
       dataIndex: "payee",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "票据",
+      dataIndex: "invoice",
       width: "5%",
       editable: true,
     },

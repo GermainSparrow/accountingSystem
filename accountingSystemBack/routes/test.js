@@ -12,4 +12,10 @@ let p =[
         collection:5
     }
 ]
-console.log(p.forEach((items)=>{return items.cost*2}));
+function a(){
+    if(true){
+        return 11
+    }
+    return 22
+}
+console.log(a());

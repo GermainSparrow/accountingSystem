@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import deleteIf from "../Tools/utils";
 import apis from "../../utils/apis/apis";
 import {
   Form,
@@ -104,13 +105,19 @@ const App: React.FC = () => {
         key: x.key,
       })
       .then((res) => {
+        deleteIf(
+          reload,
+          "oil",
+          searchState.isSearch,
+          uncollectedState.isShow,
+          data.filter((items) => items.key != x.key)
+        );
         if (res.data.code === 200) {
           message.open({
             content: "删除成功",
             duration: 1.5,
             type: "success",
           });
-          reload();
         } else {
           message.open({
             content: "删除失败",
@@ -122,7 +129,7 @@ const App: React.FC = () => {
   };
   //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
   useEffect(() => {
-    if (!searchState.isSearch&&!uncollectedState.isShow) {
+    if (!searchState.isSearch && !uncollectedState.isShow) {
       reload();
     } else {
       setData(searchState.data);
@@ -131,7 +138,7 @@ const App: React.FC = () => {
 
   //当侦听到保存完结的时候执行修改
   useEffect(() => {
-    if (!searchState.isSearch&&!uncollectedState.isShow) {
+    if (!searchState.isSearch && !uncollectedState.isShow) {
       reload();
     }
   }, [editState.financeList]);
@@ -149,6 +156,12 @@ const App: React.FC = () => {
       reload();
     }
   }, [uncollectedState.isShow]);
+  //当侦听到在展示未收款的情况下删除数据
+  useEffect(() => {
+    if (uncollectedState.isShow) {
+      setData(uncollectedState.data);
+    }
+  }, [uncollectedState.data]);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");

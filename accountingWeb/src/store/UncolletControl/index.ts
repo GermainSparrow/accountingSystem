@@ -25,8 +25,18 @@ const Uncollected = createSlice(
                     return item
                 })
             },
+            setUncollectedArray: (state, action: PayloadAction<arg>) => {
+                console.log('setUncollected被调用');
+
+                state = state.map((item) => {
+                    if (item.name == action.payload.name) {
+                        item.data = action.payload.data
+                    }
+                    return item
+                })
+            },
         }
     }
 )
-export const { setUncollected } = Uncollected.actions
+export const { setUncollected, setUncollectedArray } = Uncollected.actions
 export default Uncollected.reducer
