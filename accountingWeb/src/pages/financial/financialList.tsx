@@ -141,7 +141,6 @@ const App: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
-  const [searchData, setSearchData] = useState([]);
   //判断是否是正在修改的数据
   const isEditing = (record: Item) => record.key === editingKey;
 
