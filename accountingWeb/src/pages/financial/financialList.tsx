@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import apis from "../../utils/apis/apis";
-import CancelButton from '../Tools/CancelButton'
+import CancelButton from "../Tools/CancelButton";
 import {
   Form,
   Input,
@@ -13,6 +13,7 @@ import {
 } from "antd";
 //redux-toolkit
 import { useSelector, useDispatch } from "react-redux";
+import deleteIf from "../Tools/utils";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -116,12 +117,18 @@ const App: React.FC = () => {
       })
       .then((res) => {
         if (res.data.code === 200) {
+          deleteIf(
+            reload,
+            "financeList",
+            searchState.isSearch,
+            false,
+            data.filter((items) => items.key !== x.key)
+          );
           message.open({
             content: "删除成功",
             duration: 1.5,
             type: "success",
           });
-          reload();
         } else {
           message.open({
             content: "删除失败",
@@ -334,7 +341,7 @@ const App: React.FC = () => {
           取消查询
         </Button>
       </Container> */}
-      <CancelButton isSow={searchState.isSearch} name='financeList'/>
+      <CancelButton isSow={searchState.isSearch} name="financeList" />
       <Form form={form} component={false}>
         <Table
           components={{

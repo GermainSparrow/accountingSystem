@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import apis from "../../utils/apis/apis";
 import { Column } from "@ant-design/plots";
-import { Button, Radio } from "antd";
+import { Radio } from "antd";
 const DemoColumn = function () {
   //默认选中financial
   const [selectMenu, setSelectMenu] = useState("financial");
@@ -62,11 +62,10 @@ const DemoColumn = function () {
               return temp;
             });
             console.log("1 triggered");
-
             break;
           case 0: {
             setConfig(() => {
-              let temp = {...config};
+              let temp = { ...config };
               temp.data = res.data.data;
               return temp;
             });
@@ -75,7 +74,7 @@ const DemoColumn = function () {
           }
           case -1: {
             setConfig(() => {
-              let temp = {...config};
+              let temp = { ...config };
               temp.data = res.data.data.filter((item, index) => item.count < 0);
               console.log("3 triggered");
               return temp;

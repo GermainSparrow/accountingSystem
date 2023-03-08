@@ -100,12 +100,15 @@ router.get("/getVisualData", function (req, res, next) {
   let sqlHead = "SELECT * FROM oil_sale";
 
   db.query(sqlHead, function (err, result) {
-    let temp = result.map((item) => {
-      return {
-        name: item.head,
-        month: item.getMonth,
-        count: item.real_sales,
-      };
+    let temp = [];
+    result.map((items) => {
+      if (items.head && items.getMonth) {
+        temp.push({
+          name: items.head,
+          count: items.collection,
+          month: items.getMonth,
+        });
+      }
     });
     if (err) {
       throw err;
