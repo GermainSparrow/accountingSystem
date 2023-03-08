@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import apis from "../../utils/apis/apis";
 import {
   Form,
@@ -10,11 +11,12 @@ import {
   message,
   Button,
 } from "antd";
-import Container from "../Tools/Container";
 //引入取消按钮
 import CancelButton from "../Tools/CancelButton";
+//引入显示未收款按钮
+import UncollectedButton from "../Tools/UncollectedButton";
 //redux-toolkit
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -85,11 +87,13 @@ const App: React.FC = () => {
   //redux-toolkit
   const editState = useSelector((state: { edit: any }) => state.edit);
   const searchState = useSelector((state: { search: any }) => state.search[2]);
+  const uncollectedState = useSelector(
+    (state: { uncollected: any }) => state.uncollected[1]
+  );
   const reload = () => {
     apis.getWavesList().then((res) => {
       setData(res.data);
     });
-    setSearchData([]);
   };
   const deleteData = (x) => {
     console.log(x);
@@ -135,27 +139,18 @@ const App: React.FC = () => {
       setData(searchState.data);
     }
   }, [searchState.data]);
+  //对未收款账户的操作
+  useEffect(() => {
+    if (uncollectedState.isShow) {
+      setData(uncollectedState.data);
+    } else {
+      reload();
+    }
+  }, [uncollectedState.isShow]);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
-  const [searchData, setSearchData] = useState([]);
-  //默认不展示未收款
-  const [showUncollected, setShowUncollected] = useState(false);
-  //点击切换显示收款与未收款
-  const uncollectedControl = function () {
-    // true->false 未收款切换到已收款
-    if (showUncollected) {
-      searchData ? reload() : setData(searchData);
-      setShowUncollected(false);
-    } else {
-      setData(
-        [...data].filter((items) => {
-          return items.cost > Number(items.Collection);
-        })
-      );
-      setShowUncollected(true);
-    }
-  };
+
   //判断是否是正在修改的数据
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -371,15 +366,12 @@ const App: React.FC = () => {
   return (
     <div>
       <CancelButton isSow={searchState.isSearch} name="waveBox" />
-      <Button
-        onClick={uncollectedControl}
-        style={{
-          position: "absolute",
-          top:'11.9%'
-        }}
-      >
-        {showUncollected ? "点击展示全部数据" : "点击展示未收款"}
-      </Button>
+      <UncollectedButton
+        exit={true}
+        isShow={uncollectedState.isShow}
+        data={data.filter((items) => items.cost > items.Collection)}
+        name="waveBox"
+      />
       <Form form={form} component={false}>
         <Table
           components={{
@@ -396,15 +388,6 @@ const App: React.FC = () => {
           }}
         />
       </Form>
-
-      <Container isShow={showUncollected}>
-        <span style={{ position: "absolute", top: "16%", left: "66%" }}>
-          全部未收款金额是
-          {data.reduce((previousVal, currentVal) => {
-            return (previousVal += currentVal.Collection - currentVal.cost);
-          }, 0)}
-        </span>
-      </Container>
     </div>
   );
 };
