@@ -28,7 +28,7 @@ const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit }) => {
             top: "11.9%",
           }}
         >
-          {isShow ? "点击展示全部数据" : "点击展示未收款"}·
+          {isShow ? "点击展示全部数据" : "点击展示未收款"}
         </Button>
         <Container isShow={isShow}>
           <span style={{ position: "absolute", top: "13%", left: "24%",fontSize:'12px',color:'red'}}>

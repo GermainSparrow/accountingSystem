@@ -17,6 +17,7 @@ import CancelButton from "../Tools/CancelButton";
 import UncollectedButton from "../Tools/UncollectedButton";
 //redux-toolkit
 import { useSelector } from "react-redux";
+import { range } from "lodash";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -120,7 +121,7 @@ const App: React.FC = () => {
   };
   //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
   useEffect(() => {
-    if (!searchState.isSearch) {
+    if (!searchState.isSearch&&!uncollectedState.isShow) {
       reload();
     } else {
       setData(searchState.data);
@@ -129,7 +130,7 @@ const App: React.FC = () => {
 
   //当侦听到保存完结的时候执行修改
   useEffect(() => {
-    if (!searchState.isSearch) {
+    if (!searchState.isSearch&&!uncollectedState.isShow&&!uncollectedState.isShow) {
       reload();
     }
   }, [editState.financeList]);
@@ -385,6 +386,8 @@ const App: React.FC = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel,
+            total :data.length,
+            showTotal: (total, range) => `共 ${total} 条`,
           }}
         />
       </Form>
