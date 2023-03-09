@@ -125,21 +125,7 @@ const Cash: React.FC = () => {
         });
 
         //发送数据到后台
-        apis.updateFinancialList({ ...item, ...row }).then((res) => {
-          if (res.data.code === 200) {
-            message.open({
-              content: "修改成功",
-              duration: 1,
-              type: "success",
-            });
-          } else {
-            message.open({
-              content: "修改失败",
-              duration: 1,
-              type: "error",
-            });
-          }
-        });
+        console.log({...item},{...row});
 
         setData(newData);
         setEditingKey("");

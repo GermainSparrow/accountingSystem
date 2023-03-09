@@ -13,16 +13,17 @@ axios.interceptors.request.use((req) => {
 //设置响应拦截器
 axios.interceptors.response.use((res => {
     return res
-}), async function (error) {
-    if (error.response.status == 401) {
+}), (error) => {
+    const { response } = error;
+    if (response.status == 401) {
         message.open({
             content: '登录过期请重新登录',
             type: 'error',
             duration: 3
         })
-        localStorage.removeItem('token');
+        window.location.assign('http://127.0.0.1:5173/')
+        
     }
-
 })
 
 export default {
