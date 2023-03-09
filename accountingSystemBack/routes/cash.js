@@ -90,6 +90,7 @@ router.get("/", async (req, res) => {
             reservesOut += Number(reserves.out);
           }
         });
+        currentBalance = oilCount + waveBoxCount - reservesOut +items.extraIncome+items.otherIncome-items.bankOut;
         break;
       }
       case "公司账户": {
@@ -103,11 +104,12 @@ router.get("/", async (req, res) => {
             waveBoxCount += Number(waveBox.cost);
           }
         });
-        reservesArr.forEach((reserves) => {
-          if (items.month == reserves.month) {
-            reservesOut += Number(reserves.out);
-          }
-        });
+        // reservesArr.forEach((reserves) => {
+        //   if (items.month == reserves.month) {
+        //     reservesOut += Number(reserves.out);
+        //   }
+        // });
+        currentBalance = oilCount + waveBoxCount - reservesOut +items.extraIncome+items.otherIncome-items.bankOut;
         break;
       }
     }
