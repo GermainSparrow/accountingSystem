@@ -46,7 +46,7 @@ router.get("/", async (req, res) => {
     }),
   ]);
   //处理表
-  cashArr = cashArr.map((items,index) => {
+  cashArr = cashArr.map((items, index) => {
     let oilCount = 0;
     let waveBoxCount = 0;
     let reservesOut = 0;
@@ -90,7 +90,13 @@ router.get("/", async (req, res) => {
             reservesOut += Number(reserves.out);
           }
         });
-        currentBalance = oilCount + waveBoxCount - reservesOut +items.extraIncome+items.otherIncome-items.bankOut;
+        currentBalance =
+          oilCount +
+          waveBoxCount -
+          reservesOut +
+          items.extraIncome +
+          items.otherIncome -
+          items.bankOut;
         break;
       }
       case "公司账户": {
@@ -109,7 +115,13 @@ router.get("/", async (req, res) => {
         //     reservesOut += Number(reserves.out);
         //   }
         // });
-        currentBalance = oilCount + waveBoxCount - reservesOut +items.extraIncome+items.otherIncome-items.bankOut;
+        currentBalance =
+          oilCount +
+          waveBoxCount -
+          reservesOut +
+          items.extraIncome +
+          items.otherIncome -
+          items.bankOut;
         break;
       }
     }
@@ -119,11 +131,23 @@ router.get("/", async (req, res) => {
       waveBoxCount,
       reservesOut,
       currentBalance,
-      cumulativeBalances
+      cumulativeBalances,
     };
     return temp;
   });
-  
+  cashArr[0].cumulativeBalances = 31430;
+  cashArr[1].cumulativeBalances = 0;
+  cashArr[2].cumulativeBalances = 1;
+
+  cashArr = cashArr.map((items, index) => {
+    if(index>=3){
+        items.cumulativeBalances = items.currentBalance+ cashArr[index-3].cumulativeBalances
+        return items;
+    }
+    else{
+        return items;
+    }
+  })
   res.send(cashArr);
 });
 
