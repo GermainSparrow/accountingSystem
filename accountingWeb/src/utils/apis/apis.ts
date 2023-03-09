@@ -46,6 +46,13 @@ export default {
     deleteWavesList(obj: {}): any {
         return request.post('/waveBox/delete', obj)
     },
+    //现金表
+    getCash(obj: {}): any {
+        return request.get('/cash', obj)
+    },
+    updateCash(obj: {}): any {
+        return request.post('/cashUpdate', obj)
+    },
     //获取所有的可视化数据
     getVisualData(name: string) {
         switch (name) {
@@ -61,7 +68,7 @@ export default {
         }
     },
     //crud
-    searchData(obj: {table:string,[key:string] : any}) {
+    searchData(obj: { table: string, [key: string]: any }) {
         return request.post('/crud/search', obj)
     }
 }
