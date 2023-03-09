@@ -81,8 +81,8 @@ router.get("/", async (req, res) => {
           }
         });
         waveBoxArr.forEach((waveBox) => {
-          if (items.month == waveBox.getMonth && waveBox.head != "蔡强") {
-            waveBoxCount += Number(waveBox.cost);
+          if (items.month == waveBox.getMoneyMonth && waveBox.payee == "蔡强") {
+            waveBoxCount += Number(waveBox.Collection);
           }
         });
         reservesArr.forEach((reserves) => {
@@ -106,7 +106,7 @@ router.get("/", async (req, res) => {
           }
         });
         waveBoxArr.forEach((waveBox) => {
-          if (items.month == waveBox.getMonth) {
+          if (items.month == waveBox.getMoneyMonth) {
             waveBoxCount += Number(waveBox.cost);
           }
         });
@@ -137,7 +137,7 @@ router.get("/", async (req, res) => {
   });
   cashArr[0].cumulativeBalances = 31430;
   cashArr[1].cumulativeBalances = 0;
-  cashArr[2].cumulativeBalances = 1;
+  cashArr[2].cumulativeBalances = 3935.32;
 
   cashArr = cashArr.map((items, index) => {
     if(index>=3){
