@@ -125,8 +125,31 @@ const Cash: React.FC = () => {
         });
 
         //发送数据到后台
-        console.log({...item},{...row});
+        const { extraIncome, otherIncome } = row;
+        const { key } = item;
 
+        apis
+          .updateCash({
+            extraIncome,
+            otherIncome,
+            key,
+          })
+          .then((res) => {
+            if (res.data.code == "200") {
+              message.open({
+                content: "修改成功",
+                type: "success",
+                duration: 1.5,
+              });
+            } else {
+              message.open({
+                content: "修改失败",
+                type: "error",
+                duration: 1.5,
+              });
+              setData(res.data.data)
+            }
+          });
         setData(newData);
         setEditingKey("");
       } else {

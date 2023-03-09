@@ -311,7 +311,10 @@ router.post("/update", async (req, res) => {
       return items;
     }
   });
-  res.send(cashArr);
+  res.send({
+    code: "200",
+    data: cashArr,
+  });
 });
 
 module.exports = router;

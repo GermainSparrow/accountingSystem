@@ -51,7 +51,7 @@ export default {
         return request.get('/cash', obj)
     },
     updateCash(obj: {}): any {
-        return request.post('/cashUpdate', obj)
+        return request.post('/cash/update', obj)
     },
     //获取所有的可视化数据
     getVisualData(name: string) {
