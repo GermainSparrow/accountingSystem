@@ -502,7 +502,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
-            style={{ maxWidth: 600, margin: "100px auto" }}
+            style={{ maxWidth: 600, margin: "20px auto" }}
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
           >
