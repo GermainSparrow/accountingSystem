@@ -18,6 +18,7 @@ import UncollectedButton from "../Tools/UncollectedButton";
 //redux-toolkit
 import { useSelector } from "react-redux";
 import deleteIf from "../Tools/utils";
+import Container from "../Tools/Container";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -348,20 +349,22 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <Typography.Link
-              disabled={editingKey !== ""}
-              onClick={() => edit(record)}
-            >
-              编辑
-            </Typography.Link>
-            <Typography.Link
-              style={{ marginLeft: "15px", color: "red" }}
-              onClick={() => deleteData(record)}
-            >
-              删除
-            </Typography.Link>
-          </div>
+          <Container isShow ={localStorage.getItem('auth')=='true'?true:false}>
+          <div>
+          <Typography.Link
+            disabled={editingKey !== ""}
+            onClick={() => edit(record)}
+          >
+            编辑
+          </Typography.Link>
+          <Typography.Link
+            style={{ marginLeft: "15px", color: "red" }}
+            onClick={() => deleteData(record)}
+          >
+            删除
+          </Typography.Link>
+        </div>
+        </Container>
         );
       },
     },

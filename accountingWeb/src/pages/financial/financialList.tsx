@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import apis from "../../utils/apis/apis";
 import CancelButton from "../Tools/CancelButton";
+import Container from "../Tools/Container";
 import {
   Form,
   Input,
@@ -290,7 +291,8 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <div>
+          <Container isShow ={localStorage.getItem('auth')=='true'?true:false}>
+            <div>
             <Typography.Link
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
@@ -304,6 +306,7 @@ const App: React.FC = () => {
               删除
             </Typography.Link>
           </div>
+          </Container>
         );
       },
     },

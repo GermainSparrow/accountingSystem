@@ -10,9 +10,7 @@ import {
   message,
   Button,
 } from "antd";
-//redux-toolkit
-import { useSelector, useDispatch } from "react-redux";
-import deleteIf from "../Tools/utils";
+import Container from "../Tools/Container";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -147,7 +145,7 @@ const Cash: React.FC = () => {
                 type: "error",
                 duration: 1.5,
               });
-              setData(res.data.data)
+              setData(res.data.data);
             }
           });
         setData(newData);
@@ -242,14 +240,18 @@ const Cash: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <div>
-            <Typography.Link
-              disabled={editingKey !== ""}
-              onClick={() => edit(record)}
-            >
-              编辑
-            </Typography.Link>
-          </div>
+          <Container
+            isShow={localStorage.getItem("auth") == "true" ? true : false}
+          >
+            <div>
+              <Typography.Link
+                disabled={editingKey !== ""}
+                onClick={() => edit(record)}
+              >
+                编辑
+              </Typography.Link>
+            </div>
+          </Container>
         );
       },
     },
