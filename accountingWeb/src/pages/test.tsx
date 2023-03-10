@@ -1,14 +1,18 @@
-import React from "react";
-//redux-toolKit
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setSearchState,
-  searchEnd,
-} from "../store/counterSearch/counterSearch";
-import { Button } from "antd";
+import React, { ReactNode } from "react";
+interface b {
+  isShow: boolean;
+  children: ReactNode;
+}
+const TestNode2: React.FC<b> = ({ isShow, children }) => {
+  return isShow ? <>{children}</> : null;
+};
 const TestNode: React.FC = () => {
-  const val = useSelector((store: { search }) => store.search);
-  const dispatch = useDispatch();
-  return <div></div>;
+  return (
+    <div>
+      <TestNode2 isShow={true}>
+        <div>x</div>
+      </TestNode2>
+    </div>
+  );
 };
 export default TestNode;
