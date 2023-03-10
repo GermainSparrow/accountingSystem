@@ -14,10 +14,9 @@ const token = jsonWebToken.sign({ msg: "已经成功加密" }, "xiaoLai", {
 });
 //登录接口
 router.post("/login", async function (req, res, next) {
-  console.log(crypto
-    .createHash("md5")
-    .update(req.body.password, "utf8")
-    .digest("hex"));
+  console.log(
+    crypto.createHash("md5").update(req.body.password, "utf8").digest("hex")
+  );
   let selectCode = `select * from user where name ='${
     req.body.userName
     //对拿到的密码进行解密
@@ -34,7 +33,7 @@ router.post("/login", async function (req, res, next) {
           msg: "登录成功",
           data: {
             token,
-            ...result[0],
+            userName: result[0].userName,
           },
         });
       }

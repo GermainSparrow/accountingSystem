@@ -94,8 +94,6 @@ const Cash: React.FC = () => {
       payee: "",
       payWay: "",
       in: "",
-      usefor: "",
-      reimbursers: "",
       category: "",
       out: "",
       ...record,

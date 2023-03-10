@@ -23,7 +23,10 @@ const Login: React.FC = () => {
       .then((res) => {
         console.log(res);
         if (res.data.code === 200) {
+          console.log(res.data);
+          
           localStorage.setItem("token", res.data.data.token);
+          localStorage.setItem('user',res.data.data.userName)
           message.open({
             type: "success",
             content: "登录成功 欢迎您",

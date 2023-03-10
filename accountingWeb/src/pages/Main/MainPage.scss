@@ -1,0 +1,42 @@
+.personalBox {
+    position: relative;
+    float: right;
+    margin-right: 10%;
+
+    :hover {
+        cursor: pointer;
+    }
+
+}
+
+.personalBox:hover .userMenu {
+    height: 129px;
+}
+
+.personalBox .userMenu {
+    position: absolute;
+    border: 1px solid black;
+    color: white;
+    z-index: 9999;
+    top: 98%;
+    left: 17%;
+    background-color: #031428;
+    border-radius: 0px 0px 10px 10px;
+    height: 0px;
+
+    Button {
+        color: white;
+
+        :hover {
+            color: skyblue;
+        }
+    }
+
+    transition: 1s;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}

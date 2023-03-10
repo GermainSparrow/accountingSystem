@@ -5,6 +5,7 @@ import { Layout, Menu, theme, Radio, Button } from "antd";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Form from "../Tools/From";
 import Container from "../Tools/Container";
+import "./MainPage.scss";
 const { Header, Content, Footer, Sider } = Layout;
 
 const MainPage: React.FC = () => {
@@ -121,6 +122,15 @@ const MainPage: React.FC = () => {
           }}
         >
           <span style={{ marginLeft: "50px" }}>宏粤会计信息系统</span>
+          <div className="personalBox">
+            <span>Welcome {localStorage.getItem("user")}</span>
+            <div className="userMenu" id="userMenu">
+              <ul>
+                <li><Button size="small" type="text">个人信息</Button></li>
+                <li><Button size="small" type="text">切换登录</Button></li>
+              </ul>
+            </div>
+          </div>
         </Header>
       </Layout>
       {/* 侧边栏 */}
@@ -174,8 +184,15 @@ const MainPage: React.FC = () => {
                   </Radio.Group>
 
                   {/* 控制组件 */}
-                  <Container isShow={activeKey4} style={{display:'inline-block',position:'relative',left:'-130px'}}>
-                    <Button 
+                  <Container
+                    isShow={activeKey4}
+                    style={{
+                      display: "inline-block",
+                      position: "relative",
+                      left: "-130px",
+                    }}
+                  >
+                    <Button
                       onClick={() => {
                         setActiveKey2(!activeKey2);
                       }}

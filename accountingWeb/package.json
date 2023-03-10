@@ -29,7 +29,9 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
     "redux": "^4.2.1",
-    "redux-devtools": "^3.7.0"
+    "redux-devtools": "^3.7.0",
+    "sass": "^1.58.3",
+    "scss-loader": "^0.0.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
