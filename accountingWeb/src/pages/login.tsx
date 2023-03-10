@@ -22,24 +22,22 @@ const Login: React.FC = () => {
       })
       .then((res) => {
         console.log(res);
-
-        // if (res.data.code === 200) {
-        //   localStorage.setItem("token", res.data.data.token);
-        //   message.open({
-        //     type: "success",
-        //     content: "登录成功 欢迎您",
-        //   });
-        //   res.data.data.auth == "edit"
-        //     ? localStorage.setItem("auth", "true")
-        //     : localStorage.removeItem("auth");
-
-        //   navigate("/Main");
-        // } else {
-        //   message.open({
-        //     type: "error",
-        //     content: "账号或密码错误",
-        //   });
-        // }
+        if (res.data.code === 200) {
+          localStorage.setItem("token", res.data.data.token);
+          message.open({
+            type: "success",
+            content: "登录成功 欢迎您",
+          });
+          res.data.data.auth == "edit"
+            ? localStorage.setItem("auth", "true")
+            : localStorage.removeItem("auth");
+          navigate("/Main");
+        } else {
+          message.open({
+            type: "error",
+            content: "账号或密码错误",
+          });
+        }
       });
   };
   return (
