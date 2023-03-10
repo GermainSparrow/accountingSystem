@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import apis from "../utils/apis/apis";
-
+import md5 from "js-md5";
 import _ from "lodash";
 
 const onFinishFailed = (errorInfo: any) => {
@@ -13,23 +13,34 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   //登录函数
   const onFinish = (values: any) => {
-    apis.Login(values).then((res) => {
-      if (res.data.code === 200) {
-        localStorage.setItem("token", res.data.data.token);
-        message.open({
-          type: "success",
-          content: "登录成功 欢迎您",
-        });
-        res.data.data.auth == "edit" ? localStorage.setItem("auth", "true") : localStorage.removeItem("auth");
+    //md5加密
+    const password = md5(values.password);
+    apis
+      .Login({
+        userName: values.userName,
+        password: password,
+      })
+      .then((res) => {
+        console.log(res);
 
-        navigate("/Main");
-      } else {
-        message.open({
-          type: "error",
-          content: "账号或密码错误",
-        });
-      }
-    });
+        // if (res.data.code === 200) {
+        //   localStorage.setItem("token", res.data.data.token);
+        //   message.open({
+        //     type: "success",
+        //     content: "登录成功 欢迎您",
+        //   });
+        //   res.data.data.auth == "edit"
+        //     ? localStorage.setItem("auth", "true")
+        //     : localStorage.removeItem("auth");
+
+        //   navigate("/Main");
+        // } else {
+        //   message.open({
+        //     type: "error",
+        //     content: "账号或密码错误",
+        //   });
+        // }
+      });
   };
   return (
     <div
