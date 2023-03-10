@@ -131,6 +131,8 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!searchState.isSearch && !uncollectedState.isShow) {
       reload();
+    } else if (uncollectedState.isShow) {
+      setData(uncollectedState.data);
     } else {
       setData(searchState.data);
     }

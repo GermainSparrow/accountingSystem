@@ -132,6 +132,8 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!searchState.isSearch && !uncollectedState.isShow) {
       reload();
+    } else if (uncollectedState.isShow) {
+      setData(uncollectedState.data);
     } else {
       setData(searchState.data);
     }
@@ -366,22 +368,24 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Container isShow ={localStorage.getItem('auth')=='true'?true:false}>
-          <div>
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
+          <Container
+            isShow={localStorage.getItem("auth") == "true" ? true : false}
           >
-            编辑
-          </Typography.Link>
-          <Typography.Link
-            style={{ marginLeft: "15px", color: "red" }}
-            onClick={() => deleteData(record)}
-          >
-            删除
-          </Typography.Link>
-        </div>
-        </Container>
+            <div>
+              <Typography.Link
+                disabled={editingKey !== ""}
+                onClick={() => edit(record)}
+              >
+                编辑
+              </Typography.Link>
+              <Typography.Link
+                style={{ marginLeft: "15px", color: "red" }}
+                onClick={() => deleteData(record)}
+              >
+                删除
+              </Typography.Link>
+            </div>
+          </Container>
         );
       },
     },
@@ -413,7 +417,7 @@ const App: React.FC = () => {
         isShow={uncollectedState.isShow}
         data={data.filter((items) => items.Uncollected_amount > 0)}
         name="oil"
-        isSearch = {searchState.isSearch}
+        isSearch={searchState.isSearch}
       />
       <Form form={form} component={false}>
         <Table
