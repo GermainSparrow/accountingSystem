@@ -150,7 +150,9 @@ const App: React.FC = () => {
   }, [searchState.data]);
   //对未收款账户的操作
   useEffect(() => {
-    if (uncollectedState.isShow) {
+    if (searchState.isSearch) {
+      setData(searchState.data);
+    } else if (uncollectedState.isShow) {
       setData(uncollectedState.data);
     } else {
       reload();
@@ -349,22 +351,24 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Container isShow ={localStorage.getItem('auth')=='true'?true:false}>
-          <div>
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
+          <Container
+            isShow={localStorage.getItem("auth") == "true" ? true : false}
           >
-            编辑
-          </Typography.Link>
-          <Typography.Link
-            style={{ marginLeft: "15px", color: "red" }}
-            onClick={() => deleteData(record)}
-          >
-            删除
-          </Typography.Link>
-        </div>
-        </Container>
+            <div>
+              <Typography.Link
+                disabled={editingKey !== ""}
+                onClick={() => edit(record)}
+              >
+                编辑
+              </Typography.Link>
+              <Typography.Link
+                style={{ marginLeft: "15px", color: "red" }}
+                onClick={() => deleteData(record)}
+              >
+                删除
+              </Typography.Link>
+            </div>
+          </Container>
         );
       },
     },
@@ -394,6 +398,7 @@ const App: React.FC = () => {
         isShow={uncollectedState.isShow}
         data={data.filter((items) => items.cost > items.Collection)}
         name="waveBox"
+        isSearch={searchState.isSearch}
       />
       <Form form={form} component={false}>
         <Table

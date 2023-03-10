@@ -7,21 +7,28 @@ import { Button } from "antd";
 import Container from "./Container";
 import { useDispatch } from "react-redux";
 import { setUncollected } from "../../store/UncolletControl/index";
+import {setSearchState} from '../../store/counterSearch/counterSearch'
 interface items {
   isShow: boolean;
   data: any[];
   name: string;
   exit: boolean;
+  isSearch: boolean;
 }
 
-const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit }) => {
+const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit ,isSearch}) => {
   const dispatch = useDispatch();
   return (
     <Container isShow={exit}>
       <div>
         <Button
           onClick={() => {
-            dispatch(setUncollected({ data, name }));
+            if(!isSearch) {
+              dispatch(setUncollected({ data, name }));
+              
+            }else{
+              dispatch(setUncollected({ data, name }));
+            }
           }}
           style={{
             position: "absolute",

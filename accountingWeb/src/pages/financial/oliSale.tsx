@@ -151,7 +151,9 @@ const App: React.FC = () => {
   }, [searchState.data]);
   //对未收款账户的操作
   useEffect(() => {
-    if (uncollectedState.isShow) {
+    if (searchState.isSearch) {
+      setData(searchState.data);
+    } else if (uncollectedState.isShow) {
       setData(uncollectedState.data);
     } else {
       reload();
@@ -411,6 +413,7 @@ const App: React.FC = () => {
         isShow={uncollectedState.isShow}
         data={data.filter((items) => items.Uncollected_amount > 0)}
         name="oil"
+        isSearch = {searchState.isSearch}
       />
       <Form form={form} component={false}>
         <Table

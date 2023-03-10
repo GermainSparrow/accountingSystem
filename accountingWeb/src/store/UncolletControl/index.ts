@@ -35,6 +35,14 @@ const Uncollected = createSlice(
                     return item
                 })
             },
+            // endUncollected: (state, action: PayloadAction<arg>) => {
+            //     state = state.map((item) => {
+            //         if (item.name == action.payload.name) {
+                        
+            //         }
+            //         return item
+            //     })
+            // }
         }
     }
 )
