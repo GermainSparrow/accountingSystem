@@ -36,6 +36,19 @@ const MainPage: React.FC = () => {
     setActiveKey3(key);
     setActiveKey2(false);
   }
+  const menuClick2 = (e: any) => {
+    switch(e.target.innerText){
+      case'个人信息':{
+        break
+      }
+      case'切换用户':{
+        localStorage.removeItem("token");
+        localStorage.removeItem('user');
+        localStorage.removeItem('auth');
+        navigate('/')
+      }
+    }
+  };
   //设置useEffect 刷新设置key
   useEffect(() => {
     let path = location.pathname.substring(6, location.pathname.length);
@@ -125,9 +138,21 @@ const MainPage: React.FC = () => {
           <div className="personalBox">
             <span>Welcome {localStorage.getItem("user")}</span>
             <div className="userMenu" id="userMenu">
-              <ul>
-                <li><Button size="small" type="text">个人信息</Button></li>
-                <li><Button size="small" type="text">切换登录</Button></li>
+              <ul
+                onClick={(e) => {
+                  menuClick2(e);
+                }}
+              >
+                <li>
+                  <Button size="small" type="text">
+                    个人信息
+                  </Button>
+                </li>
+                <li>
+                  <Button size="small" type="text">
+                    切换用户
+                  </Button>
+                </li>
               </ul>
             </div>
           </div>
