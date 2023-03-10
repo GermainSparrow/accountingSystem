@@ -16,7 +16,7 @@ const MainPage: React.FC = () => {
   const [activeKey, setActiveKey] = useState(true);
   const [activeKey2, setActiveKey2] = useState(false);
   const [activeKey3, setActiveKey3] = useState("financeList");
-  //默认选中油品表展示
+  //默认选中备用金表展示
   const [selectedKey, setSelectedKey] = useState("financeList");
   //设置默认选中的按钮依赖menuop
   const [selectedKeys, setSelectedKeys] = useState(["financeList"]);
@@ -115,6 +115,7 @@ const MainPage: React.FC = () => {
   function menuClick({ item, key, keyPath, selectedKeys, domEvent, openKeys }) {
     setSelectedKeys(selectedKeys);
     if (keyPath[0].trim() == "financeList") {
+      setSelectedKey('financeList')
       setActiveKey(true);
     } else {
       setActiveKey(false);
