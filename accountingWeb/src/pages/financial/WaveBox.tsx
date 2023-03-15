@@ -127,45 +127,23 @@ const App: React.FC = () => {
         }
       });
   };
-  //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
+  // 一个useEffect 全部搞定
   useEffect(() => {
     if (!searchState.isSearch && !uncollectedState.isShow) {
       reload();
-    } else if (uncollectedState.isShow) {
+    } else if (searchState.isSearch && !uncollectedState.isShow) {
+      setData(searchState.data);
+    } else if (!searchState.isSearch && uncollectedState.isShow) {
       setData(uncollectedState.data);
-    } else {
+    } else if ((searchState.isSearch, uncollectedState.isShow)) {
       setData(searchState.data);
     }
-  }, [searchState.isSearch]);
-
-  //当侦听到保存完结的时候执行修改
-  useEffect(() => {
-    if (!searchState.isSearch && !uncollectedState.isShow) {
-      reload();
-    }
-  }, [editState.waveBox]);
-  //如果是再次查询直接给新的结果
-  useEffect(() => {
-    if (searchState.isSearch) {
-      setData(searchState.data);
-    }
-  }, [searchState.data]);
-  //对未收款账户的操作
-  useEffect(() => {
-    if (searchState.isSearch) {
-      setData(searchState.data);
-    } else if (uncollectedState.isShow) {
-      setData(uncollectedState.data);
-    } else {
-      reload();
-    }
-  }, [uncollectedState.isShow]);
-  //当侦听到在展示未收款的情况下删除数据
-  useEffect(() => {
-    if (uncollectedState.isShow) {
-      setData(uncollectedState.data);
-    }
-  }, [uncollectedState.data]);
+  }, [
+    searchState.isSearch,
+    searchState.data,
+    uncollectedState.isShow,
+    uncollectedState.data,
+  ]);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
