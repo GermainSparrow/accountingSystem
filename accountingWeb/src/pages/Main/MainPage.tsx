@@ -198,7 +198,7 @@ const MainPage: React.FC = () => {
                     onChange={(e) => changeMenu(e.target.value)}
                     style={{
                       position: "relative",
-                      left: "55%",
+                      left: "45%",
                       translate: "-70%",
                       marginBottom: "16px",
                     }}
