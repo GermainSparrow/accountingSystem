@@ -37,15 +37,15 @@ const MainPage: React.FC = () => {
     setActiveKey2(false);
   }
   const menuClick2 = (e: any) => {
-    switch(e.target.innerText){
-      case'个人信息':{
-        break
+    switch (e.target.innerText) {
+      case "个人信息": {
+        break;
       }
-      case'切换用户':{
+      case "切换用户": {
         localStorage.removeItem("token");
-        localStorage.removeItem('user');
-        localStorage.removeItem('auth');
-        navigate('/')
+        localStorage.removeItem("user");
+        localStorage.removeItem("auth");
+        navigate("/");
       }
     }
   };
@@ -115,7 +115,7 @@ const MainPage: React.FC = () => {
   function menuClick({ item, key, keyPath, selectedKeys, domEvent, openKeys }) {
     setSelectedKeys(selectedKeys);
     if (keyPath[0].trim() == "financeList") {
-      setSelectedKey('financeList')
+      setSelectedKey("financeList");
       setActiveKey(true);
     } else {
       setActiveKey(false);
@@ -213,9 +213,7 @@ const MainPage: React.FC = () => {
                   <Container
                     isShow={activeKey4}
                     style={{
-                      display: "inline-block",
-                      position: "relative",
-                      left: "-130px",
+                      float: "left",
                     }}
                   >
                     <Button

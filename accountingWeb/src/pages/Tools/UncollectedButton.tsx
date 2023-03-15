@@ -20,7 +20,12 @@ const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit ,isSearch
   const dispatch = useDispatch();
   return (
     <Container isShow={exit}>
-      <div>
+      <div style={{
+            float:'left',
+            marginLeft:'15%',
+            position:'relative',
+            translate:'0 -145%'
+          }}>
         <Button
           onClick={() => {
             if(!isSearch) {
@@ -30,15 +35,12 @@ const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit ,isSearch
               dispatch(setUncollected({ data, name }));
             }
           }}
-          style={{
-            position: "absolute",
-            top: "11.9%",
-          }}
+          
         >
           {isShow ? "点击展示全部数据" : "点击展示未收款"}
         </Button>
         <Container isShow={isShow}>
-          <span style={{ position: "absolute", top: "13%", left: "24%",fontSize:'12px',color:'red'}}>
+          <span style={{ position: "absolute", top: "20%", left: "120%",fontSize:'12px',color:'red'}}>
             {name=='oil'?(data.reduce((previousVal, currentVal) => {
               return (previousVal += Number(currentVal.Uncollected_amount));
             }, 0)):data.reduce((previousVal, currentVal) => {
