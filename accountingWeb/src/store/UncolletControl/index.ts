@@ -11,6 +11,10 @@ interface arg {
     name: string,
     data: {}[],
 }
+interface add {
+    name:string,
+    data:{}
+}
 const Uncollected = createSlice(
     {
         name: "uncollected",
@@ -26,8 +30,7 @@ const Uncollected = createSlice(
                 })
             },
             setUncollectedArray: (state, action: PayloadAction<arg>) => {
-                console.log('setUncollected被调用');
-
+                
                 state = state.map((item) => {
                     if (item.name == action.payload.name) {
                         item.data = action.payload.data
@@ -35,16 +38,16 @@ const Uncollected = createSlice(
                     return item
                 })
             },
-            // endUncollected: (state, action: PayloadAction<arg>) => {
-            //     state = state.map((item) => {
-            //         if (item.name == action.payload.name) {
-                        
-            //         }
-            //         return item
-            //     })
-            // }
+            addUncollected: (state, action: PayloadAction<add>) => {
+                state = state.map((item) => {
+                    if (item.name == action.payload.name) {
+                        item.data.push(action.payload.data)
+                    }
+                    return item
+                })
+            },
         }
     }
 )
-export const { setUncollected, setUncollectedArray } = Uncollected.actions
+export const { setUncollected, setUncollectedArray,addUncollected } = Uncollected.actions
 export default Uncollected.reducer
