@@ -3,6 +3,7 @@ var router = express.Router();
 const db = require("../src/db");
 const jsonWebToken = require("jsonwebtoken");
 const crypto = require("crypto");
+const mysql = require("mysql");
 /* GET users listing. */
 router.get("/a", function (req, res, next) {
   res.send("get user message");
@@ -14,19 +15,16 @@ const token = jsonWebToken.sign({ msg: "已经成功加密" }, "xiaoLai", {
 });
 //登录接口
 router.post("/login", async function (req, res, next) {
-  console.log(
-    `password is${crypto
-      .createHash("md5")
-      .update(req.body.password, "utf8")
-      .digest("hex")}`
-  );
-  let selectCode = `select * from user where name ='${
-    req.body.userName
-    //对拿到的密码进行解密
-  }' and password ='${crypto
-    .createHash("md5")
-    .update(req.body.password, "utf8")
-    .digest("hex")}' `;
+  console.log("name为 " + req.body.userName + " 正在尝试登录");
+  const params = [
+    req.body.userName,
+    crypto.createHash("md5").update(req.body.password, "utf8").digest("hex"),
+  ];
+  let selectCode = `select * from user where name = ? and password = ? `;
+  selectCode = mysql.format(selectCode, params);
+
+  console.log(selectCode);
+
   db.query(selectCode, function (err, result) {
     if (!err) {
       //如果查询到的数据不为空
