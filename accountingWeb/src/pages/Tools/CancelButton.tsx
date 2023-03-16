@@ -12,11 +12,12 @@ const CancelButton: React.FC<item> = ({ isSow, name }) => {
   return (
     <Container isShow={isSow}>
       <Button
-        style={{ float: "left",translate:'0 -10%' }}
+        style={{ float: "left", translate: "0 -10%" }}
         type="text"
         danger
         onClick={() => {
-          dispatch(searchEnd({ name: name })), console.log("search ENd");
+          dispatch(searchEnd({ name: name, rule: "" })),
+            console.log("search ENd");
         }}
       >
         取消查询

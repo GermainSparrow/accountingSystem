@@ -6,7 +6,7 @@ const deleteIf = (reload: any, name, isSearch, isUncollected, data) => {
     console.log('选择删除被调用了', reload, name, isSearch, isUncollected, data);
 
     if (isSearch) {
-        store.dispatch(setSearchState({ name: name, data: data }))
+        store.dispatch(setSearchState({ name: name, data: data, rule: '' }))
         return null
     } else if (isUncollected) {
         store.dispatch(setUncollectedArray({ name: name, data: data }))
