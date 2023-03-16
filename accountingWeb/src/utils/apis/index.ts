@@ -3,9 +3,9 @@ import axios from 'axios';
 
 
 
-axios.defaults.baseURL = 'http://127.0.0.1:3001';
+// axios.defaults.baseURL = 'http://127.0.0.1:3001';
 //设置远程服务器的地址
-// axios.defaults.baseURL = 'http://1.14.74.199:3001'
+axios.defaults.baseURL = 'http://1.14.74.199:3001'
 //设置请求拦截器
 axios.interceptors.request.use((req) => {
     let token = localStorage.getItem('token');
