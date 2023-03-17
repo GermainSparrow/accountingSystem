@@ -78,7 +78,7 @@ const Cash: React.FC = () => {
     apis.getCash({}).then((cash) => {
       setData(cash.data);
     });
-  });
+  },[]);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
@@ -121,7 +121,7 @@ const Cash: React.FC = () => {
         });
 
         //发送数据到后台
-        const { extraIncome, otherIncome } = row;
+        const { extraIncome, otherIncome, bankOut } = row;
         const { key } = item;
 
         apis
@@ -129,6 +129,7 @@ const Cash: React.FC = () => {
             extraIncome,
             otherIncome,
             key,
+            bankOut
           })
           .then((res) => {
             if (res.data.code == "200") {
