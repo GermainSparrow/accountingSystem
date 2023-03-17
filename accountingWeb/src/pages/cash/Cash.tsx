@@ -78,7 +78,7 @@ const Cash: React.FC = () => {
     apis.getCash({}).then((cash) => {
       setData(cash.data);
     });
-  },[]);
+  }, []);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
@@ -129,7 +129,7 @@ const Cash: React.FC = () => {
             extraIncome,
             otherIncome,
             key,
-            bankOut
+            bankOut,
           })
           .then((res) => {
             if (res.data.code == "200") {
@@ -138,20 +138,18 @@ const Cash: React.FC = () => {
                 type: "success",
                 duration: 1.5,
               });
+              setData(res.data.data);
             } else {
               message.open({
                 content: "修改失败",
                 type: "error",
                 duration: 1.5,
               });
-              setData(res.data.data);
             }
           });
-        setData(newData);
         setEditingKey("");
       } else {
         newData.push(row);
-        setData(newData);
         setEditingKey("");
       }
     } catch (errInfo) {

@@ -3,8 +3,7 @@ const router = express.Router();
 const db = require("../src/db");
 
 //封装一下查询方法
-var p =1
-async function selectCash() {
+const selectCash = async () => {
   let cashArr = [];
   let oilArr = [];
   let waveBoxArr = [];
@@ -145,15 +144,15 @@ async function selectCash() {
       return items;
     }
   });
-  console.log(p++);
   return cashArr;
-}
+};
 
 //获取表数据
 router.get("/", async (req, res) => {
   const cashArr = await selectCash();
   res.send(cashArr);
 });
+
 //修改表数据
 router.post("/update", async (req, res) => {
   let sql = "UPDATE cash SET ";
@@ -165,16 +164,17 @@ router.post("/update", async (req, res) => {
   }
   sql = sql.substring(0, sql.length - 1);
   sql += `WHERE \`key\` = ${req.body["key"]}`;
-  db.query(sql, (err, result) => {
+  // 执行查询 
+  db.query(sql, async (err, result) => {  
     if (err) {
       res.send(err);
     }
-  });
-
-  const cashArr = await selectCash();
-  res.send({
-    code: "200",
-    data: cashArr,
+    // 此时数据库应该是已经被修改
+    const cashArr = await selectCash();
+    res.send({
+      code: "200",
+      data: cashArr,
+    });
   });
 });
 
