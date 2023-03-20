@@ -6,12 +6,12 @@
 module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
-
   //备用金表
   router.post('/financial/addFinancialList', controller.reserves.add);
   router.post('/financial/delete', controller.reserves.delete);
   router.post('/financial/updateFinancialList', controller.reserves.update);
   router.get('/financial/getFinancialList', controller.reserves.get);
+
   //波箱表
   router.post('/waveBox/addWaveBox', controller.waveBox.add);
   router.post('/waveBox/delete', controller.waveBox.delete);
@@ -26,4 +26,10 @@ module.exports = app => {
   router.post('/cash/update', controller.cash.update);
   router.get('/cash', controller.cash.get);
   //获取可视化数据
+  router.post('/oil/getVisualData',controller.crude.getVisual);
+  router.post('/waveBox/getVisualData',controller.crude.getVisual);
+  router.post('/financial/getVisualData',controller.crude.getVisual);
+  //条件查询数据
+  router.post('/crud/search',controller.crude.search);
+
 };
