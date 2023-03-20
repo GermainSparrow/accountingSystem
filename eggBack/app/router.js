@@ -26,9 +26,9 @@ module.exports = app => {
   router.post('/cash/update', controller.cash.update);
   router.get('/cash', controller.cash.get);
   //获取可视化数据
-  router.get('/oil/getVisualData',controller.crude.getVisual);
-  router.get('/waveBox/getVisualData',controller.crude.getVisual);
-  router.get('/financial/getVisualData',controller.crude.getVisual);
+  router.get('/oil/getVisualData',controller.oilSale.getVisual);
+  router.get('/waveBox/getVisualData',controller.waveBox.getVisual);
+  router.get('/financial/getVisualData',controller.reserves.getVisual);
   //条件查询数据
   router.post('/crud/search',controller.crude.search);
 };

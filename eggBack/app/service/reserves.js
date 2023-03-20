@@ -57,7 +57,7 @@ class Test extends Service {
     }
     async getVisual() {
         try {
-            const result = await this.app.mysql.mysql.select('reserves');
+            const result = await this.app.mysql.select('reserves');
             const temp = result.map((item, index) => {
                 if (item.in) {
                     return {
