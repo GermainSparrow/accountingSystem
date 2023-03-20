@@ -9,7 +9,7 @@ class Test extends Service {
             const res = await app.mysql.select('reserves')
             return res
         } catch (err) {
-            console.log(err);
+            console.log('err------------->',err);
         }
     }
 }

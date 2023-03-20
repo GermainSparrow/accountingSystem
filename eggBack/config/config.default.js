@@ -23,11 +23,18 @@ module.exports = appInfo => {
     app: true,
     agent: false,
     client: {
-      host: '127.0.0.1',
+      // 数据库类型，支持 mysql、sqlite、postgres、mssql
+      type: 'mysql',
+      // 数据库连接地址
+      host: 'localhost',
+      // 数据库连接端口
       port: '3306',
+      // 数据库用户名
       user: 'root',
-      password: '200113',
-      database: 'xiaolai'
+      // 数据库密码
+      password: '200113Sam_lai',
+      // 数据库名称
+      database: 'xiaolai',
     }
   }
   // use for cookie sign key, should change to your own and keep security
