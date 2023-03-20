@@ -15,7 +15,7 @@ const token = jsonWebToken.sign({ msg: "已经成功加密" }, "xiaoLai", {
 });
 //登录接口
 router.post("/login", async function (req, res, next) {
-  console.log("name为 " + req.body.userName + " 正在尝试登录");
+  console.log("name为 " + req.body.userName + " 正在尝试登录",'password'+ crypto.createHash("md5").update(req.body.password, "utf8").digest("hex"));
   const params = [
     req.body.userName,
     crypto.createHash("md5").update(req.body.password, "utf8").digest("hex"),
