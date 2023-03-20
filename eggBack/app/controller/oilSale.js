@@ -5,19 +5,28 @@ const { Controller } = require('egg');
 class db extends Controller {
     async add() {
         const { ctx } = this;
+        const result = await this.service.oilSale.add(ctx.request.body);
+        result ? ctx.body = ({ code: '200', data: result }) : { code: '500', msg: '添加数据失败' }
     }
     async delete() {
         const { ctx } = this;
+        const result = await this.service.oilSale.delete(ctx.request.body)
+        result ? ctx.body = ({ code: '200', data: result }) : { code: '500', msg: '删除数据失败' }
     }
     async update() {
         const { ctx } = this;
+        const result = await this.service.oilSale.update(ctx.request.body)
+        result ? ctx.body = ({ code: '200', data: result }) : { code: '500', msg: '更新数据失败' }
     }
     async get() {
         const { ctx } = this;
-        ctx.body = await this.service.reserves.getReservesList();
+        const result = await this.service.oilSale.get();
+        result ? ctx.body = ({ code: '200', data: result }) : { code: '500', msg: '查询数据失败' }
     }
-    async getVisual(){
+    async getVisual() {
         const { ctx } = this;
+        const data = await this.service.oilSale.getVisual();
+        data ? ctx.body = { code: '200', data } : { code: '500', msg: '获取可视化数据失效' };
     }
 }
 
