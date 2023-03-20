@@ -29,9 +29,4 @@ router.post("/search", (req, res) => {
     });
   });
 });
-router.get('/update', async (req, res) => {
-  let sql = 'select * from wavebox';
-  let result = await db.query(sql, (err, result) => {result})
-  
-})
 module.exports = router;
