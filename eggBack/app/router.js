@@ -31,5 +31,4 @@ module.exports = app => {
   router.post('/financial/getVisualData',controller.crude.getVisual);
   //条件查询数据
   router.post('/crud/search',controller.crude.search);
-
 };
