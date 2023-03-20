@@ -14,10 +14,5 @@ class Test extends Service {
             return false;
         }
     }
-    async getVisual() {
-        try { } catch (err) {
-            console.log('err------------->', err);
-        }
-    }
 }
 module.exports = Test;

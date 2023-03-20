@@ -23,10 +23,8 @@ class db extends Controller {
         const result = await this.service.reserves.get();
         result ? ctx.body = ({ code: '200', data: result }) : { code: '400', msg: '查询数据失败' }
     }
-    async getBy() {
+    async getVisual() {
         const { ctx } = this;
-        const result = await this.service.reserves.getBy(ctx.request.body);
-        result ? ctx.body = ({ code: '200', data: result }) : { code: '400', msg: '查询数据失败' }
     }
 }
 
