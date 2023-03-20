@@ -55,5 +55,29 @@ class Test extends Service {
             return false
         }
     }
+    async getVisual() {
+        try {
+            const result = await this.app.mysql.mysql.select('reserves');
+            const temp = result.map((item, index) => {
+                if (item.in) {
+                    return {
+                        name: item.payee,
+                        month: item.month,
+                        count: Number(item.in),
+                    };
+                } else {
+                    return {
+                        name: item.reimbursers,
+                        month: item.month,
+                        count: 0 - Number(item.out),
+                    };
+                }
+            });
+            return temp
+        } catch (err) {
+            console.log('err------------->', err);
+            return false
+        }
+    }
 }
 module.exports = Test;
