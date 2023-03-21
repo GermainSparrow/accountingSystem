@@ -76,7 +76,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 const Cash: React.FC = () => {
   useEffect(() => {
     apis.getCash({}).then((cash) => {
-      setData(cash.data);
+      setData(cash.data.data);
     });
   }, []);
   const [form] = Form.useForm();

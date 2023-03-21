@@ -95,7 +95,7 @@ const App: React.FC = () => {
   );
   const reload = () => {
     apis.getWavesList().then((res) => {
-      setData(res.data);
+      setData(res.data.data);
     });
   };
   const deleteData = (x) => {
