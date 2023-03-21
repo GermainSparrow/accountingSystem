@@ -23,16 +23,13 @@ axios.interceptors.response.use((res => {
             type: 'error',
             duration: 3
         })
-        window.location.assign('http://1.14.74.199:3001')
-        
+        // window.location.assign('http://1.14.74.199:3001')
+
     }
 })
 
 export default {
     post(url: string, data: {}) {
-
-        console.log('data', data);
-
         return axios({
             url: url,
             method: 'POST',

@@ -6,7 +6,7 @@ import md5 from "js-md5";
 import _ from "lodash";
 
 const onFinishFailed = (errorInfo: any) => {
-  console.log("Failed:", errorInfo);
+  
 };
 
 const Login: React.FC = () => {
@@ -22,10 +22,8 @@ const Login: React.FC = () => {
       })
       .then((res) => {
         console.log(res);
-        if (res.data.code === 200) {
-          console.log(res.data);
-          
-          localStorage.setItem("token", res.data.data.token);
+        if (res.data.code === 200) {          
+          localStorage.setItem("token", res.data.token);
           localStorage.setItem('user',res.data.data.userName)
           message.open({
             type: "success",
