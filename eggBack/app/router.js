@@ -31,4 +31,6 @@ module.exports = app => {
   router.get('/financial/getVisualData',controller.reserves.getVisual);
   //条件查询数据
   router.post('/crud/search',controller.crude.search);
+  //用户登录
+  router.post('/user/login',controller.user.login)
 };

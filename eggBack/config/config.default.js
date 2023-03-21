@@ -18,6 +18,10 @@ module.exports = appInfo => {
       enable: false,
     },
   };
+  //配置jwt
+  config.jwt = {
+    secret:'xiaolai'
+  }
   //配置mysql
   config.mysql = {
     app: true,
