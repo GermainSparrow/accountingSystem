@@ -3,21 +3,13 @@
 const { Controller } = require('egg');
 
 class db extends Controller {
-    async add() {
-        const { ctx } = this;
-    }
-    async delete() {
-        const { ctx } = this;
-    }
     async update() {
         const { ctx } = this;
     }
     async get() {
         const { ctx } = this;
-        ctx.body = await this.service.reserves.getReservesList();
-    }
-    async getVisual(){
-        const { ctx } = this;
+        const data =  await this.service.cash.get();
+        data?ctx.body ={code:'200',data}:{code:'500',msg:'服务器出错'}
     }
 }
 
