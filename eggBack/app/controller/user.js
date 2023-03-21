@@ -6,7 +6,9 @@ class userControl extends Controller {
     async login() {
         const data = await this.service.user.login(this.ctx.request.body)
         delete data.password;
-        data ? this.ctx.body = { 'code': 200, data } : this.ctx.body = { 'code': 500, data }
+        const token = this.ctx.helper.getToken('xiaolai');
+        console.log(token);
+        data ? this.ctx.body = { 'code': 200, data, token } : this.ctx.body = { 'code': 500, data, }
     }
 }
 

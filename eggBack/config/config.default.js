@@ -12,15 +12,20 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
-  // CSRF //允许跨域请求
-  config.security = {
-    csrf: {
-      enable: false,
-    },
-  };
+  //配置helper
+  config.helper = {
+    // 指定需要加载的 helper 文件路径
+    path: 'app/extend/helper',
+  },
+    // CSRF //允许跨域请求
+    config.security = {
+      csrf: {
+        enable: false,
+      },
+    };
   //配置jwt
   config.jwt = {
-    secret:'xiaolai'
+    secret: 'xiaolai'
   }
   //配置mysql
   config.mysql = {
