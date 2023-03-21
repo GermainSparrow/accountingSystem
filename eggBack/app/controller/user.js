@@ -8,7 +8,7 @@ class userControl extends Controller {
         delete data.password;
         const token = this.ctx.helper.getToken('xiaolai');
         console.log(token);
-        data ? this.ctx.body = { 'code': 200, data, token } : this.ctx.body = { 'code': 500, data, }
+        data ? this.ctx.body = { 'code': 200, data, token } : this.ctx.body = { 'code': 500, msg: '登录失败 账号或密码不正确' }
     }
 }
 
