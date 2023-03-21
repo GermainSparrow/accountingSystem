@@ -50,7 +50,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_200113';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = ['token'];
 
   // add your user config here
   const userConfig = {
