@@ -12,15 +12,20 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
+  //跨域
+  config.cors = {
+    origin: '*', // 允许所有的源进行请求
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
+  }
   //配置helper
   config.helper = {
     // 指定需要加载的 helper 文件路径
     path: 'app/extend/helper',
   },
-    // CSRF //允许跨域请求
+    // CSRF 
     config.security = {
       csrf: {
-        enable: false,
+        enable: true,
       },
     };
   //配置jwt
