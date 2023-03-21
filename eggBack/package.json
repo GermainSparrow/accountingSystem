@@ -7,11 +7,12 @@
     "declarations": true
   },
   "dependencies": {
-    "egg": "^3",
+    "egg": "^3.15.0",
     "egg-jwt": "^3.1.7",
     "egg-mysql": "^4.0.0",
-    "egg-scripts": "^2",
-    "egg-view-ejs": "^3.0.0"
+    "egg-scripts": "^2.17.0",
+    "egg-view-ejs": "^3.0.0",
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
     "egg-bin": "^5",
