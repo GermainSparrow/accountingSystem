@@ -23,8 +23,7 @@ axios.interceptors.response.use((res => {
             type: 'error',
             duration: 3
         })
-        // window.location.assign('http://1.14.74.199:3001')
-
+        setTimeout(() => {window.location.href ='http://1.14.74.199' }, 2000)
     }
 })
 
