@@ -63,63 +63,31 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
     if (values.choice == "添加数据") {
       delete values.choice;
       // 根据取得的key值调用接口
+      let p: any = ''
       switch (props.x.trim()) {
         case "financeList":
-          await apis.addFinancialList(values).then((res) => {
-            if (res.data.code == 200) {
-              message.open({
-                content: '添加成功',
-                duration: 1.5,
-                type: "success",
-              });
-            } else {
-              message.open({
-                content: '添加成功',
-                duration: 1.5,
-                type: "error",
-              });
-            }
-          });
+          p = apis.addFinancialList(values)
           break;
         case "oil":
-          await apis.addOliList(values).then((res) => {
-            if (res.data.code == 200) {
-              message.open({
-                content: '添加成功',
-                duration: 1.5,
-                type: "success",
-              });
-            } else {
-              message.open({
-                content: res.data.msg,
-                duration: 1.5,
-                type: "error",
-              });
-            }
-          });
-
+          p = apis.addOliList(values)
           break;
         case "waveBox":
-          await apis.addWavesList(values).then((res) => {
-            if (res.data.code == 200) {
-              message.open({
-                content: res.data.msg,
-                duration: 1.5,
-                type: "success",
-              });
-            } else {
-              message.open({
-                content: res.data.msg,
-                duration: 1.5,
-                type: "error",
-              });
-            }
-          });
-
+          p = apis.addWavesList(values)
           break;
         default:
           break;
       }
+      p.then(res => {
+        res.data.code == '200' ? message.open({
+          content: '添加成功',
+          type: 'success',
+          duration: 1.5
+        }) : message.open({
+          content: '添加失败',
+          type: 'error',
+          duration: 1.5
+        })
+      })
       //添加结束发送到状态机 那边决定要不要添加
       dispatch(addSearch({ data: values, name: props.x.trim() }));
       values.cost > values.Collection || values.Uncollected_amount > 0
