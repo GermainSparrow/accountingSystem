@@ -8,8 +8,8 @@ class db extends Controller {
     }
     async get() {
         const { ctx } = this;
-        const data =  await this.service.cash.get();
-        data?ctx.body ={code:'200',data}:{code:'500',msg:'服务器出错'}
+        const data = await this.service.cash.get();
+        data ? ctx.body = { code: 200, data } : { code: 500, msg: '服务器出错' }
     }
 }
 
