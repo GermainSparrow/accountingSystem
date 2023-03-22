@@ -40,16 +40,7 @@ class Test extends Service {
     async get() {
         try {
             const result = await this.app.mysql.select('reserves')
-            return result
-        } catch (err) {
-            console.log('err------------->', err);
-            return false
-        }
-    }
-    async getBy(obj) {
-        try {
-            const result = await this.app.mysql.select('reserves', { where: obj })
-            return result
+            return result.reverse()
         } catch (err) {
             console.log('err------------->', err);
             return false

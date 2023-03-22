@@ -140,7 +140,7 @@ class Test extends Service {
     async get() {
         try {
             const cashArr = await cashSearch(this.app)
-            return cashArr
+            return cashArr.reverse()
         } catch (err) {
             console.log('err------------->', err);
             return false;

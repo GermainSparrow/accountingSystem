@@ -8,7 +8,7 @@ class Test extends Service {
             const tableName = obj.table
             delete obj.table
             const result = await this.app.mysql.select(tableName, { where: obj })
-            return result
+            return result.reverse()
         } catch (err) {
             console.log('err------------->', err);
             return false;
