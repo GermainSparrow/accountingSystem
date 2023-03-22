@@ -10,6 +10,7 @@ const onFinishFailed = (errorInfo: any) => {
 };
 
 const Login: React.FC = () => {
+  document.title = '小赖的会计系统'
   const navigate = useNavigate();
   //登录函数
   const onFinish = (values: any) => {

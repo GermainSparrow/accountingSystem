@@ -94,7 +94,7 @@ const MainPage: React.FC = () => {
   //遍历设置菜单数据
   const menuItems2: MenuProps["items"] = menuItems.map((items, index) => {
     const key = String(index + 1);
-
+    document.title = '小赖的会计系统'
     return {
       key: `${items.key}`,
       icon: React.createElement(items.icon),
