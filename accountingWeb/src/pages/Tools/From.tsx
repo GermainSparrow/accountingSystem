@@ -23,7 +23,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
   const [key, setKey] = useState("financeList");
   useEffect(() => {
     props.x.trim() == 'financeList' ? null : setKey(props.x.trim());
-    console.log(props.x.trim());
   }, []);
 
 

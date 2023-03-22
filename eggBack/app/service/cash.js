@@ -127,18 +127,19 @@ const cashSearch = async (app) => {
 }
 
 class Test extends Service {
-    async update() {
+    async update(obj) {
         try {
-
+            await this.app.mysql.update('cash', obj, { where: { key: obj.key } });
+            const cashArr = await cashSearch(this.app);
+            return cashArr;
         } catch (err) {
             console.log('err------------->', err);
+            return false
         }
     }
     async get() {
         try {
-            console.log('get开始被调用');
             const cashArr = await cashSearch(this.app)
-            console.log('get结束被调用');
             return cashArr
         } catch (err) {
             console.log('err------------->', err);
