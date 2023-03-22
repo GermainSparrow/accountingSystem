@@ -26,11 +26,11 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
     console.log(props.x.trim());
   }, []);
 
-  //提交函数
+
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
+  //提交函数
   const onFinish = async (values: any) => {
     if (values.choice == undefined) {
       message.error("请选择添加/查询数据");

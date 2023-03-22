@@ -6,17 +6,17 @@ class db extends Controller {
     async add() {
         const { ctx } = this;
         const result = await this.service.reserves.add(ctx.request.body);
-        result ? ctx.body = ({ code: 200, data: result }) : { code: 500, msg: '添加数据失败' }
+        result ? ctx.body = ({ code: 200, data: '添加数据成功' }) : { code: 500, msg: '添加数据失败' }
     }
     async delete() {
         const { ctx } = this;
         const result = await this.service.reserves.delete(ctx.request.body)
-        result ? ctx.body = ({ code: 200, data: result }) : { code: 500, msg: '删除数据失败' }
+        result ? ctx.body = ({ code: 200, data: '删除数据成功' }) : { code: 500, msg: '删除数据失败' }
     }
     async update() {
         const { ctx } = this;
         const result = await this.service.reserves.update(ctx.request.body)
-        result ? ctx.body = ({ code: 200, data: result }) : { code: 500, msg: '更新数据失败' }
+        result ? ctx.body = ({ code: 200, data: '更新数据成功' }) : { code: 500, msg: '更新数据失败' }
     }
     async get() {
         const { ctx } = this;
