@@ -47,12 +47,9 @@ const DemoColumn = function () {
 
   //封装一下设置数据源的方法
   const getVisualData = (m: string, show: number) => {
-    console.log("现在选中的表是", m, "表的状态是", show);
     apis
       .getVisualData(m)
       .then((res: { data: { data: { count: number }[] } }) => {
-        console.log(res.data.data);
-
         //根据selectKey决定表格显示正负
         switch (show) {
           case 1:
@@ -61,7 +58,6 @@ const DemoColumn = function () {
               temp.data = res.data.data.filter((item, index) => item.count > 0);
               return temp;
             });
-            console.log("1 triggered");
             break;
           case 0: {
             setConfig(() => {
@@ -69,14 +65,12 @@ const DemoColumn = function () {
               temp.data = res.data.data;
               return temp;
             });
-            console.log("2 triggered");
             break;
           }
           case -1: {
             setConfig(() => {
               let temp = { ...config };
               temp.data = res.data.data.filter((item, index) => item.count < 0);
-              console.log("3 triggered");
               return temp;
             });
             break;

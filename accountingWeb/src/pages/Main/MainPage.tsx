@@ -32,7 +32,6 @@ const MainPage: React.FC = () => {
       navigate("/");
       message.error("请先登录");
     }
-    // console.log("key", key, "selectedKey", selectedKey);
     setActiveKey3(key);
     setActiveKey2(false);
   }
@@ -61,7 +60,6 @@ const MainPage: React.FC = () => {
         })
       : setOpen(() => {
           let temp = ["sub2"];
-          console.log("x");
           return temp;
         });
 
@@ -165,10 +163,8 @@ const MainPage: React.FC = () => {
           breakpoint="lg"
           collapsedWidth="0"
           onBreakpoint={(broken) => {
-            console.log(broken);
           }}
           onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
           }}
         >
           <div className="logo" />

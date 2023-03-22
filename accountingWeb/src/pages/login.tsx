@@ -21,7 +21,6 @@ const Login: React.FC = () => {
         password: password,
       })
       .then((res) => {
-        console.log(res);
         if (res.data.code === 200) {          
           localStorage.setItem("token", res.data.token);
           localStorage.setItem('user',res.data.data.userName)

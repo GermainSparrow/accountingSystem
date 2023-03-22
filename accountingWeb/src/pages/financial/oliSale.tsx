@@ -100,7 +100,6 @@ const App: React.FC = () => {
     });
   }
   const deleteData = (x) => {
-    console.log(x);
     apis
       .deleteOliList({
         key: x.key,

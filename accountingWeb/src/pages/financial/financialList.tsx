@@ -111,7 +111,6 @@ const App: React.FC = () => {
   }, [searchState.data]);
 
   const deleteData = (x) => {
-    console.log(x);
     apis
       .deleteFinancialList({
         key: x.key,

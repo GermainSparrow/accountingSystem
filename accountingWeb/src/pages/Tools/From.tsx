@@ -28,7 +28,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
   const dispatch = useDispatch();
   const [key, setKey] = useState("financeList");
   useEffect(() => {
-    console.log("props.x", props.x);
     setKey(props.x.trim());
   }, []);
 
@@ -86,9 +85,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
                 type: "error",
               });
             }
-          });
-          console.log("fffff");
-
+          });          
           break;
         case "oil":
           await apis.addOliList(values).then((res) => {
@@ -106,7 +103,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
               });
             }
           });
-          console.log("ooooo");
 
           break;
         case "waveBox":

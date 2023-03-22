@@ -99,7 +99,6 @@ const App: React.FC = () => {
     });
   };
   const deleteData = (x) => {
-    console.log(x);
     apis
       .deleteWavesList({
         key: x.key,

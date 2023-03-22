@@ -16,8 +16,7 @@ const CancelButton: React.FC<item> = ({ isSow, name }) => {
         type="text"
         danger
         onClick={() => {
-          dispatch(searchEnd({ name: name, rule: "" })),
-            console.log("search ENd");
+          dispatch(searchEnd({ name: name, rule: "" }))
         }}
       >
         取消查询
