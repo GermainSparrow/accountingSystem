@@ -11,7 +11,6 @@ module.exports = app => {
   router.post('/financial/delete', controller.reserves.delete);
   router.post('/financial/updateFinancialList', controller.reserves.update);
   router.get('/financial/getFinancialList', controller.reserves.get);
-
   //波箱表
   router.post('/waveBox/addWaveBox', controller.waveBox.add);
   router.post('/waveBox/delete', controller.waveBox.delete);
