@@ -68,13 +68,13 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           await apis.addFinancialList(values).then((res) => {
             if (res.data.code == 200) {
               message.open({
-                content: res.data.msg,
+                content: '添加成功',
                 duration: 1.5,
                 type: "success",
               });
             } else {
               message.open({
-                content: res.data.msg,
+                content: '添加成功',
                 duration: 1.5,
                 type: "error",
               });
@@ -85,7 +85,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
           await apis.addOliList(values).then((res) => {
             if (res.data.code == 200) {
               message.open({
-                content: res.data.msg,
+                content: '添加成功',
                 duration: 1.5,
                 type: "success",
               });
