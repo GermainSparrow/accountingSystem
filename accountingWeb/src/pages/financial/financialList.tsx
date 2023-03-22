@@ -115,8 +115,8 @@ const App: React.FC = () => {
       .deleteFinancialList({
         key: x.key,
       })
-      .then((res) => {
-        if (res.data.code === 200) {
+      .then((res: { data: { code: number } }) => {
+        if (res.data.code == 200) {
           deleteIf(
             reload,
             "financeList",
@@ -290,21 +290,21 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Container isShow ={localStorage.getItem('auth')=='true'?true:false}>
+          <Container isShow={localStorage.getItem('auth') == 'true' ? true : false}>
             <div>
-            <Typography.Link
-              disabled={editingKey !== ""}
-              onClick={() => edit(record)}
-            >
-              编辑
-            </Typography.Link>
-            <Typography.Link
-              style={{ marginLeft: "15px", color: "red" }}
-              onClick={() => deleteData(record)}
-            >
-              删除
-            </Typography.Link>
-          </div>
+              <Typography.Link
+                disabled={editingKey !== ""}
+                onClick={() => edit(record)}
+              >
+                编辑
+              </Typography.Link>
+              <Typography.Link
+                style={{ marginLeft: "15px", color: "red" }}
+                onClick={() => deleteData(record)}
+              >
+                删除
+              </Typography.Link>
+            </div>
           </Container>
         );
       },
@@ -329,19 +329,6 @@ const App: React.FC = () => {
 
   return (
     <div>
-      {/* <Container isShow={searchState.isSearch}>
-        <Button
-          style={{ position: "relative", top: "-48px", left: "75%" }}
-          type="text"
-          danger
-          onClick={() => {
-            dispatch(searchEnd({ name: "financeList" })),
-              console.log("search ENd");
-          }}
-        >
-          取消查询
-        </Button>
-      </Container> */}
       <CancelButton isSow={searchState.isSearch} name="financeList" />
       <Form form={form} component={false}>
         <Table
