@@ -116,7 +116,7 @@ const App: React.FC = () => {
         key: x.key,
       })
       .then((res: { data: { code: number } }) => {
-        if (res.data.code == 200) {
+        if (res.data.code === 200) {
           deleteIf(
             reload,
             "financeList",

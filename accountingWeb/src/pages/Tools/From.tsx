@@ -3,15 +3,9 @@ import {
   Form,
   Input,
   Button,
-  Radio,
   Select,
-  Cascader,
   DatePicker,
   InputNumber,
-  TreeSelect,
-  Switch,
-  Checkbox,
-  Upload,
   message,
 } from "antd";
 import apis from "../../utils/apis/apis";
@@ -28,7 +22,8 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
   const dispatch = useDispatch();
   const [key, setKey] = useState("financeList");
   useEffect(() => {
-    setKey(props.x.trim());
+    props.x.trim() == 'financeList' ? null : setKey(props.x.trim());
+    console.log(props.x.trim());
   }, []);
 
   //提交函数
@@ -85,7 +80,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
                 type: "error",
               });
             }
-          });          
+          });
           break;
         case "oil":
           await apis.addOliList(values).then((res) => {
@@ -185,7 +180,7 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
   };
   //渲染列表
   switch (key) {
-    case "financeList ":
+    case 'financeList':
       return (
         <div
           style={{
@@ -482,98 +477,6 @@ const FormDisabledDemo = function (props: { x: string; setShow: any }) {
             </Form.Item>
             <Form.Item label="票据" name="invoice">
               <TextArea rows={1} />
-            </Form.Item>
-            <Form.Item label="点击添加">
-              <Button type="primary" htmlType="submit">
-                点击提交
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      );
-    default:
-      return (
-        <div
-          style={{
-            position: "absolute",
-            zIndex: "999",
-            backgroundColor: "white",
-            height: "800px",
-            width: " 800px",
-            left: "50%",
-            translate: "-50%",
-            top: "20%",
-          }}
-        >
-          <Form
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 14 }}
-            style={{ maxWidth: 600, margin: "20px auto" }}
-            onFinishFailed={onFinishFailed}
-            onFinish={onFinish}
-          >
-            <Form.Item label="模式选择" name="choice">
-              <Select>
-                <Select.Option value="添加数据">添加数据</Select.Option>
-                <Select.Option value="搜索数据">搜索数据</Select.Option>
-              </Select>
-            </Form.Item>
-            {/* 选择时间 */}
-            <Form.Item label="选择时间" name="time">
-              <DatePicker />
-            </Form.Item>
-            {/* 选择月份 */}
-            <Form.Item label="选择月份" name="month">
-              <DatePicker picker="month" format={"YYYY-MM"} />
-            </Form.Item>
-            {/* 选择付款人 */}
-            <Form.Item label="选择付款人" name="payer">
-              <Select>
-                <Select.Option value="赖敏">赖敏</Select.Option>
-                <Select.Option value="蔡强">蔡强</Select.Option>
-              </Select>
-            </Form.Item>
-            {/* 选择收款人 */}
-            <Form.Item label="选择收款人" name="payee">
-              <Select>
-                <Select.Option value="赖敏">赖敏</Select.Option>
-                <Select.Option value="蔡强">蔡强</Select.Option>
-              </Select>
-            </Form.Item>
-            {/* 付款方式 */}
-            <Form.Item label="选择付款方式" name="payway">
-              <Select>
-                <Select.Option value="微信">微信</Select.Option>
-                <Select.Option value="支付宝">支付宝</Select.Option>
-                <Select.Option value="现金">现金</Select.Option>
-              </Select>
-            </Form.Item>
-            {/* 备用金收入金额 */}
-            <Form.Item label="备用金收入金额" name="in">
-              <InputNumber />
-            </Form.Item>
-            {/* 备用金指出金额 */}
-            <Form.Item label="备用金支出金额" name="out">
-              <InputNumber />
-            </Form.Item>
-            {/* 用途 */}
-            <Form.Item label="用途" name="usefor">
-              <TextArea rows={2} />
-            </Form.Item>
-            {/* 还款方式 */}
-            <Form.Item label="还款方式" name="payway">
-              <Select>
-                <Select.Option value="微信">微信</Select.Option>
-                <Select.Option value="支付宝">支付宝</Select.Option>
-                <Select.Option value="现金">现金</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item label="收款人" name="payee">
-              <Select>
-                <Select.Option value="方晓勇">方晓勇</Select.Option>
-                <Select.Option value="蔡强">蔡强</Select.Option>
-                <Select.Option value="张胖">张胖</Select.Option>
-              </Select>
             </Form.Item>
             <Form.Item label="点击添加">
               <Button type="primary" htmlType="submit">

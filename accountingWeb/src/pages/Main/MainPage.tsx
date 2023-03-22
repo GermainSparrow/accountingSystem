@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { MenuProps, message } from "antd";
 import { UserOutlined, LaptopOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme, Radio, Button } from "antd";
@@ -54,14 +54,14 @@ const MainPage: React.FC = () => {
     setSelectedKeys([`${path}`]);
     path == "financeList" || path == "visual"
       ? setOpen(() => {
-          let temp = ["sub1"];
+        let temp = ["sub1"];
 
-          return temp;
-        })
+        return temp;
+      })
       : setOpen(() => {
-          let temp = ["sub2"];
-          return temp;
-        });
+        let temp = ["sub2"];
+        return temp;
+      });
 
     localStorage.getItem("auth") ? setActiveKey4(true) : null;
   }, []);
