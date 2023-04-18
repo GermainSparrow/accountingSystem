@@ -33,7 +33,7 @@
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
-    "lint": "eslint .",
+    "lint": "eslint --fix --ext .js,.vue src",
     "ci": "npm run lint && npm run cov"
   },
   "ci": {
