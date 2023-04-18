@@ -1,2 +1,2 @@
 # accountingSystem
-ts+react+e后台 搭建的会计在线系统
+ts+react+egg 搭建的会计在线系统
