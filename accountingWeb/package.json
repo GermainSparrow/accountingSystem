@@ -32,7 +32,8 @@
     "redux": "^4.2.1",
     "redux-devtools": "^3.7.0",
     "sass": "^1.58.3",
-    "scss-loader": "^0.0.1"
+    "scss-loader": "^0.0.1",
+    "use-http": "^1.0.27"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",

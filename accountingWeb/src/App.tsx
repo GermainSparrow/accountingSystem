@@ -4,9 +4,11 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import {
   routesArr
 } from './routes'
+import { Provider as HttpProvider } from "use-http";
 function App() {
   return (
-    <div className="App" style={{ height: "100vh", width: "100vw" }}>
+    <HttpProvider>
+      <div className="App" style={{ height: "100vh", width: "100vw" }}>
         <React.Suspense fallback={<div>正在加载中</div>}>
           <BrowserRouter>
             <Routes>
@@ -16,7 +18,8 @@ function App() {
             </Routes>
           </BrowserRouter>
         </React.Suspense>
-    </div>
+      </div>
+    </HttpProvider>
   );
 }
 
