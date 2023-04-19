@@ -10,7 +10,7 @@ import {
   message,
   Button,
 } from "antd";
-import Container from "../Tools/Container";
+import { L1Container } from "../components";
 //单个数组元素对象接口
 interface Item {
   key: string;
@@ -73,7 +73,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 //组件使用
-const Cash: React.FC = () => {
+export const Cash: React.FC = () => {
   useEffect(() => {
     apis.getCash({}).then((cash) => {
       setData(cash.data.data);
@@ -237,7 +237,7 @@ const Cash: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Container
+          <L1Container
             isShow={localStorage.getItem("auth") == "true" ? true : false}
           >
             <div>
@@ -248,7 +248,7 @@ const Cash: React.FC = () => {
                 编辑
               </Typography.Link>
             </div>
-          </Container>
+          </L1Container>
         );
       },
     },
@@ -296,4 +296,4 @@ const Cash: React.FC = () => {
   );
 };
 
-export default Cash;
+

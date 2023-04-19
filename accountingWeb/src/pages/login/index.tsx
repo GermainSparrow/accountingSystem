@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import apis from "../utils/apis/apis";
+import apis from "../../utils/apis/apis";
 import md5 from "js-md5";
 import _ from "lodash";
 
@@ -9,7 +9,7 @@ const onFinishFailed = (errorInfo: any) => {
   
 };
 
-const Login: React.FC = () => {
+export const Login: React.FC = () => {
   document.title = '小赖的会计系统-登录'
   const navigate = useNavigate();
   //登录函数
@@ -81,12 +81,12 @@ const Login: React.FC = () => {
           valuePropName="checked"
           wrapperCol={{ offset: 8, span: 16 }}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>记住密码</Checkbox>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            登录
           </Button>
         </Form.Item>
       </Form>
@@ -94,4 +94,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+

@@ -3,12 +3,12 @@ import { MenuProps, message } from "antd";
 import { UserOutlined, LaptopOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme, Radio, Button } from "antd";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import Form from "../Tools/From";
-import Container from "../Tools/Container";
+import Form from "../components/form";
+import {L1Container} from "../components";
 import "./MainPage.scss";
 const { Header, Content, Footer, Sider } = Layout;
 
-const MainPage: React.FC = () => {
+export const MainPage: React.FC = () => {
   //获取路由
   const location = useLocation();
 
@@ -187,7 +187,7 @@ const MainPage: React.FC = () => {
                 overflow: "hidden",
               }}
             >
-              <Container isShow={activeKey}>
+              <L1Container isShow={activeKey}>
                 <div>
                   <Radio.Group
                     value={selectedKey}
@@ -206,7 +206,7 @@ const MainPage: React.FC = () => {
                   </Radio.Group>
 
                   {/* 控制组件 */}
-                  <Container
+                  <L1Container
                     isShow={activeKey4}
                     style={{
                       float: "left",
@@ -220,12 +220,12 @@ const MainPage: React.FC = () => {
                       {" "}
                       点击添加/查询
                     </Button>
-                  </Container>
-                  <Container isShow={activeKey2}>
+                  </L1Container>
+                  <L1Container isShow={activeKey2}>
                     <Form x={activeKey3} setShow={setActiveKey2} />
-                  </Container>
+                  </L1Container>
                 </div>
-              </Container>
+              </L1Container>
               {/* 路由出口 */}
               <Outlet />
               <div style={{ clear: "both" }}></div>
@@ -241,4 +241,4 @@ const MainPage: React.FC = () => {
   );
 };
 
-export default MainPage;
+

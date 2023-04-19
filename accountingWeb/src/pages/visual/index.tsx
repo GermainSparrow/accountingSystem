@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import apis from "../../utils/apis/apis";
 import { Column } from "@ant-design/plots";
 import { Radio } from "antd";
-const DemoColumn = function () {
+export const AntG2 = function () {
   //默认选中financial
   const [selectMenu, setSelectMenu] = useState("financial");
   //默认为空数组
@@ -130,4 +130,4 @@ const DemoColumn = function () {
   );
 };
 
-export default DemoColumn;
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import deleteIf from "../Tools/utils";
+import deleteIf from "../components/utils";
 import apis from "../../utils/apis/apis";
 import {
   Form,
@@ -12,12 +12,12 @@ import {
   Button,
 } from "antd";
 //取消组件
-import CancelButton from "../Tools/CancelButton";
+import CancelButton from "../components/CancelButton";
 //合计组件
-import UncollectedButton from "../Tools/UncollectedButton";
+import UncollectedButton from "../components/UncollectedButton";
 //redux-toolkit
 import { useSelector } from "react-redux";
-import Container from "../Tools/Container";
+import {L1Container} from "../components/Container";
 //单个数组元素对象接口
 interface Item {
   key: any;
@@ -87,7 +87,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 //组件使用
-const App: React.FC = () => {
+export const OilSale: React.FC = () => {
   //redux-toolkit
   const editState = useSelector((state: { edit: any }) => state.edit);
   const searchState = useSelector((state: { search: any }) => state.search[1]);
@@ -347,7 +347,7 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Container
+          <L1Container
             isShow={localStorage.getItem("auth") == "true" ? true : false}
           >
             <div>
@@ -364,7 +364,7 @@ const App: React.FC = () => {
                 删除
               </Typography.Link>
             </div>
-          </Container>
+          </L1Container>
         );
       },
     },
@@ -422,4 +422,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+

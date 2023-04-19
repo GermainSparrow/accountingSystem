@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useCallback } from "react";
 import apis from "../../utils/apis/apis";
+import CancelButton from "../components/CancelButton";
+import {L1Container} from "../components/Container";
 import {
   Form,
   Input,
@@ -11,32 +12,22 @@ import {
   message,
   Button,
 } from "antd";
-//引入取消按钮
-import CancelButton from "../Tools/CancelButton";
-//引入显示未收款按钮
-import UncollectedButton from "../Tools/UncollectedButton";
 //redux-toolkit
-import { useSelector } from "react-redux";
-import deleteIf from "../Tools/utils";
-import Container from "../Tools/Container";
+import { useSelector, useDispatch } from "react-redux";
+import deleteIf from "../components/utils";
 //单个数组元素对象接口
 interface Item {
   key: string;
-  in_time: string;
-  Head: string;
-  owner: string;
-  model: string;
-  Gearbox_model: string;
-  license_plate: string;
-  cost: string;
-  detail: string;
-  out_time: string;
-  Collection: string;
-  getMoneyTime: string;
-  getMoneyMonth: string;
-  payway: string;
-  payee: string;
-  invoice: string;
+  time: string;
+  month: null | string;
+  payer: null | string;
+  payee: null | string;
+  payWay: null | string;
+  in: null | string;
+  usefor: string | null;
+  reimbursers: string | null;
+  category: string | null;
+  out: string | number | null;
 }
 //创建一个数组
 
@@ -86,31 +77,52 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 //组件使用
-const App: React.FC = () => {
+export const Reserves: React.FC = () => {
   //redux-toolkit
   const editState = useSelector((state: { edit: any }) => state.edit);
-  const searchState = useSelector((state: { search: any }) => state.search[2]);
-  const uncollectedState = useSelector(
-    (state: { uncollected: any }) => state.uncollected[1]
-  );
-  const reload = () => {
-    apis.getWavesList().then((res) => {
+  const searchState = useSelector((state: { search: any }) => state.search[0]);
+  const dispatch = useDispatch();
+
+  function reload() {
+    apis.getFinancialList().then((res) => {
       setData(res.data.data);
     });
-  };
+  }
+  //页面载入检查一下是否是查询后的状态 是则用状态机数据 否则重新查询一次
+  useEffect(() => {
+    if (!searchState.isSearch) {
+      reload();
+    } else {
+      setData(searchState.data);
+    }
+  }, [searchState.isSearch]);
+
+  //当侦听到保存完结的时候执行修改
+  useEffect(() => {
+    if (!searchState.isSearch) {
+      reload();
+    }
+  }, [editState.financeList]);
+  //如果是再次查询直接给新的结果
+  useEffect(() => {
+    if (searchState.isSearch) {
+      setData(searchState.data);
+    }
+  }, [searchState.data]);
+
   const deleteData = (x) => {
     apis
-      .deleteWavesList({
+      .deleteFinancialList({
         key: x.key,
       })
-      .then((res) => {
+      .then((res: { data: { code: number } }) => {
         if (res.data.code === 200) {
           deleteIf(
             reload,
-            "waveBox",
+            "financeList",
             searchState.isSearch,
-            uncollectedState.isShow,
-            data.filter((items) => items.key != x.key)
+            false,
+            data.filter((items) => items.key !== x.key)
           );
           message.open({
             content: "删除成功",
@@ -126,48 +138,25 @@ const App: React.FC = () => {
         }
       });
   };
-  // 一个useEffect 全部搞定
-  useEffect(() => {
-    if (!searchState.isSearch && !uncollectedState.isShow) {
-      reload();
-    } else if (searchState.isSearch && !uncollectedState.isShow) {
-      setData(searchState.data);
-    } else if (!searchState.isSearch && uncollectedState.isShow) {
-      setData(uncollectedState.data);
-    } else if ((searchState.isSearch, uncollectedState.isShow)) {
-      setData(searchState.data);
-    }
-  }, [
-    searchState.isSearch,
-    searchState.data,
-    uncollectedState.isShow,
-    uncollectedState.data,
-  ]);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
-
   //判断是否是正在修改的数据
   const isEditing = (record: Item) => record.key === editingKey;
 
   //编辑函数 设置数组的值和 正在修改的key
   const edit = (record: Partial<Item> & { key: React.Key }) => {
     form.setFieldsValue({
-      key: "",
-      in_time: "",
-      Head: "",
-      owner: "",
-      model: "",
-      Gearbox_model: "",
-      license_plate: "",
-      cost: "",
-      detail: "",
-      out_time: "",
-      Collection: "",
-      getMoneyTime: "",
-      getMoneyMonth: "",
-      payway: "",
+      time: "",
+      month: "",
+      payer: "",
       payee: "",
+      payWay: "",
+      in: "",
+      usefor: "",
+      reimbursers: "",
+      category: "",
+      out: "",
       ...record,
     });
     setEditingKey(record.key);
@@ -186,13 +175,14 @@ const App: React.FC = () => {
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
+
         newData.splice(index, 1, {
           ...item,
           ...row,
         });
 
         //发送数据到后台
-        apis.updateWavesList({ ...item, ...row }).then((res) => {
+        apis.updateFinancialList({ ...item, ...row }).then((res) => {
           if (res.data.code === 200) {
             message.open({
               content: "修改成功",
@@ -222,99 +212,69 @@ const App: React.FC = () => {
 
   const columns = [
     {
-      title: "进厂日期",
-      dataIndex: "in_time",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "负责人",
-      dataIndex: "Head",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "HUA",
-      dataIndex: "owner",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "型号",
-      dataIndex: "model",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "变速箱型号",
-      dataIndex: "Gearbox_model",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "车牌",
-      dataIndex: "license_plate",
-      width: "7%",
-      editable: true,
-    },
-    {
-      title: "金额",
-      dataIndex: "cost",
-      width: "8%",
-      editable: true,
-    },
-    {
-      title: "细节",
-      dataIndex: "detail",
+      title: "付款时间",
+      dataIndex: "time",
       width: "15%",
       editable: true,
     },
     {
-      title: "出场日期",
-      dataIndex: "out_time",
+      title: "月份",
+      dataIndex: "month",
       width: "10%",
       editable: true,
     },
     {
-      title: "收款金额",
-      dataIndex: "Collection",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "收款时间",
-      dataIndex: "getMoneyTime",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "收款月份",
-      dataIndex: "getMoneyMonth",
-      width: "7%",
-      editable: true,
-    },
-    {
-      title: "付款方式",
-      dataIndex: "payway",
-      width: "5%",
+      title: "付款人",
+      dataIndex: "payer",
+      width: "8%",
       editable: true,
     },
     {
       title: "收款人",
       dataIndex: "payee",
+      width: "8%",
+      editable: true,
+    },
+    {
+      title: "付款方式",
+      dataIndex: "payWay",
       width: "5%",
       editable: true,
     },
     {
-      title: "票据",
-      dataIndex: "invoice",
+      title: "备用金收入",
+      dataIndex: "in",
       width: "5%",
+      editable: true,
+    },
+    {
+      title: "备用金指出",
+      dataIndex: "out",
+      width: "5%",
+      editable: true,
+    },
+    {
+      title: "报销人",
+      dataIndex: "reimbursers",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "类别",
+      dataIndex: "category",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "用途",
+      dataIndex: "usefor",
+      width: "10%",
       editable: true,
     },
     {
       title: "操作",
       dataIndex: "operation",
-      width: "10%",
+      width: "15%",
       render: (_: any, record: Item) => {
         const editable = isEditing(record);
         return editable ? (
@@ -330,9 +290,7 @@ const App: React.FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Container
-            isShow={localStorage.getItem("auth") == "true" ? true : false}
-          >
+          <L1Container isShow={localStorage.getItem('auth') == 'true' ? true : false}>
             <div>
               <Typography.Link
                 disabled={editingKey !== ""}
@@ -347,7 +305,7 @@ const App: React.FC = () => {
                 删除
               </Typography.Link>
             </div>
-          </Container>
+          </L1Container>
         );
       },
     },
@@ -371,14 +329,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <CancelButton isSow={searchState.isSearch} name="waveBox" />
-      <UncollectedButton
-        exit={true}
-        isShow={uncollectedState.isShow}
-        data={data.filter((items) => items.cost > items.Collection)}
-        name="waveBox"
-        isSearch={searchState.isSearch}
-      />
+      <CancelButton isSow={searchState.isSearch} name="financeList" />
       <Form form={form} component={false}>
         <Table
           components={{
@@ -394,7 +345,7 @@ const App: React.FC = () => {
             onChange: cancel,
             total: data.length,
             showTotal: (total, range) => `共 ${total} 条`,
-            defaultPageSize: 6,
+            defaultPageSize: 8,
             pageSizeOptions: [5, 10, 15, 20],
           }}
         />
@@ -403,4 +354,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+

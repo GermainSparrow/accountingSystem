@@ -8,14 +8,14 @@ import {
   InputNumber,
   message,
 } from "antd";
-import apis from "../../utils/apis/apis";
+import apis from "../../../utils/apis/apis";
 //react-toolkit
 import { useDispatch } from "react-redux";
-import { addUncollected } from "../../store/UncolletControl";
+import { addUncollected } from "../../../store/UncolletControl";
 import {
   setSearchState,
   addSearch,
-} from "../../store/counterSearch/counterSearch";
+} from "../../../store/counterSearch/counterSearch";
 const { TextArea } = Input;
 
 const FormDisabledDemo = function (props: { x: string; setShow: any }) {

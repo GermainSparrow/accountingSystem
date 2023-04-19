@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-const container = function (props: {
+export const L1Container = function (props: {
   children: React.ReactElement;
   isShow: boolean;
   style?:{}
@@ -10,4 +10,3 @@ const container = function (props: {
     return null;
   }
 };
-export default container;

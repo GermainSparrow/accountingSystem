@@ -2,7 +2,7 @@ import { Button } from "antd";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { searchEnd } from "../../store/counterSearch/counterSearch";
-import Container from "./Container";
+import {L1Container} from "./Container";
 interface item {
   isSow: boolean;
   name: string;
@@ -10,7 +10,7 @@ interface item {
 const CancelButton: React.FC<item> = ({ isSow, name }) => {
   const dispatch = useDispatch();
   return (
-    <Container isShow={isSow}>
+    <L1Container isShow={isSow}>
       <Button
         style={{ float: "left", translate: "0 -10%" }}
         type="text"
@@ -21,7 +21,7 @@ const CancelButton: React.FC<item> = ({ isSow, name }) => {
       >
         取消查询
       </Button>
-    </Container>
+    </L1Container>
   );
 };
 export default CancelButton;
