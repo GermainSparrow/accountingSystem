@@ -43,7 +43,7 @@ export const WaveBox: React.FC = () => {
         "invoice": null
     }]);
     const [modalOpen, setModalOpen] = useState<boolean>(false)
-    const [modelData, setModalData] = useState<Item[] | []>([])
+    const [modelData, setModalData] = useState<Item>('' as Item)
     const expandedRowRender = (data: InnerType) => {
         const columns: TableColumnsType<Item> = [
             { title: '负责人', dataIndex: 'Head', key: 'date' },
@@ -56,24 +56,19 @@ export const WaveBox: React.FC = () => {
         return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
     };
     const columns = [
-        { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
-        { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
-        { title: '车牌', dataIndex: 'license_plate', key: 'license_plate', editable: true },
-        { title: '金额', dataIndex: 'cost', key: 'cost', editable: true },
-        { title: '出场日期', dataIndex: 'createdAt', key: 'createdAt', editable: true },
-        { title: '收款时间', dataIndex: 'getMoneyTime', key: 'getMoneyTime', editable: true },
-        { title: '收款金额', dataIndex: 'Collection', key: 'Collection', editable: true },
+        { title: '进场日期', dataIndex: 'in_time',       key: 'in_time', editable: true },
+        { title: '车型号', dataIndex: 'model',           key: 'model', editable: true },
+        { title: '车牌', dataIndex: 'license_plate',     key: 'license_plate', editable: true },
+        { title: '金额', dataIndex: 'cost',              key: 'cost', editable: true },
+        { title: '出场日期', dataIndex: 'createdAt',     key: 'createdAt', editable: true },
+        { title: '收款时间', dataIndex: 'getMoneyTime',  key: 'getMoneyTime', editable: true },
+        { title: '收款金额', dataIndex: 'Collection',     key: 'Collection', editable: true },
         {
             title: '操作', key: 'operation', editable: false,
-            // render: (recoard) => <Button onClick={(recoard) => {
-            //     setModalOpen(!modalOpen); setModalData(recoard); console.log('xxx', recoard);
-            // }}>编辑</Button>,
-            render: (recoard: Item) => <Button title='xx' onClick={() => {
-                console.log(recoard,'xxxxxxxxx');
-                setModalOpen(!modalOpen); setModalData(recoard);
-                console.log(modelData);
-                
-            }} />
+            render: (recoard: Item) => <Button onClick={() => {
+                setModalData({...recoard});
+                setModalOpen(!modalOpen);
+            }} >编辑</Button>
         },
     ];
     return (
@@ -83,7 +78,7 @@ export const WaveBox: React.FC = () => {
                 expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
-            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} recoard={data} />
+            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} recoard={modelData} />
         </>
     );
 };
