@@ -1,5 +1,5 @@
-import { FC, Dispatch, SetStateAction } from 'react'
-import { Select, DatePicker, Input } from 'antd'
+import React, { FC } from 'react'
+import { Select, DatePicker, Input, Form, Row, Col } from 'antd'
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 
@@ -39,24 +39,40 @@ export const DayPicker: FC<selectType> = () => {
 export const MonthPicker: FC<selectType> = () => {
     return (<DatePicker picker='month' locale={locale} />)
 }
-
-interface selectChoice {
+interface selectChoiceType {
     dataIndex: string,
-    defaultVale?: string
+    defaultValue: string,
+    key: string
 }
-export const SelectChoice = (dataIndex, defaultVale = '') => {
-    switch (dataIndex) {
+const selectChoice = (props: selectChoiceType): React.ReactNode => {
+    switch (props.dataIndex) {
         case 'in_time':
-            return (<DayPicker defaultValue={defaultVale} />);
+            return (<Col><Form.Item style={{ height: 'auto',width:'100%' }} key={props.key}><DayPicker defaultValue={props.defaultValue} /></Form.Item>   </Col>);
         case 'out_time':
-            return (<DayPicker defaultValue={defaultVale} />);
+            return (<Col><Form.Item style={{ height: 'auto',width:'100%' }} key={props.key}><DayPicker defaultValue={props.defaultValue} /></Form.Item>   </Col>);
         case 'payee':
-            return (<PayeeSelect defaultValue={defaultVale} />);
+            return (<Col><Form.Item style={{ height: 'auto',width:'100%' }} key={props.key}><PayeeSelect defaultValue={props.defaultValue} /></Form.Item> </Col>);
         case 'payway':
-            return (<PaywaySelect defaultValue={defaultVale} />);
+            return (<Col><Form.Item style={{ height: 'auto',width:'100%' }} key={props.key}><PaywaySelect defaultValue={props.defaultValue} /></Form.Item></Col>);
         case 'head':
-            return (<HeadSelect defaultValue={defaultVale} />)
+            return (<Col><Form.Item style={{ height: 'auto',width:'100%' }} key={props.key}><HeadSelect defaultValue={props.defaultValue} /></Form.Item>  </Col>);
         default:
-            return (<Input defaultValue={defaultVale} />)
+            return (<Col><Form.Item style={{ height: 'auto',width:'100%' }} key={props.key}><Input defaultValue={props.defaultValue} /></Form.Item>       </Col>);
     }
+}
+interface val {
+    tableItem: Record<string, any>
+}
+export const L1FromGenerator: FC<val> = (props) => {
+    const selectArr: React.ReactNode[] = Object.keys(props.tableItem).map(items => {
+        return (selectChoice({ dataIndex: items, defaultValue: props.tableItem[items], key: items })
+        )
+    })
+    return (
+        <Form layout='inline'  style={{width:'100%'}}>
+            <Row gutter={[20, 20]}>
+                {selectArr}
+            </Row>
+        </Form>
+    )
 }

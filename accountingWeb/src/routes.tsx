@@ -6,7 +6,6 @@ import {
   Reserves,
   AntG2,
   WaveBox,
-  Login
 } from './pages'
 interface IRoutesType {
   id: string,

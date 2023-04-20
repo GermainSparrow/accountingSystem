@@ -3,7 +3,6 @@ import { MenuProps, message } from "antd";
 import { UserOutlined, LaptopOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme, Radio, Button } from "antd";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import Form from "../components/form";
 import {L1Container} from "../components";
 import "./MainPage.scss";
 const { Header, Content, Footer, Sider } = Layout;
@@ -221,9 +220,7 @@ export const MainPage: React.FC = () => {
                       点击添加/查询
                     </Button>
                   </L1Container>
-                  <L1Container isShow={activeKey2}>
-                    <Form x={activeKey3} setShow={setActiveKey2} />
-                  </L1Container>
+
                 </div>
               </L1Container>
               {/* 路由出口 */}
