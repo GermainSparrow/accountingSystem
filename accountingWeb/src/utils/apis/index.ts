@@ -13,19 +13,19 @@ axios.interceptors.request.use((req) => {
     return req;
 })
 //设置响应拦截器
-axios.interceptors.response.use((res => {
-    return res
-}), (error) => {
-    const { response } = error;
-    if (response.status == 401) {
-        message.open({
-            content: '登录过期请重新登录',
-            type: 'error',
-            duration: 3
-        })
-        setTimeout(() => {window.location.href ='http://1.14.74.199' }, 2000)
-    }
-})
+// axios.interceptors.response.use((res => {
+//     return res
+// }), (error) => {
+//     const { response } = error;
+//     if (response.status == 401) {
+//         message.open({
+//             content: '登录过期请重新登录',
+//             type: 'error',
+//             duration: 3
+//         })
+//         setTimeout(() => {window.location.href ='http://1.14.74.199' }, 2000)
+//     }
+// })
 
 export default {
     post(url: string, data: {}) {

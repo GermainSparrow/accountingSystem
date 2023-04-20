@@ -1,406 +1,90 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from 'react';
+import { TableColumnsType, Button } from 'antd';
+import { Table, Card } from 'antd';
+import { EditModal } from '../components'
+type waveboxItemType = string | number | undefined
 
-import apis from "../../utils/apis/apis";
-import {
-  Form,
-  Input,
-  InputNumber,
-  Popconfirm,
-  Table,
-  Typography,
-  message,
-  Button,
-} from "antd";
-//引入取消按钮
-import CancelButton from "../components/CancelButton";
-//引入显示未收款按钮
-import UncollectedButton from "../components/UncollectedButton";
-//redux-toolkit
-import { useSelector } from "react-redux";
-import deleteIf from "../components/utils";
-import {L1Container} from "../components/Container";
-//单个数组元素对象接口
 interface Item {
-  key: string;
-  in_time: string;
-  Head: string;
-  owner: string;
-  model: string;
-  Gearbox_model: string;
-  license_plate: string;
-  cost: string;
-  detail: string;
-  out_time: string;
-  Collection: string;
-  getMoneyTime: string;
-  getMoneyMonth: string;
-  payway: string;
-  payee: string;
-  invoice: string;
+    key?: React.Key;
+    editable?: boolean;
+    in_time?: waveboxItemType;
+    out_time?: waveboxItemType;
+    model?: waveboxItemType;
+    license_plate?: waveboxItemType;
+    cost?: waveboxItemType;
+    staus?: React.ReactNode;
+    Collection?: waveboxItemType;
+    getMoneyTime?: waveboxItemType;
+    getMoneyMonth?: waveboxItemType;
+    Head?: waveboxItemType;
+    owner?: waveboxItemType;
+    Gearbox_model?: waveboxItemType;
+    detail?: waveboxItemType;
+    payway?: waveboxItemType;
+    payee?: waveboxItemType;
+    invoice?: waveboxItemType;
 }
-//创建一个数组
-
-//创建一个 编辑接口
-interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
-  editing: boolean;
-  dataIndex: string;
-  title: any;
-  inputType: "number" | "text";
-  record: Item;
-  index: number;
-  children: React.ReactNode;
-}
-//输入框结点
-const EditableCell: React.FC<EditableCellProps> = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
-
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{ margin: 0 }}
-          rules={[
-            {
-              required: false,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
-//组件使用
-const App: React.FC = () => {
-  //redux-toolkit
-  const editState = useSelector((state: { edit: any }) => state.edit);
-  const searchState = useSelector((state: { search: any }) => state.search[2]);
-  const uncollectedState = useSelector(
-    (state: { uncollected: any }) => state.uncollected[1]
-  );
-  const reload = () => {
-    apis.getWavesList().then((res) => {
-      setData(res.data.data);
-    });
-  };
-  const deleteData = (x) => {
-    apis
-      .deleteWavesList({
-        key: x.key,
-      })
-      .then((res) => {
-        if (res.data.code === 200) {
-          deleteIf(
-            reload,
-            "waveBox",
-            searchState.isSearch,
-            uncollectedState.isShow,
-            data.filter((items) => items.key != x.key)
-          );
-          message.open({
-            content: "删除成功",
-            duration: 1.5,
-            type: "success",
-          });
-        } else {
-          message.open({
-            content: "删除失败",
-            duration: 1.5,
-            type: "error",
-          });
-        }
-      });
-  };
-  // 一个useEffect 全部搞定
-  useEffect(() => {
-    if (!searchState.isSearch && !uncollectedState.isShow) {
-      reload();
-    } else if (searchState.isSearch && !uncollectedState.isShow) {
-      setData(searchState.data);
-    } else if (!searchState.isSearch && uncollectedState.isShow) {
-      setData(uncollectedState.data);
-    } else if ((searchState.isSearch, uncollectedState.isShow)) {
-      setData(searchState.data);
-    }
-  }, [
-    searchState.isSearch,
-    searchState.data,
-    uncollectedState.isShow,
-    uncollectedState.data,
-  ]);
-  const [form] = Form.useForm();
-  const [data, setData] = useState([]);
-  const [editingKey, setEditingKey] = useState("");
-
-  //判断是否是正在修改的数据
-  const isEditing = (record: Item) => record.key === editingKey;
-
-  //编辑函数 设置数组的值和 正在修改的key
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({
-      key: "",
-      in_time: "",
-      Head: "",
-      owner: "",
-      model: "",
-      Gearbox_model: "",
-      license_plate: "",
-      cost: "",
-      detail: "",
-      out_time: "",
-      Collection: "",
-      getMoneyTime: "",
-      getMoneyMonth: "",
-      payway: "",
-      payee: "",
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
-
-  const cancel = () => {
-    setEditingKey("");
-  };
-
-  //保存函数
-  const save = async (key: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as Item;
-
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-
-        //发送数据到后台
-        apis.updateWavesList({ ...item, ...row }).then((res) => {
-          if (res.data.code === 200) {
-            message.open({
-              content: "修改成功",
-              duration: 1,
-              type: "success",
-            });
-          } else {
-            message.open({
-              content: "修改失败",
-              duration: 1,
-              type: "error",
-            });
-          }
-        });
-
-        setData(newData);
-        setEditingKey("");
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey("");
-      }
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-    }
-  };
-
-  const columns = [
-    {
-      title: "进厂日期",
-      dataIndex: "in_time",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "负责人",
-      dataIndex: "Head",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "HUA",
-      dataIndex: "owner",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "型号",
-      dataIndex: "model",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "变速箱型号",
-      dataIndex: "Gearbox_model",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "车牌",
-      dataIndex: "license_plate",
-      width: "7%",
-      editable: true,
-    },
-    {
-      title: "金额",
-      dataIndex: "cost",
-      width: "8%",
-      editable: true,
-    },
-    {
-      title: "细节",
-      dataIndex: "detail",
-      width: "15%",
-      editable: true,
-    },
-    {
-      title: "出场日期",
-      dataIndex: "out_time",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: "收款金额",
-      dataIndex: "Collection",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "收款时间",
-      dataIndex: "getMoneyTime",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "收款月份",
-      dataIndex: "getMoneyMonth",
-      width: "7%",
-      editable: true,
-    },
-    {
-      title: "付款方式",
-      dataIndex: "payway",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "收款人",
-      dataIndex: "payee",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "票据",
-      dataIndex: "invoice",
-      width: "5%",
-      editable: true,
-    },
-    {
-      title: "操作",
-      dataIndex: "operation",
-      width: "10%",
-      render: (_: any, record: Item) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{ marginRight: 8 }}
-            >
-              保存修改
-            </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>取消修改</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <L1Container
-            isShow={localStorage.getItem("auth") == "true" ? true : false}
-          >
-            <div>
-              <Typography.Link
-                disabled={editingKey !== ""}
-                onClick={() => edit(record)}
-              >
-                编辑
-              </Typography.Link>
-              <Typography.Link
-                style={{ marginLeft: "15px", color: "red" }}
-                onClick={() => deleteData(record)}
-              >
-                删除
-              </Typography.Link>
-            </div>
-          </L1Container>
-        );
-      },
-    },
-  ];
-
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record: Item) => ({
-        record,
-        inputType: col.dataIndex === "age" ? "number" : "text",
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
+type InnerType = Item[]
+export const WaveBox: React.FC = () => {
+    const [data, setData] = useState<Item[]>([{
+        "key": 175,
+        "in_time": "2023-02-28",
+        "Head": "蔡强", "owner": "中捷通",
+        "model": "捷达",
+        "Gearbox_model": "09G",
+        "license_plate": "川A9F2N2",
+        "cost": "0", "detail": "拖车2.3修2.28返修大力鼓维修150车艺人修线路800",
+        "out_time": null,
+        "Collection": null,
+        "getMoneyTime": null,
+        "getMoneyMonth": null,
+        "payway": null,
+        "payee": null,
+        "invoice": null
+    }]);
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [modelData, setModalData] = useState<Item[] | []>([])
+    const expandedRowRender = (data: InnerType) => {
+        const columns: TableColumnsType<Item> = [
+            { title: '负责人', dataIndex: 'Head', key: 'date' },
+            { title: '车主', dataIndex: 'owner', key: 'owner' },
+            { title: '波箱型号', dataIndex: 'Gearbox_model', key: 'Gearbox_model' },
+            { title: '维修细节', dataIndex: 'detail', key: 'detail' },
+            { title: '付款方式', dataIndex: 'payway', key: 'payway' },
+            { title: '未知', dataIndex: 'invoice', key: 'invoice' },
+        ];
+        return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
     };
-  });
-
-  return (
-    <div>
-      <CancelButton isSow={searchState.isSearch} name="waveBox" />
-      <UncollectedButton
-        exit={true}
-        isShow={uncollectedState.isShow}
-        data={data.filter((items) => items.cost > items.Collection)}
-        name="waveBox"
-        isSearch={searchState.isSearch}
-      />
-      <Form form={form} component={false}>
-        <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          bordered
-          dataSource={data}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: cancel,
-            total: data.length,
-            showTotal: (total, range) => `共 ${total} 条`,
-            defaultPageSize: 6,
-            pageSizeOptions: [5, 10, 15, 20],
-          }}
-        />
-      </Form>
-    </div>
-  );
+    const columns = [
+        { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
+        { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
+        { title: '车牌', dataIndex: 'license_plate', key: 'license_plate', editable: true },
+        { title: '金额', dataIndex: 'cost', key: 'cost', editable: true },
+        { title: '出场日期', dataIndex: 'createdAt', key: 'createdAt', editable: true },
+        { title: '收款时间', dataIndex: 'getMoneyTime', key: 'getMoneyTime', editable: true },
+        { title: '收款金额', dataIndex: 'Collection', key: 'Collection', editable: true },
+        {
+            title: '操作', key: 'operation', editable: false,
+            // render: (recoard) => <Button onClick={(recoard) => {
+            //     setModalOpen(!modalOpen); setModalData(recoard); console.log('xxx', recoard);
+            // }}>编辑</Button>,
+            render: (recoard: Item) => <Button title='xx' onClick={() => {
+                console.log(recoard,'xxxxxxxxx');
+                setModalOpen(!modalOpen); setModalData(recoard);
+                console.log(modelData);
+                
+            }} />
+        },
+    ];
+    return (
+        <>
+            <Table
+                columns={columns}
+                expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
+                dataSource={data}
+            />
+            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} recoard={data} />
+        </>
+    );
 };
 
-export default App;

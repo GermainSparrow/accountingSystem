@@ -4,6 +4,9 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import {
   routesArr
 } from './routes'
+import {
+  Dashboard, Login
+} from './pages'
 import { Provider as HttpProvider } from "use-http";
 function App() {
   return (
@@ -12,9 +15,12 @@ function App() {
         <React.Suspense fallback={<div>正在加载中</div>}>
           <BrowserRouter>
             <Routes>
-              {routesArr.map((items) => {
-                return (<Route path={items.path} element={items.element} id={items.id} />)
-              })}
+              <Route id={'dashboard'} element={<Dashboard />} path="dashboard" key={'dashboard'} children={
+                routesArr.map((items) => {
+                  return (<Route path={items.path} element={items.element} id={items.id} key={items.id}/>)
+                })
+              } />
+              <Route element={<Login />} id="login" path="/login"key={'login'} />
             </Routes>
           </BrowserRouter>
         </React.Suspense>

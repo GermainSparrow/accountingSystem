@@ -5,7 +5,7 @@ import {
   OilSale,
   Reserves,
   AntG2,
-  Dashboard,
+  WaveBox,
   Login
 } from './pages'
 interface IRoutesType {
@@ -20,44 +20,38 @@ export const routesArr: IRoutesType[] = [
   {
     id: 'cash',
     element: <Cash />,
-    path: '/cash',
+    path: '/dashboard/cash',
 
   },
   {
     id: 'oilSale',
     element: <OilSale />,
-    path: '/oilSale',
+    path: '/dashboard/oilSale',
   },
   {
     id: 'reserves',
     element: <Reserves />,
-    path: '/reserves',
+    path: '/dashboard/reserves',
   },
   {
     id: 'antG2',
     element: <AntG2 />,
-    path: '/antG2',
+    path: '/dashboard/antG2',
   },
   {
     id: 'manage',
     element: <Manage />,
-    path: '/manage',
+    path: '/dashboard/manage',
   },
   {
     id: 'manageList',
     element: <ManageList />,
-    path: '/manageList',
+    path: '/dashboard/manageList',
   },
   {
-    id: 'login',
-    element: <Login />,
-    path: '/login',
-  },
-  {
-    id: 'dashboard',
-    element: <Dashboard />,
-    path: '/dashboard',
+    id: 'WaveBox',
+    element: <WaveBox />,
+    path: '/dashboard/waveBox',
   }
-
 ]
 
