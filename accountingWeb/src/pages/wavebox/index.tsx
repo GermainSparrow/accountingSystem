@@ -56,17 +56,17 @@ export const WaveBox: React.FC = () => {
         return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
     };
     const columns = [
-        { title: '进场日期', dataIndex: 'in_time',       key: 'in_time', editable: true },
-        { title: '车型号', dataIndex: 'model',           key: 'model', editable: true },
-        { title: '车牌', dataIndex: 'license_plate',     key: 'license_plate', editable: true },
-        { title: '金额', dataIndex: 'cost',              key: 'cost', editable: true },
-        { title: '出场日期', dataIndex: 'createdAt',     key: 'createdAt', editable: true },
-        { title: '收款时间', dataIndex: 'getMoneyTime',  key: 'getMoneyTime', editable: true },
-        { title: '收款金额', dataIndex: 'Collection',     key: 'Collection', editable: true },
+        { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
+        { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
+        { title: '车牌', dataIndex: 'license_plate', key: 'license_plate', editable: true },
+        { title: '金额', dataIndex: 'cost', key: 'cost', editable: true },
+        { title: '出场日期', dataIndex: 'createdAt', key: 'createdAt', editable: true },
+        { title: '收款时间', dataIndex: 'getMoneyTime', key: 'getMoneyTime', editable: true },
+        { title: '收款金额', dataIndex: 'Collection', key: 'Collection', editable: true },
         {
             title: '操作', key: 'operation', editable: false,
             render: (recoard: Item) => <Button onClick={() => {
-                setModalData({...recoard});
+                setModalData({ ...recoard });
                 setModalOpen(!modalOpen);
             }} >编辑</Button>
         },
@@ -78,7 +78,7 @@ export const WaveBox: React.FC = () => {
                 expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
-            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} recoard={modelData} />
+            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} recoard={modelData} dictionaryName='wavebox' setData={setData} />
         </>
     );
 };

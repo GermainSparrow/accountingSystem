@@ -15,10 +15,10 @@ export const Nav: FC<nav> = () => {
             <Radio.Group onChange={(item) => {
                 naviage(`/dashboard/${item.target.value}`)
             }}>
-                <Radio.Button value={'cash'}>现金表</Radio.Button>
+                <Radio.Button value={'reserves'}>备用金表</Radio.Button>
                 <Radio.Button value={'oilSale'}>油品表</Radio.Button>
                 <Radio.Button value={'waveBox'}>波箱维修表</Radio.Button>
-                <Radio.Button value={'dayCash'}>每日现金表</Radio.Button>
+                <Radio.Button value={'cash'}>每日现金表</Radio.Button>
             </Radio.Group>
         </Space>
     )

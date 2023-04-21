@@ -1,22 +1,30 @@
-import { Modal, Space } from "antd";
-import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { Modal, Space, Button } from "antd";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { L1FromGenerator } from '../utilsComponent'
-interface editModal {
+import { l1Dctionary } from '../../../utils/dictionary'
+import { FetchData } from "use-http";
+interface editModalType {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
-    recoard: Record<string, any>
+    recoard: Record<string, any>;
+    dictionaryName: string;
+    setData: Dispatch<SetStateAction<Record<string, any>>>
+    post?: FetchData<any>
 }
 
-export const EditModal: FC<editModal> = (props) => {
+export const EditModal: FC<editModalType> = (props) => {
+    const dictionary = l1Dctionary[props.dictionaryName]
     useEffect(() => {
         console.log(props.recoard, 'xxx');
-    }, [props.recoard])
+        console.log(dictionary);
+    }, [])
     return (
-        <Modal open={props.isOpen} onCancel={() => { props.setIsOpen(!props.isOpen) }} onOk={() => {
-            console.log(props.recoard);
-        }} style={{width:'65%',height:'30%'}}>
+        <Modal open={props.isOpen}
+            width={'60vw'}
+            footer={[]}
+        >
             <Space>
-                <L1FromGenerator tableItem={props.recoard} />
+                <L1FromGenerator tableItem={props.recoard} dictionary={dictionary} setData={props.setData}  setIsOpen={props.setIsOpen}/>
             </Space>
         </Modal>)
 }
