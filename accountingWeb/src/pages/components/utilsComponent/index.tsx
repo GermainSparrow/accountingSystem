@@ -1,8 +1,9 @@
 import React, { Dispatch, FC, SetStateAction } from 'react'
-import { Select, DatePicker, Input, Form, Row, Col, Button } from 'antd'
+import { Select, DatePicker, Input, Form, Row, Col, Button, } from 'antd'
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import { FetchData } from 'use-http';
+
 
 <DatePicker locale={locale} />;
 interface selectType {
@@ -56,21 +57,40 @@ interface val {
     api?: FetchData<any>
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }
+const { TextArea } = Input
 const selectChoice = (props: selectChoiceType): React.ReactNode => {
+    let tempNode = null
     switch (props.dataIndex) {
         case 'in_time':
-            return (<Col><Form.Item  initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}><DayPicker defaultValue={props.defaultValue} /></Form.Item>   </Col>);
+            tempNode = <DayPicker defaultValue={props.defaultValue} />
+            break
         case 'out_time':
-            return (<Col><Form.Item  initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}><DayPicker defaultValue={props.defaultValue} /></Form.Item>   </Col>);
+            tempNode = <DayPicker defaultValue={props.defaultValue} />
+            break
         case 'payee':
-            return (<Col><Form.Item  initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}><PayeeSelect defaultValue={props.defaultValue} /></Form.Item> </Col>);
+            tempNode = <PayeeSelect defaultValue={props.defaultValue} />
+            break
         case 'payway':
-            return (<Col><Form.Item  initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}><PaywaySelect defaultValue={props.defaultValue} /></Form.Item></Col>);
+            tempNode = <PaywaySelect defaultValue={props.defaultValue} />
+            break
         case 'head':
-            return (<Col><Form.Item  initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}><HeadSelect defaultValue={props.defaultValue} /></Form.Item>  </Col>);
+            tempNode = <HeadSelect defaultValue={props.defaultValue} />
+            break
+        case 'detail':
+            tempNode = <TextArea autoSize defaultValue={props.defaultValue} />
+            break
         default:
-            return (<Col><Form.Item  initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}><Input defaultValue={props.defaultValue} /></Form.Item>       </Col>);
+            tempNode = <Input defaultValue={props.defaultValue} />
+            break
     }
+
+    return (
+        <Col flex={1} span={8}>
+            <Form.Item initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}>
+                {tempNode}
+            </Form.Item>
+        </Col>
+    )
 }
 
 export const L1FromGenerator: FC<val> = (props) => {
@@ -79,14 +99,14 @@ export const L1FromGenerator: FC<val> = (props) => {
             console.log(val);
             props.setIsOpen(false)
         }} >
-            <Row gutter={[20, 20]}>
+            <Row gutter={[20, 20]} >
                 {Object.keys(props.tableItem).map(items => {
                     return (selectChoice({ dataIndex: items, defaultValue: props.tableItem[items], key: items, dictionary: props.dictionary })
                     )
                 })}
                 <Col>
-                    <Form.Item>
-                        <Button type='primary' htmlType='submit' >点击提交</Button>
+                    <Form.Item style={{ float: 'right' }}>
+                        <Button type='primary' htmlType='submit' style={{ float: 'right' }}>点击提交</Button>
                     </Form.Item>
                 </Col>
             </Row>
