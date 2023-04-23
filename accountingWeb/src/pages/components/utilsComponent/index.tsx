@@ -4,7 +4,7 @@ import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import { FetchData } from 'use-http';
 import dayjs from 'dayjs';
-
+import { waveboxDictionary } from '../../../utils/dictionary'
 
 <DatePicker locale={locale} />;
 interface selectType {
@@ -16,7 +16,9 @@ export const HeadSelect: FC<selectType> = (props) => {
         { value: '方晓勇', lable: '方晓勇' },
         { value: '张胖', lable: '张胖' },
     ]
-    return (<Select options={options} defaultValue={props.defaultValue} />)
+    return (<Select options={options} onChange={(val) => {
+        console.log(val);
+    }} />)
 }
 
 export const PaywaySelect: FC<selectType> = (props) => {
@@ -25,7 +27,7 @@ export const PaywaySelect: FC<selectType> = (props) => {
         { value: '支付宝', lable: '支付宝' },
         { value: '现金', lable: '现金' },
     ]
-    return (<Select options={options} defaultValue={props.defaultValue} />)
+    return (<Select options={options} />)
 }
 
 export const PayeeSelect: FC<selectType> = (props) => {
@@ -34,13 +36,13 @@ export const PayeeSelect: FC<selectType> = (props) => {
         { value: '公司账户', lable: '公司账户' },
         { value: '赖敏', lable: '赖敏' },
     ]
-    return (<Select options={options} defaultValue={props.defaultValue} />)
+    return (<Select options={options} />)
 }
 export const DayPicker: FC<selectType> = (props) => {
-    return (<DatePicker picker='date' locale={locale} defaultValue={props.defaultValue ? dayjs(props.defaultValue, 'YYYY-MM-DD') : null} />)
+    return (<DatePicker picker='date' locale={locale} />)
 }
 export const MonthPicker: FC<selectType> = (props) => {
-    return (<DatePicker picker='month' locale={locale} defaultValue={props.defaultValue ? dayjs(props.defaultValue, 'YYYY-MM') : null} />)
+    return (<DatePicker picker='month' locale={locale} />)
 }
 interface selectChoiceType {
     dataIndex: string,
@@ -60,44 +62,27 @@ interface val {
 }
 const { TextArea } = Input
 const selectChoice = (props: selectChoiceType): React.ReactNode => {
-    let tempNode = null
     switch (props.dataIndex) {
         case 'in_time':
-            tempNode = <DayPicker defaultValue={props.defaultValue} />
-            break
+            return <DayPicker />
         case 'out_time':
-            tempNode = <DayPicker defaultValue={props.defaultValue} />
-            break
+            return <DayPicker />
         case 'getMoneyTime':
-            tempNode = <DayPicker defaultValue={props.defaultValue} />
-            break
+            return <DayPicker />
         case 'getMoneyMonth':
-            tempNode = <MonthPicker defaultValue={props.defaultValue} />
-            break
+            return <MonthPicker />
         case 'payee':
-            tempNode = <PayeeSelect defaultValue={props.defaultValue} />
-            break
+            return <PayeeSelect />
         case 'payway':
-            tempNode = <PaywaySelect defaultValue={props.defaultValue} />
-            break
+            return <PaywaySelect />
         case 'Head':
-            tempNode = <HeadSelect defaultValue={props.defaultValue} />
-            break
+            return <HeadSelect />
         case 'detail':
-            tempNode = <TextArea autoSize defaultValue={props.defaultValue} />
-            break
+            return <TextArea autoSize />
         default:
-            tempNode = <Input defaultValue={props.defaultValue} />
-            break
+            return <Input />
     }
 
-    return (
-        props.dataIndex === 'key' ? null : <Col span={8} key={props.dataIndex}>
-            <Form.Item initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}>
-                {tempNode}
-            </Form.Item>
-        </Col>
-    )
 }
 
 export const L1FromGenerator: FC<val> = (props) => {
@@ -108,11 +93,17 @@ export const L1FromGenerator: FC<val> = (props) => {
             onFinish={(val) => {
                 console.log(val);
                 props.setIsOpen(false)
-            }} 
+            }}
             initialValues={props.tableItem}>
             <Row gutter={[16, 16]} key={1}>
                 {Object.keys(props.tableItem).map(items => {
-                    return (selectChoice({ dataIndex: items, defaultValue: props.tableItem[items], key: items, dictionary: props.dictionary })
+                    return (
+                        items === 'key' ? null :
+                            <Col span={8} key={items}>
+                                <Form.Item name={items} label={waveboxDictionary[items]}>
+                                    {selectChoice({ dataIndex: items, defaultValue: props.tableItem[items], key: items, dictionary: props.dictionary })}
+                                </Form.Item>
+                            </Col>
                     )
                 })}
 
@@ -120,7 +111,7 @@ export const L1FromGenerator: FC<val> = (props) => {
             <Row gutter={[16, 8]} key={2}>
                 <Col span={16} key={4} />
                 <Col span={4} key={5}>
-                    <Button onClick={() => { props.setIsOpen(false) }} >Cancel</Button>
+                    <Button onClick={() => { props.setIsOpen(false) }} type='dashed' >Cancel</Button>
                 </Col>
                 <Col span={4} key={6}>
                     <Form.Item >
