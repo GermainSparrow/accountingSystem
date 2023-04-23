@@ -3,6 +3,7 @@ import { Select, DatePicker, Input, Form, Row, Col, Button, } from 'antd'
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import { FetchData } from 'use-http';
+import dayjs from 'dayjs';
 
 
 <DatePicker locale={locale} />;
@@ -35,11 +36,11 @@ export const PayeeSelect: FC<selectType> = (props) => {
     ]
     return (<Select options={options} defaultValue={props.defaultValue} />)
 }
-export const DayPicker: FC<selectType> = () => {
-    return (<DatePicker picker='date' locale={locale} />)
+export const DayPicker: FC<selectType> = (props) => {
+    return (<DatePicker picker='date' locale={locale} defaultValue={props.defaultValue ? dayjs(props.defaultValue, 'YYYY-MM-DD') : null} />)
 }
-export const MonthPicker: FC<selectType> = () => {
-    return (<DatePicker picker='month' locale={locale} />)
+export const MonthPicker: FC<selectType> = (props) => {
+    return (<DatePicker picker='month' locale={locale} defaultValue={props.defaultValue ? dayjs(props.defaultValue, 'YYYY-MM') : null} />)
 }
 interface selectChoiceType {
     dataIndex: string,
@@ -67,13 +68,19 @@ const selectChoice = (props: selectChoiceType): React.ReactNode => {
         case 'out_time':
             tempNode = <DayPicker defaultValue={props.defaultValue} />
             break
+        case 'getMoneyTime':
+            tempNode = <DayPicker defaultValue={props.defaultValue} />
+            break
+        case 'getMoneyMonth':
+            tempNode = <MonthPicker defaultValue={props.defaultValue} />
+            break
         case 'payee':
             tempNode = <PayeeSelect defaultValue={props.defaultValue} />
             break
         case 'payway':
             tempNode = <PaywaySelect defaultValue={props.defaultValue} />
             break
-        case 'head':
+        case 'Head':
             tempNode = <HeadSelect defaultValue={props.defaultValue} />
             break
         case 'detail':
@@ -85,7 +92,7 @@ const selectChoice = (props: selectChoiceType): React.ReactNode => {
     }
 
     return (
-        <Col flex={1} span={8}>
+        props.dataIndex === 'key' ? null : <Col span={8} key={props.dataIndex}>
             <Form.Item initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}>
                 {tempNode}
             </Form.Item>
@@ -95,22 +102,32 @@ const selectChoice = (props: selectChoiceType): React.ReactNode => {
 
 export const L1FromGenerator: FC<val> = (props) => {
     return (
-        <Form layout='inline' style={{ width: '100%' }} onFinish={(val) => {
-            console.log(val);
-            props.setIsOpen(false)
-        }} >
-            <Row gutter={[20, 20]} >
+        <Form
+            layout='vertical'
+            style={{ width: '100%' }}
+            onFinish={(val) => {
+                console.log(val);
+                props.setIsOpen(false)
+            }} 
+            initialValues={props.tableItem}>
+            <Row gutter={[16, 16]} key={1}>
                 {Object.keys(props.tableItem).map(items => {
                     return (selectChoice({ dataIndex: items, defaultValue: props.tableItem[items], key: items, dictionary: props.dictionary })
                     )
                 })}
-                <Col>
-                    <Form.Item style={{ float: 'right' }}>
-                        <Button type='primary' htmlType='submit' style={{ float: 'right' }}>点击提交</Button>
+
+            </Row>
+            <Row gutter={[16, 8]} key={2}>
+                <Col span={16} key={4} />
+                <Col span={4} key={5}>
+                    <Button onClick={() => { props.setIsOpen(false) }} >Cancel</Button>
+                </Col>
+                <Col span={4} key={6}>
+                    <Form.Item >
+                        <Button type='primary' htmlType='submit' >点击提交</Button>
                     </Form.Item>
                 </Col>
             </Row>
-
         </Form>
     )
 }
