@@ -7,7 +7,8 @@ import { FetchData } from 'use-http';
 
 <DatePicker locale={locale} />;
 interface selectType {
-    defaultValue?: string
+    defaultValue?: string,
+    form?: any
 }
 export const HeadSelect: FC<selectType> = (props) => {
     const options = [
@@ -24,7 +25,7 @@ export const PaywaySelect: FC<selectType> = (props) => {
         { value: '支付宝', lable: '支付宝' },
         { value: '现金', lable: '现金' },
     ]
-    return (<Select options={options} defaultValue={props.defaultValue} />)
+    return (<Select options={options} />)
 }
 
 export const PayeeSelect: FC<selectType> = (props) => {
@@ -33,7 +34,7 @@ export const PayeeSelect: FC<selectType> = (props) => {
         { value: '公司账户', lable: '公司账户' },
         { value: '赖敏', lable: '赖敏' },
     ]
-    return (<Select options={options} defaultValue={props.defaultValue} />)
+    return (<Select options={options} value={props.form.getFieldValue('payee')} />)
 }
 export const DayPicker: FC<selectType> = () => {
     return (<DatePicker picker='date' locale={locale} />)
@@ -48,6 +49,7 @@ interface selectChoiceType {
     dictionary: Record<string, string>,
     formVal?: Record<string, any>,
     setFormVal?: Dispatch<SetStateAction<Record<string, any>>>
+    form?: any
 }
 interface val {
     tableItem: Record<string, any>,
@@ -58,35 +60,36 @@ interface val {
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 const { TextArea } = Input
+
 const selectChoice = (props: selectChoiceType): React.ReactNode => {
     let tempNode = null
     switch (props.dataIndex) {
         case 'in_time':
-            tempNode = <DayPicker defaultValue={props.defaultValue} />
+            tempNode = <DayPicker />
             break
         case 'out_time':
-            tempNode = <DayPicker defaultValue={props.defaultValue} />
+            tempNode = <DayPicker />
             break
         case 'payee':
-            tempNode = <PayeeSelect defaultValue={props.defaultValue} />
+            tempNode = <PayeeSelect form={props.form} />
             break
         case 'payway':
-            tempNode = <PaywaySelect defaultValue={props.defaultValue} />
+            tempNode = <PaywaySelect />
             break
-        case 'head':
-            tempNode = <HeadSelect defaultValue={props.defaultValue} />
+        case 'Head':
+            tempNode = <HeadSelect defaultValue='蔡强' />
             break
         case 'detail':
-            tempNode = <TextArea autoSize defaultValue={props.defaultValue} />
+            tempNode = <TextArea autoSize />
             break
         default:
-            tempNode = <Input defaultValue={props.defaultValue} />
+            tempNode = <Input />
             break
     }
 
     return (
-        <Col flex={1} span={8}>
-            <Form.Item initialValue={props.defaultValue} label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex}>
+        <Col span={8}>
+            <Form.Item label={props.dictionary[props.dataIndex]} name={props.dataIndex} key={props.dataIndex} initialValue={props.defaultValue}>
                 {tempNode}
             </Form.Item>
         </Col>
@@ -94,14 +97,16 @@ const selectChoice = (props: selectChoiceType): React.ReactNode => {
 }
 
 export const L1FromGenerator: FC<val> = (props) => {
+    const [form] = Form.useForm();
     return (
         <Form layout='inline' style={{ width: '100%' }} onFinish={(val) => {
             console.log(val);
             props.setIsOpen(false)
+            form
         }} >
             <Row gutter={[20, 20]} >
                 {Object.keys(props.tableItem).map(items => {
-                    return (selectChoice({ dataIndex: items, defaultValue: props.tableItem[items], key: items, dictionary: props.dictionary })
+                    return (selectChoice({ dataIndex: items, defaultValue: props.tableItem[items], key: items, dictionary: props.dictionary, form })
                     )
                 })}
                 <Col>
