@@ -15,8 +15,6 @@ interface editModalType {
 export const EditModal: FC<editModalType> = (props) => {
     const dictionary = l1Dctionary[props.dictionaryName]
     useEffect(() => {
-        console.log(props.recoard, 'xxx');
-        console.log(dictionary);
     }, [])
     return (
         <Modal open={props.isOpen}
