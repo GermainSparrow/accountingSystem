@@ -10,19 +10,18 @@ interface editModalType {
     dictionaryName: string;
     setData: Dispatch<SetStateAction<Record<string, any>>>
     post?: FetchData<any>
+    setRecord: Dispatch<SetStateAction<Record<string, any>>>
 }
 
 export const EditModal: FC<editModalType> = (props) => {
     const dictionary = l1Dctionary[props.dictionaryName]
-    useEffect(() => {
-    }, [])
     return (
         <Modal open={props.isOpen}
             width={'60vw'}
             footer={[]}
         >
             <Space>
-                <L1FromGenerator tableItem={props.recoard} dictionary={dictionary} setData={props.setData}  setIsOpen={props.setIsOpen}/>
+                <L1FromGenerator tableItem={props.recoard} dictionary={dictionary} setData={props.setData} setIsOpen={props.setIsOpen} />
             </Space>
         </Modal>)
 }

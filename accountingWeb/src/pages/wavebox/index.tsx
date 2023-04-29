@@ -43,7 +43,7 @@ export const WaveBox: React.FC = () => {
         "invoice": null
     }]);
     const [modalOpen, setModalOpen] = useState<boolean>(false)
-    const [modelData, setModalData] = useState<Item>('' as Item)
+    const [record, setRecord] = useState<Item>('' as Item)
     const expandedRowRender = (data: InnerType) => {
         const columns: TableColumnsType<Item> = [
             { title: '负责人', dataIndex: 'Head', key: 'date' },
@@ -66,7 +66,7 @@ export const WaveBox: React.FC = () => {
         {
             title: '操作', key: 'operation', editable: false,
             render: (recoard: Item) => <Button onClick={() => {
-                setModalData({ ...recoard });
+                setRecord({ ...recoard });
                 setModalOpen(!modalOpen);
             }} >编辑</Button>
         },
@@ -78,7 +78,7 @@ export const WaveBox: React.FC = () => {
                 expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
-            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} recoard={modelData} dictionaryName='wavebox' setData={setData} />
+            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} setRecord={setRecord} recoard={record} dictionaryName='wavebox' setData={setData} />
         </>
     );
 };

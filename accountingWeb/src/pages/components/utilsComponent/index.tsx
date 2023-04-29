@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react'
+import React, { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import { Select, DatePicker, Input, Form, Row, Col, Button, InputNumber } from 'antd'
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
@@ -14,8 +14,12 @@ interface selectChoiceType {
 const { TextArea } = Input
 const SelectChoice: FC<selectChoiceType> = ({ formItem, dictionary }) => {
     const form = Form.useFormInstance()
-    form.setFieldValue([formItem.key], formItem.initialVaule)
-    
+    // useEffect(() => {
+    //     return () => {
+    //         form.setFieldValue([formItem.key], formItem.initialVaule)
+    //     };
+    // }, [formItem])
+
     switch (dictionary[formItem.key].type) {
         case 'input':
             return <Input defaultValue={formItem.initialVaule} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
@@ -26,9 +30,9 @@ const SelectChoice: FC<selectChoiceType> = ({ formItem, dictionary }) => {
         case 'textArea':
             return <TextArea defaultValue={formItem.initialVaule} autoSize onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
         case 'datePicker':
-            return <DatePicker defaultValue={dayjs(formItem.initialVaule?.trim(),'YYYY-MM-DD')} locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
+            return <DatePicker defaultValue={formItem.initialVaule ? dayjs(formItem.initialVaule?.trim(), 'YYYY-MM-DD') : null} locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
         case 'monthPicker':
-            return <DatePicker defaultValue={dayjs(formItem.initialVaule?.trim(),'YYYY-MM')} picker='month' locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
+            return <DatePicker defaultValue={formItem.initialVaule ? dayjs(formItem.initialVaule?.trim(), 'YYYY-MM') : null} picker='month' locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
         case 'key':
             return null
     }
@@ -54,6 +58,7 @@ export const L1FromGenerator: FC<val> = (props) => {
             form={form}>
             <Row gutter={[16, 16]} key={1}>
                 {Object.keys(props.tableItem).map(items => {
+                    form.setFieldValue([items], props.tableItem[items])
                     return (
                         items === 'key' ? null :
                             <Col span={8} key={items}>
