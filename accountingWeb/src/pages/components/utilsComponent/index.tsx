@@ -14,12 +14,6 @@ interface selectChoiceType {
 const { TextArea } = Input
 const SelectChoice: FC<selectChoiceType> = ({ formItem, dictionary }) => {
     const form = Form.useFormInstance()
-    // useEffect(() => {
-    //     return () => {
-    //         form.setFieldValue([formItem.key], formItem.initialVaule)
-    //     };
-    // }, [formItem])
-
     switch (dictionary[formItem.key].type) {
         case 'input':
             return <Input defaultValue={formItem.initialVaule} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
@@ -30,9 +24,9 @@ const SelectChoice: FC<selectChoiceType> = ({ formItem, dictionary }) => {
         case 'textArea':
             return <TextArea defaultValue={formItem.initialVaule} autoSize onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
         case 'datePicker':
-            return <DatePicker defaultValue={formItem.initialVaule ? dayjs(formItem.initialVaule?.trim(), 'YYYY-MM-DD') : null} locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
+            return <DatePicker defaultValue={formItem.initialVaule ? dayjs(formItem.initialVaule?.trim(), 'YYYY-MM-DD') : null} locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val.format('YYYY-MM-DD')) }} />
         case 'monthPicker':
-            return <DatePicker defaultValue={formItem.initialVaule ? dayjs(formItem.initialVaule?.trim(), 'YYYY-MM') : null} picker='month' locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
+            return <DatePicker defaultValue={formItem.initialVaule ? dayjs(formItem.initialVaule?.trim(), 'YYYY-MM') : null} picker='month' locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val.format('YYYY-MM')) }} />
         case 'key':
             return null
     }

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { TableColumnsType, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { TableColumnsType, Button, Spin, Space, Modal, Radio, Typography, Popconfirm } from 'antd';
 import { Table, Card } from 'antd';
 import { EditModal } from '../components'
+import useFetch from 'use-http'
 type waveboxItemType = string | number | undefined
 
 interface Item {
@@ -26,24 +27,11 @@ interface Item {
 }
 type InnerType = Item[]
 export const WaveBox: React.FC = () => {
-    const [data, setData] = useState<Item[]>([{
-        "key": 175,
-        "in_time": "2023-02-28",
-        "Head": "蔡强", "owner": "中捷通",
-        "model": "捷达",
-        "Gearbox_model": "09G",
-        "license_plate": "川A9F2N2",
-        "cost": "0", "detail": "拖车2.3修2.28返修大力鼓维修150车艺人修线路800",
-        "out_time": null,
-        "Collection": null,
-        "getMoneyTime": null,
-        "getMoneyMonth": null,
-        "payway": null,
-        "payee": null,
-        "invoice": null
-    }]);
+    const { get, post, loading } = useFetch('/waveBox')
+    const [data, setData] = useState<Item[] | []>([]);
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [record, setRecord] = useState<Item>('' as Item)
+    //expand table
     const expandedRowRender = (data: InnerType) => {
         const columns: TableColumnsType<Item> = [
             { title: '负责人', dataIndex: 'Head', key: 'date' },
@@ -55,6 +43,19 @@ export const WaveBox: React.FC = () => {
         ];
         return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
     };
+    const loadData = () => {
+        get('getWaveBoxList').then(res => {
+            setData(res.data)
+            console.log('agagin?');
+
+        })
+    }
+    useEffect(() => {
+        loadData(),
+            console.log('xx');
+
+    }, [loading])
+    // table columns
     const columns = [
         { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
         { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
@@ -65,21 +66,34 @@ export const WaveBox: React.FC = () => {
         { title: '收款金额', dataIndex: 'Collection', key: 'Collection', editable: true },
         {
             title: '操作', key: 'operation', editable: false,
-            render: (recoard: Item) => <Button onClick={() => {
-                setRecord({ ...recoard });
-                setModalOpen(!modalOpen);
-            }} >编辑</Button>
+            render: (recoard: Item) => <Space>
+                <Button onClick={() => {
+                    setRecord({ ...recoard });
+                    setModalOpen(!modalOpen);
+                }} >编辑</Button>
+                <Popconfirm title="Sure to cancel?" onConfirm={() => {
+                    post('delete', { key: recoard.key }).then((res) => {
+                        console.log(res);
+
+                    })
+                }}>
+                    <Button type='dashed' danger  >删除</Button>
+                </Popconfirm>
+
+
+            </Space>
         },
     ];
+
     return (
-        <>
+        <Spin spinning={loading}>
             <Table
                 columns={columns}
                 expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
             <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} setRecord={setRecord} recoard={record} dictionaryName='wavebox' setData={setData} />
-        </>
+        </Spin>
     );
 };
 

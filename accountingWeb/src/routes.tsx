@@ -51,6 +51,6 @@ export const routesArr: IRoutesType[] = [
     id: 'WaveBox',
     element: <WaveBox />,
     path: '/dashboard/waveBox',
-  }
+  },
 ]
 
