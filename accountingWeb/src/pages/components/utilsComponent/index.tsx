@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useEffect } from 'react'
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { Select, DatePicker, Input, Form, Row, Col, Button, InputNumber } from 'antd'
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
@@ -16,7 +16,7 @@ const SelectChoice: FC<selectChoiceType> = ({ formItem, dictionary }) => {
     const form = Form.useFormInstance()
     switch (dictionary[formItem.key].type) {
         case 'input':
-            return <Input defaultValue={formItem.initialVaule} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
+            return <Input defaultValue={formItem.initialVaule} onChange={(val) => { form.setFieldValue(formItem.key, val.target.value) }} />
         case 'inputNumber':
             return <InputNumber defaultValue={formItem.initialVaule} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
         case 'select':
@@ -41,24 +41,31 @@ interface val {
 }
 export const L1FromGenerator: FC<val> = (props) => {
     const [form] = Form.useForm()
+    const [state, setState] = useState({})
+    useEffect(() => {
+        setState(props.tableItem)
+    }, [])
     return (
         <Form
             layout='vertical'
             style={{ width: '100%' }}
             onFinish={(val) => {
                 console.log(val);
-                props.reload()
-                props.setIsOpen(false)
+                val.key = state['key']
+                props.post({ type: 'edit', data: val }).then(res => {
+                    props.reload()
+                    props.setIsOpen(false)
+                })
+
             }}
             form={form}>
             <Row gutter={[16, 16]} key={1}>
-                {Object.keys(props.tableItem).map(items => {
-                    form.setFieldValue([items], props.tableItem[items])
+                {Object.keys(state).map(items => {
                     return (
                         items === 'key' ? null :
                             <Col span={8} key={items}>
-                                <Form.Item name={items} label={waveboxDictionary[items].value}>
-                                    {<SelectChoice formItem={{ key: items, initialVaule: props.tableItem[items] }} dictionary={waveboxDictionary as any} />}
+                                <Form.Item name={items} label={waveboxDictionary[items].value} initialValue={state[items]}>
+                                    {<SelectChoice formItem={{ key: items, initialVaule: state[items] }} dictionary={waveboxDictionary as any} />}
                                 </Form.Item>
                             </Col>
                     )

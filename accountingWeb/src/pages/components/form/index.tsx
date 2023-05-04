@@ -3,6 +3,7 @@ import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { L1FromGenerator } from '../utilsComponent'
 import { l1Dctionary } from '../../../utils/dictionary'
 import { FetchData } from "use-http";
+import { TRUE } from "sass";
 interface editModalType {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -18,6 +19,7 @@ export const EditModal: FC<editModalType> = (props) => {
         <Modal open={props.isOpen}
             width={'60vw'}
             footer={[]}
+            destroyOnClose={true}
         >
             <Space>
                 <L1FromGenerator
