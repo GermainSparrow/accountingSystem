@@ -35,8 +35,8 @@ interface val {
     tableItem: Record<string, any>,
     dictionary: Record<string, string>,
     formVal?: Record<string, any>,
-    setData?: Dispatch<SetStateAction<Record<string, any>>>
-    api?: FetchData<any>
+    reload?: () => void
+    post: (val: { type: string, data: any }) => Promise<void>
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 export const L1FromGenerator: FC<val> = (props) => {
@@ -47,6 +47,7 @@ export const L1FromGenerator: FC<val> = (props) => {
             style={{ width: '100%' }}
             onFinish={(val) => {
                 console.log(val);
+                props.reload()
                 props.setIsOpen(false)
             }}
             form={form}>

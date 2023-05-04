@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { TableColumnsType, Button, Spin, Space, Modal, Radio, Typography, Popconfirm } from 'antd';
+import { TableColumnsType, Button, Spin, Space, Modal, Radio, Typography, Popconfirm, message } from 'antd';
 import { Table, Card } from 'antd';
 import { EditModal } from '../components'
-import useFetch from 'use-http'
+import useFetch, { CachePolicies } from 'use-http'
 type waveboxItemType = string | number | undefined
 
 interface Item {
@@ -27,7 +27,10 @@ interface Item {
 }
 type InnerType = Item[]
 export const WaveBox: React.FC = () => {
-    const { get, post, loading } = useFetch('/waveBox')
+    const { get, post, loading } = useFetch(
+        '/waveBox',
+        { cachePolicy: CachePolicies.NO_CACHE }
+    )
     const [data, setData] = useState<Item[] | []>([]);
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [record, setRecord] = useState<Item>('' as Item)
@@ -46,16 +49,15 @@ export const WaveBox: React.FC = () => {
     const loadData = () => {
         get('getWaveBoxList').then(res => {
             setData(res.data)
-            console.log('agagin?');
-
         })
     }
+    const postData = (val: { type: string, data: any }) => {
+        const res = val.type == 'edit' ? post('updateWaveBox', val.data) : post('addWaveBox', val.data);
+        return res
+    }
     useEffect(() => {
-        loadData(),
-            console.log('xx');
-
+        loadData()
     }, [loading])
-    // table columns
     const columns = [
         { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
         { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
@@ -73,8 +75,7 @@ export const WaveBox: React.FC = () => {
                 }} >编辑</Button>
                 <Popconfirm title="Sure to cancel?" onConfirm={() => {
                     post('delete', { key: recoard.key }).then((res) => {
-                        console.log(res);
-
+                        res.code == 200 ? message.open({ type: 'success', content: '删除成功' }) : message.open({ type: 'error', content: '删除失败' })
                     })
                 }}>
                     <Button type='dashed' danger  >删除</Button>
@@ -92,7 +93,14 @@ export const WaveBox: React.FC = () => {
                 expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
-            <EditModal isOpen={modalOpen} setIsOpen={setModalOpen} setRecord={setRecord} recoard={record} dictionaryName='wavebox' setData={setData} />
+            <EditModal
+                isOpen={modalOpen}
+                setIsOpen={setModalOpen}
+                recoard={record}
+                dictionaryName='wavebox'
+                reload={loadData}
+                post={postData}
+            />
         </Spin>
     );
 };

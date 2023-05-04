@@ -27,8 +27,6 @@ export const Login: React.FC = () => {
       userName: values.userName,
       password: password,
     }).then((res) => {
-      console.log(res);
-
       if (res.code === 200) {
         localStorage.setItem("ac-jwt-token", res.token);
         localStorage.setItem('user', res.data.userName)

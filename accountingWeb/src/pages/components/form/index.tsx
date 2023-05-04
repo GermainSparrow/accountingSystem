@@ -8,9 +8,8 @@ interface editModalType {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     recoard: Record<string, any>;
     dictionaryName: string;
-    setData: Dispatch<SetStateAction<Record<string, any>>>
-    post?: FetchData<any>
-    setRecord: Dispatch<SetStateAction<Record<string, any>>>
+    reload: () => void
+    post: (val: { type: string, data: any }) => Promise<void>
 }
 
 export const EditModal: FC<editModalType> = (props) => {
@@ -21,7 +20,13 @@ export const EditModal: FC<editModalType> = (props) => {
             footer={[]}
         >
             <Space>
-                <L1FromGenerator tableItem={props.recoard} dictionary={dictionary} setData={props.setData} setIsOpen={props.setIsOpen} />
+                <L1FromGenerator
+                    tableItem={props.recoard}
+                    dictionary={dictionary}
+                    reload={props.reload}
+                    setIsOpen={props.setIsOpen}
+                    post={props.post}
+                />
             </Space>
         </Modal>)
 }
