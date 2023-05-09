@@ -1,8 +1,7 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
-import { Select, DatePicker, Input, Form, Row, Col, Button, InputNumber } from 'antd'
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
+import { Select, DatePicker, Input, Form, Row, Col, Button, InputNumber, message } from 'antd'
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
-import { FetchData } from 'use-http';
 import dayjs from 'dayjs';
 import { waveboxDictionary } from '../../../utils/dictionary'
 
@@ -22,7 +21,7 @@ const SelectChoice: FC<selectChoiceType> = ({ formItem, dictionary }) => {
         case 'select':
             return <Select defaultValue={formItem.initialVaule?.trim()} options={dictionary[formItem.key].options} onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
         case 'textArea':
-            return <TextArea defaultValue={formItem.initialVaule} autoSize onChange={(val) => { form.setFieldValue([formItem.key], val) }} />
+            return <TextArea defaultValue={formItem.initialVaule} autoSize onChange={(val) => { form.setFieldValue([formItem.key], val.target.value) }} />
         case 'datePicker':
             return <DatePicker defaultValue={formItem.initialVaule ? dayjs(formItem.initialVaule?.trim(), 'YYYY-MM-DD') : null} locale={locale} onChange={(val) => { form.setFieldValue([formItem.key], val.format('YYYY-MM-DD')) }} />
         case 'monthPicker':
@@ -33,10 +32,10 @@ const SelectChoice: FC<selectChoiceType> = ({ formItem, dictionary }) => {
 }
 interface val {
     tableItem: Record<string, any>,
-    dictionary: Record<string, string>,
+    dictionary: any,
     formVal?: Record<string, any>,
     reload?: () => void
-    post: (val: { type: string, data: any }) => Promise<void>
+    post: (data: any) => Promise<any>
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 export const L1FromGenerator: FC<val> = (props) => {
@@ -52,7 +51,8 @@ export const L1FromGenerator: FC<val> = (props) => {
             onFinish={(val) => {
                 console.log(val);
                 val.key = state['key']
-                props.post({ type: 'edit', data: val }).then(res => {
+                props.post(val).then(res => {
+                    res.code == '200' ? message.open({ type: 'success', content: '操作成功' }) : message.open({ type: 'error', content: '操作失败' })
                     props.reload()
                     props.setIsOpen(false)
                 })
@@ -64,8 +64,8 @@ export const L1FromGenerator: FC<val> = (props) => {
                     return (
                         items === 'key' ? null :
                             <Col span={8} key={items}>
-                                <Form.Item name={items} label={waveboxDictionary[items].value} initialValue={state[items]}>
-                                    {<SelectChoice formItem={{ key: items, initialVaule: state[items] }} dictionary={waveboxDictionary as any} />}
+                                <Form.Item name={items} label={props.dictionary[items].value} initialValue={state[items]}>
+                                    {<SelectChoice formItem={{ key: items, initialVaule: state[items] }} dictionary={props.dictionary as any} />}
                                 </Form.Item>
                             </Col>
                     )

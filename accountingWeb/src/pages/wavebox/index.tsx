@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { TableColumnsType, Button, Spin, Space, Modal, Radio, Typography, Popconfirm, message } from 'antd';
+import { TableColumnsType, Button, Spin, Space, Popconfirm, message } from 'antd';
+import dayjs from 'dayjs';
 import { Table, Card } from 'antd';
 import { EditModal } from '../components'
 import useFetch, { CachePolicies } from 'use-http'
+import { Nav } from '../layout/components/nav';
 type waveboxItemType = string | number | undefined
 
 interface Item {
@@ -31,9 +33,13 @@ export const WaveBox: React.FC = () => {
         '/waveBox',
         { cachePolicy: CachePolicies.NO_CACHE }
     )
-    const [data, setData] = useState<Item[] | []>([]);
+    const [data, setData] = useState<Item[] | [] | any>([]);
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [record, setRecord] = useState<Item>('' as Item)
+    const [addModalOpen, setAddModalOpen] = useState(false)
+    const [addModalRecord, setAddModalRecord] = useState<Item | null>(null)
+    const [showUncollect, setShowUncollect] = useState(false)
+    const [uncollectMoney, setUncollectMoney] = useState(null)
     //expand table
     const expandedRowRender = (data: InnerType) => {
         const columns: TableColumnsType<Item> = [
@@ -48,16 +54,50 @@ export const WaveBox: React.FC = () => {
     };
     const loadData = () => {
         get('getWaveBoxList').then(res => {
-            setData(res.data)
+            if (showUncollect) {
+                let account = 0
+                setData(res.data.filter(items => {
+                    !items.Collection || items.Collection < items.cost ? account += parseFloat(items.cost) : null
+                    return items.cost && (!items.Collection || items.Collection < items.cost)
+                }))
+                setUncollectMoney(account)
+            } else {
+                setData(res.data)
+            }
+            const tempData = { ...res.data[0] }
+            Object.keys(tempData).map(items => {
+                tempData[items] = ''
+            })
+            tempData['getMoneyTime'] = dayjs(new Date()).format('YYYY-MM-DD')
+            tempData['getMoneyMonth'] = dayjs(new Date()).format('YYYY-MM')
+            tempData['out_time'] = dayjs(new Date()).format('YYYY-MM-DD')
+            tempData['in_time'] = dayjs(new Date()).format('YYYY-MM-DD')
+            tempData['key'] = res.data[0]['key'] + 1
+            setAddModalRecord(tempData)
+            console.log(showUncollect);
         })
+
     }
-    const postData = (val: { type: string, data: any }) => {
-        const res = val.type == 'edit' ? post('updateWaveBox', val.data) : post('addWaveBox', val.data);
+    const editData = (data: any) => {
+        const res = post('updateWaveBox', data)
+        return res
+    }
+    const addData = (data: any) => {
+        const res = post('addWaveBox', data)
         return res
     }
     useEffect(() => {
-        loadData()
-    }, [loading])
+        if (showUncollect) {
+            let account = 0
+            setData(data.filter(items => {
+                !items.Collection || items.Collection < items.cost ? account += parseFloat(items.cost) : null
+                return items.cost && (!items.Collection || items.Collection < items.cost)
+            }))
+            setUncollectMoney(account)
+        } else {
+            loadData()
+        }
+    }, [showUncollect])
     const columns = [
         { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
         { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
@@ -73,35 +113,53 @@ export const WaveBox: React.FC = () => {
                     setRecord({ ...recoard });
                     setModalOpen(!modalOpen);
                 }} >编辑</Button>
-                <Popconfirm title="Sure to cancel?" onConfirm={() => {
+                <Popconfirm title="确定要删除吗?" onConfirm={() => {
+                    console.log(recoard);
                     post('delete', { key: recoard.key }).then((res) => {
                         res.code == 200 ? message.open({ type: 'success', content: '删除成功' }) : message.open({ type: 'error', content: '删除失败' })
+                        loadData()
                     })
                 }}>
                     <Button type='dashed' danger  >删除</Button>
                 </Popconfirm>
-
-
             </Space>
         },
     ];
 
     return (
-        <Spin spinning={loading}>
-            <Table
-                columns={columns}
-                expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
-                dataSource={data}
-            />
-            <EditModal
-                isOpen={modalOpen}
-                setIsOpen={setModalOpen}
-                recoard={record}
-                dictionaryName='wavebox'
-                reload={loadData}
-                post={postData}
-            />
-        </Spin>
+        <Card title={
+            <Nav
+                setAddModalOpen={setAddModalOpen}
+                setShowUncollect={setShowUncollect}
+                showUncollect={showUncollect}
+                uncollectMoney={uncollectMoney}
+            />}>
+            <Spin spinning={loading}>
+                <Table
+                    columns={columns}
+                    expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
+                    dataSource={data}
+                />
+                {/* //edit modal */}
+                <EditModal
+                    isOpen={modalOpen}
+                    setIsOpen={setModalOpen}
+                    recoard={record}
+                    dictionaryName='wavebox'
+                    reload={loadData}
+                    post={editData}
+                />
+                {/* //add modal */}
+                <EditModal
+                    isOpen={addModalOpen}
+                    setIsOpen={setAddModalOpen}
+                    recoard={addModalRecord}
+                    dictionaryName='wavebox'
+                    reload={loadData}
+                    post={addData}
+                />
+            </Spin>
+        </Card>
     );
 };
 

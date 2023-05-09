@@ -5,9 +5,8 @@ import {
   FileExcelTwoTone,
   LineChartOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, theme, Card } from 'antd';
+import { Layout, Menu, theme, } from 'antd';
 import { Outlet } from 'react-router';
-import { Nav } from './components/nav'
 const { Header, Sider, Content } = Layout;
 
 export const Dashboard: React.FC = () => {
@@ -53,12 +52,10 @@ export const Dashboard: React.FC = () => {
             margin: '24px 16px',
             padding: 24,
             background: colorBgContainer,
-            overflow:'auto' 
+            overflow: 'auto'
           }}
         >
-          <Card title={<Nav />} >
-            <Outlet />
-          </Card>
+          <Outlet />
 
         </Content>
       </Layout>

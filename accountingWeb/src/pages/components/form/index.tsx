@@ -1,16 +1,14 @@
-import { Modal, Space, Button } from "antd";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Modal, Space } from "antd";
+import { Dispatch, FC, SetStateAction } from "react";
 import { L1FromGenerator } from '../utilsComponent'
 import { l1Dctionary } from '../../../utils/dictionary'
-import { FetchData } from "use-http";
-import { TRUE } from "sass";
 interface editModalType {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     recoard: Record<string, any>;
     dictionaryName: string;
     reload: () => void
-    post: (val: { type: string, data: any }) => Promise<void>
+    post: (data: any) => Promise<void>
 }
 
 export const EditModal: FC<editModalType> = (props) => {
