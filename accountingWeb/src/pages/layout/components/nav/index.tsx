@@ -2,14 +2,16 @@ import { Dispatch, FC, SetStateAction, } from "react";
 import { Radio, Space, Button, Checkbox, Input, Popover } from "antd";
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
 import { useNavigate } from "react-router-dom";
+import { debounce } from 'lodash'
 interface nav {
     setTable?: Dispatch<SetStateAction<string>>
     setAddModalOpen: Dispatch<SetStateAction<boolean>>
     setShowUncollect: Dispatch<SetStateAction<boolean>>
     showUncollect: boolean
-    uncollectMoney
+    uncollectMoney: number | null
+    searchData: (val: string) => void
 }
-export const Nav: FC<nav> = ({ setAddModalOpen, setShowUncollect, showUncollect, uncollectMoney }) => {
+export const Nav: FC<nav> = ({ setAddModalOpen, setShowUncollect, showUncollect, uncollectMoney, searchData }) => {
     const naviage = useNavigate()
     return (
         <Space size={'large'}>
@@ -17,7 +19,9 @@ export const Nav: FC<nav> = ({ setAddModalOpen, setShowUncollect, showUncollect,
             <Popover title={'未收款金额为'} content={uncollectMoney} trigger='click'>
                 <Checkbox onChange={() => { setShowUncollect(!showUncollect) }}>只展示未收款</Checkbox>
             </Popover>
-            <Input placeholder="search-box" suffix={<SearchOutlined />} />
+            <Input placeholder="search-box" onChange={debounce(val => {
+                searchData(val.target.value)
+            },500)} suffix={<SearchOutlined />} />
             <Radio.Group onChange={(item) => {
                 naviage(`/dashboard/${item.target.value}`)
             }}>

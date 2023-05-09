@@ -12,8 +12,8 @@ import { Provider as HttpProvider, IncomingOptions } from "use-http";
 
 
 function App() {
-  // const navigate = useNavigate()
-  const url = 'http://1.14.74.199:7001'
+  // const url = 'http://1.14.74.199:7001'
+  const url = 'http://127.0.0.1:7001'
   const options: IncomingOptions = {
     interceptors: {
       request: async ({
@@ -25,9 +25,6 @@ function App() {
       response: async ({
         response,
       }: any) => {
-        // if (response.status === 401) {
-        //   return window.location.href = '/login'
-        // }
         return response
       },
     }

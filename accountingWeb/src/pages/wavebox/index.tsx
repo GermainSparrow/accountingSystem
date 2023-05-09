@@ -30,7 +30,7 @@ interface Item {
 type InnerType = Item[]
 export const WaveBox: React.FC = () => {
     const { get, post, loading } = useFetch(
-        '/waveBox',
+        '',
         { cachePolicy: CachePolicies.NO_CACHE }
     )
     const [data, setData] = useState<Item[] | [] | any>([]);
@@ -53,7 +53,7 @@ export const WaveBox: React.FC = () => {
         return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
     };
     const loadData = () => {
-        get('getWaveBoxList').then(res => {
+        get('/waveBox/getWaveBoxList').then(res => {
             if (showUncollect) {
                 let account = 0
                 setData(res.data.filter(items => {
@@ -79,12 +79,21 @@ export const WaveBox: React.FC = () => {
 
     }
     const editData = (data: any) => {
-        const res = post('updateWaveBox', data)
+        const res = post('/waveBox/updateWaveBox', data)
         return res
     }
     const addData = (data: any) => {
-        const res = post('addWaveBox', data)
+        const res = post('/waveBox/addWaveBox', data)
         return res
+    }
+    const searchData = (keyword: string) => {
+        post('crud/search', {
+            table: 'wavebox',
+            keyword
+        }).then(res => {
+            setData(res.data)
+
+        })
     }
     useEffect(() => {
         if (showUncollect) {
@@ -98,6 +107,7 @@ export const WaveBox: React.FC = () => {
             loadData()
         }
     }, [showUncollect])
+
     const columns = [
         { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
         { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
@@ -115,7 +125,7 @@ export const WaveBox: React.FC = () => {
                 }} >编辑</Button>
                 <Popconfirm title="确定要删除吗?" onConfirm={() => {
                     console.log(recoard);
-                    post('delete', { key: recoard.key }).then((res) => {
+                    post('/waveBox/delete', { key: recoard.key }).then((res) => {
                         res.code == 200 ? message.open({ type: 'success', content: '删除成功' }) : message.open({ type: 'error', content: '删除失败' })
                         loadData()
                     })
@@ -133,6 +143,7 @@ export const WaveBox: React.FC = () => {
                 setShowUncollect={setShowUncollect}
                 showUncollect={showUncollect}
                 uncollectMoney={uncollectMoney}
+                searchData={searchData}
             />}>
             <Spin spinning={loading}>
                 <Table
