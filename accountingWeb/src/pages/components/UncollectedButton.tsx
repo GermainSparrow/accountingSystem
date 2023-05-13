@@ -4,7 +4,7 @@
  */
 import PropTypes from "prop-types";
 import { Button } from "antd";
-import Container from "./Container";
+import {L1Container} from "./Container";
 import { useDispatch } from "react-redux";
 import { setUncollected } from "../../store/UncolletControl/index";
 import {setSearchState} from '../../store/counterSearch/counterSearch'
@@ -19,7 +19,7 @@ interface items {
 const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit ,isSearch}) => {
   const dispatch = useDispatch();
   return (
-    <Container isShow={exit}>
+    <L1Container isShow={exit}>
       <div style={{
             float:'left',
             marginLeft:'15%',
@@ -39,7 +39,7 @@ const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit ,isSearch
         >
           {isShow ? "点击展示全部数据" : "点击展示未收款"}
         </Button>
-        <Container isShow={isShow}>
+        <L1Container isShow={isShow}>
           <span style={{ position: "absolute", top: "20%", left: "120%",fontSize:'12px',color:'red'}}>
             {name=='oil'?(data.reduce((previousVal, currentVal) => {
               return (previousVal += Number(currentVal.Uncollected_amount));
@@ -47,9 +47,9 @@ const UncollectedButton: React.FC<items> = ({ isShow, data, name, exit ,isSearch
               return (previousVal += currentVal.Collection -currentVal.cost);
             }, 0)}
           </span>
-        </Container>
+        </L1Container>
       </div>
-    </Container>
+    </L1Container>
   );
 };
 UncollectedButton.propTypes = {

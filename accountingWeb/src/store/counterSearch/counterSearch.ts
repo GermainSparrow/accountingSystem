@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { isElement, times } from "lodash";
+
 //定义单个元素
 type searchData = {
     name: string,
