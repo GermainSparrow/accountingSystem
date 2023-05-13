@@ -40,6 +40,7 @@ export const WaveBox: React.FC = () => {
     const [addModalRecord, setAddModalRecord] = useState<Item | null>(null)
     const [showUncollect, setShowUncollect] = useState(false)
     const [uncollectMoney, setUncollectMoney] = useState(null)
+    const [searchVal, setSearchVal] = useState("")
     //expand table
     const expandedRowRender = (data: InnerType) => {
         const columns: TableColumnsType<Item> = [
@@ -48,12 +49,15 @@ export const WaveBox: React.FC = () => {
             { title: '波箱型号', dataIndex: 'Gearbox_model', key: 'Gearbox_model' },
             { title: '维修细节', dataIndex: 'detail', key: 'detail' },
             { title: '付款方式', dataIndex: 'payway', key: 'payway' },
-            { title: '未知', dataIndex: 'invoice', key: 'invoice' },
+            { title: '开票', dataIndex: 'invoice', key: 'invoice' },
         ];
         return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
     };
     const loadData = () => {
-        get('/waveBox/getWaveBoxList').then(res => {
+        post('/crud/search',{
+            table: 'wavebox',
+            keyword:searchVal
+        }).then(res => {
             if (showUncollect) {
                 let account = 0
                 setData(res.data.filter(items => {
@@ -99,7 +103,7 @@ export const WaveBox: React.FC = () => {
         if (showUncollect) {
             let account = 0
             setData(data.filter(items => {
-                !items.Collection || items.Collection < items.cost ? account += parseFloat(items.cost) : null
+                !items.Collection || items.Collection < items.cost ? account += (parseFloat(items.cost)-parseFloat(items.Collection?items.Collection:"0")) : null
                 return items.cost && (!items.Collection || items.Collection < items.cost)
             }))
             setUncollectMoney(account)
@@ -109,13 +113,13 @@ export const WaveBox: React.FC = () => {
     }, [showUncollect])
 
     const columns = [
-        { title: '进场日期', dataIndex: 'in_time', key: 'in_time', editable: true },
-        { title: '车型号', dataIndex: 'model', key: 'model', editable: true },
-        { title: '车牌', dataIndex: 'license_plate', key: 'license_plate', editable: true },
-        { title: '金额', dataIndex: 'cost', key: 'cost', editable: true },
-        { title: '出场日期', dataIndex: 'createdAt', key: 'createdAt', editable: true },
-        { title: '收款时间', dataIndex: 'getMoneyTime', key: 'getMoneyTime', editable: true },
-        { title: '收款金额', dataIndex: 'Collection', key: 'Collection', editable: true },
+        { title: '进场日期', dataIndex: 'in_time', key: 'in_time' },
+        { title: '车型号', dataIndex: 'model', key: 'model' },
+        { title: '车牌', dataIndex: 'license_plate', key: 'license_plate' },
+        { title: '金额', dataIndex: 'cost', key: 'cost' },
+        { title: '出场日期', dataIndex: 'createdAt', key: 'createdAt' },
+        { title: '收款时间', dataIndex: 'getMoneyTime', key: 'getMoneyTime' },
+        { title: '收款金额', dataIndex: 'Collection', key: 'Collection' },
         {
             title: '操作', key: 'operation', editable: false,
             render: (recoard: Item) => <Space>
@@ -139,6 +143,7 @@ export const WaveBox: React.FC = () => {
     return (
         <Card title={
             <Nav
+                setSearchVal={setSearchVal}
                 setAddModalOpen={setAddModalOpen}
                 setShowUncollect={setShowUncollect}
                 showUncollect={showUncollect}

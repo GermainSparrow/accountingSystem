@@ -15,7 +15,7 @@ export const EditModal: FC<editModalType> = (props) => {
     const dictionary = l1Dctionary[props.dictionaryName]
     return (
         <Modal open={props.isOpen}
-            width={'60vw'}
+            width={location.pathname=='/dashboard/cash'?'40vw':'60vw'}
             footer={[]}
             destroyOnClose={true}
         >

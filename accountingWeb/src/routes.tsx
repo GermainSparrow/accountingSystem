@@ -35,7 +35,7 @@ export const routesArr: IRoutesType[] = [
   {
     id: 'antG2',
     element: <AntG2 />,
-    path: '/dashboard/antG2',
+    path: '/dashboard/visual',
   },
   {
     id: 'manage',

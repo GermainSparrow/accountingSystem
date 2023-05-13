@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
-import { Select, DatePicker, Input, Form, Row, Col, Button, InputNumber, message } from 'antd'
+import { Select, DatePicker, Input, Form, Row, Col, Button, InputNumber, message, Space } from 'antd'
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import dayjs from 'dayjs';
@@ -47,7 +47,6 @@ export const L1FromGenerator: FC<val> = (props) => {
     return (
         <Form
             layout='vertical'
-            style={{ width: '100%' }}
             onFinish={(val) => {
                 console.log(val);
                 val.key = state['key']
@@ -61,27 +60,30 @@ export const L1FromGenerator: FC<val> = (props) => {
             form={form}>
             <Row gutter={[16, 16]} key={1}>
                 {Object.keys(state).map(items => {
-                    return (
-                        items === 'key' ? null :
-                            <Col span={8} key={items}>
-                                <Form.Item name={items} label={props.dictionary[items].value} initialValue={state[items]}>
-                                    {<SelectChoice formItem={{ key: items, initialVaule: state[items] }} dictionary={props.dictionary as any} />}
-                                </Form.Item>
-                            </Col>
-                    )
+                    if (props.dictionary[items]) {
+                        return (
+                            items === 'key' ? null :
+                                <Col span={8} key={items}>
+                                    <Form.Item name={items} label={props.dictionary[items].value} initialValue={state[items]}>
+                                        {<SelectChoice formItem={{ key: items, initialVaule: state[items] }} dictionary={props.dictionary as any} />}
+                                    </Form.Item>
+                                </Col>
+                        )
+                    }
+
                 })}
 
             </Row>
             <Row gutter={[16, 8]} key={2}>
                 <Col span={16} key={4} />
-                <Col span={4} key={5}>
-                    <Button onClick={() => { props.setIsOpen(false) }} type='dashed' >Cancel</Button>
-                </Col>
-                <Col span={4} key={6}>
+                <Space size='large' align='center'>
+                    <Form.Item>
+                        <Button onClick={() => { props.setIsOpen(false) }} type='dashed' >Cancel</Button>
+                    </Form.Item>
                     <Form.Item >
                         <Button type='primary' htmlType='submit' >点击提交</Button>
                     </Form.Item>
-                </Col>
+                </Space>
             </Row>
         </Form>
     )

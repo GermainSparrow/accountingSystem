@@ -1,183 +1,133 @@
-import React, { useState } from 'react';
-import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { TableColumnsType, Button, Spin, Space, Popconfirm, message } from 'antd';
+import dayjs from 'dayjs';
+import { Table, Card } from 'antd';
+import { EditModal } from '../components'
+import useFetch, { CachePolicies } from 'use-http'
+import { Nav } from '../layout/components/nav';
+type oilSaleType = string | number | undefined
 
 interface Item {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
+  key?: React.Key;
+  time?: oilSaleType;
+  head?: oilSaleType;
+  model?: oilSaleType;
+  unit?: oilSaleType;
+  count?: oilSaleType;
+  price?: React.ReactNode;
+  Plan_sales?: oilSaleType;
+  real_sales?: oilSaleType;
+  Discounts?: oilSaleType;
+  getTime?: oilSaleType;
+  getMonth?: oilSaleType;
+  collection?: oilSaleType;
+  payway?: oilSaleType;
+  payee?: oilSaleType;
+  Uncollected_amount?: oilSaleType;
+  off_price?: oilSaleType;
+  remark?: oilSaleType;
 }
-
-const originData: Item[] = [];
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
-interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
-  editing: boolean;
-  dataIndex: string;
-  title: any;
-  inputType: 'number' | 'text';
-  record: Item;
-  index: number;
-  children: React.ReactNode;
-}
-
-const EditableCell: React.FC<EditableCellProps> = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-console.log('cash ediable cell');
-
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{ margin: 0 }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
+type InnerType = Item[]
 export const Cash: React.FC = () => {
-  const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
-  const [editingKey, setEditingKey] = useState('');
-
-  const isEditing = (record: Item) => record.key === editingKey;
-
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ name: '', age: '', address: '', ...record });
-    setEditingKey(record.key);
+  const { post, loading,get } = useFetch(
+    '',
+    { cachePolicy: CachePolicies.NO_CACHE }
+  )
+  const [data, setData] = useState<Item[] | [] | any>([]);
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [record, setRecord] = useState<Item>('' as Item)
+  const [addModalOpen, setAddModalOpen] = useState(false)
+  const [addModalRecord, setAddModalRecord] = useState<Item | null>(null)
+  const [showUncollect, setShowUncollect] = useState(false)
+  const [searchVal, setSearchVal] = useState('')
+  //expand table
+  const expandedRowRender = (data: InnerType) => {
+    const columns: TableColumnsType<Item> = [
+      { title: '分类', dataIndex: 'category', key: 'category' },
+    ];
+    return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
   };
+  const loadData = () => {
+    get('/cash').then(res => {
+        setData(res.data)
+      const tempData = { ...res.data[0] }
+      Object.keys(tempData).map(items => {
+        tempData[items] = ''
+      })
+      tempData['time'] = dayjs(new Date()).format('YYYY-MM-DD')
+      tempData['month'] = dayjs(new Date()).format('YYYY-MM')
+      tempData['key'] = res.data[0]['key'] + 1
+      setAddModalRecord(tempData)
+      console.log(showUncollect);
+    })
 
-  const cancel = () => {
-    setEditingKey('');
-  };
+  }
+  const editData = (data: any) => {
+    const res = post('/cash/update', data)
+    return res
+  }
+  const searchData = (keyword: string) => {
+    post('crud/search', {
+      table: 'reserves',
+      keyword
+    }).then(res => {
+      setData(res.data)
 
-  const save = async (key: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as Item;
-
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
-        setEditingKey('');
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
-      }
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
-    }
-  };
+    })
+  }
+  useEffect(() => {
+    loadData()
+  }, [])
 
   const columns = [
+    { title: '月份', dataIndex: 'month', key: 'month' },
+    { title: '账户名称', dataIndex: 'head', key: 'head' },
+    { title: '波箱收入', dataIndex: 'waveBoxCount', key: 'waveBoxCount' },
+    { title: '油品收入', dataIndex: 'oilCount', key: 'oilCount' },
+    { title: '额为收入', dataIndex: 'extraIncome', key: 'extraIncome' },
+    { title: '其他收入', dataIndex: 'otherIncome', key: 'otherIncome' },
+    { title: '银行支出', dataIndex: 'bankOut', key: 'bankOut' },
+    { title: '备用金支出', dataIndex: 'reservesOut', key: 'reservesOut' },
+    { title: '本期余额', dataIndex: 'currentBalance', key: 'currentBalance' },
+    { title: '累计余额', dataIndex: 'cumulativeBalances', key: 'cumulativeBalances' },
     {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
-      editable: true,
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%',
-      editable: true,
-    },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-      render: (_: any, record: Item) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
-              Save
-            </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            Edit
-          </Typography.Link>
-        );
-      },
+      title: '操作', key: 'operation', editable: false,
+      render: (recoard: Item) => <Space>
+        <Button onClick={() => {
+          setRecord({ ...recoard });
+          setModalOpen(!modalOpen);
+        }} >编辑</Button>
+      </Space>
     },
   ];
 
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record: Item) => ({
-        record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
-
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+    <Card title={
+      <Nav
+        setSearchVal={setSearchVal}
+        setAddModalOpen={setAddModalOpen}
+        setShowUncollect={setShowUncollect}
+        showUncollect={showUncollect}
+        uncollectMoney={'该页面没有未收款属性'}
+        searchData={searchData}
+      />}>
+      <Spin spinning={loading}>
+        <Table
+          columns={columns}
+          expandable={{ expandedRowRender: (record) => (expandedRowRender([record])), defaultExpandedRowKeys: ['0'] }}
+          dataSource={data}
+        />
+        {/* //edit modal */}
+        <EditModal
+          isOpen={modalOpen}
+          setIsOpen={setModalOpen}
+          recoard={record}
+          dictionaryName='cash'
+          reload={loadData}
+          post={editData}
+        />
+        {/* //add modal */}
+      </Spin>
+    </Card>
   );
 };
-
-

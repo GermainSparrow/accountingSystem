@@ -37,7 +37,7 @@ export const Login: React.FC = () => {
         res.data.auth == "edit"
           ? localStorage.setItem("auth", "true")
           : localStorage.removeItem("auth");
-        navigate("/dashboard");
+        navigate("/dashboard/reserves");
       } else {
         message.open({
           type: "error",
