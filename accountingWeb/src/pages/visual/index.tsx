@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import apis from "../../utils/apis/apis";
 import { Column } from "@ant-design/plots";
-import { Radio } from "antd";
+import { Radio, Spin } from "antd";
+import useFetch, { CachePolicies } from 'use-http'
 export const AntG2 = function () {
+  const { get, post } = useFetch('', { cachePolicy: CachePolicies.NO_CACHE })
   //默认选中financial
   const [selectMenu, setSelectMenu] = useState("financial");
   //默认为空数组
@@ -47,36 +48,46 @@ export const AntG2 = function () {
 
   //封装一下设置数据源的方法
   const getVisualData = (m: string, show: number) => {
-    apis
-      .getVisualData(m)
-      .then((res: { data: { data: { count: number }[] } }) => {
-        //根据selectKey决定表格显示正负
-        switch (show) {
-          case 1:
-            setConfig(() => {
-              let temp = { ...config };
-              temp.data = res.data.data.filter((item, index) => item.count > 0);
-              return temp;
-            });
-            break;
-          case 0: {
-            setConfig(() => {
-              let temp = { ...config };
-              temp.data = res.data.data;
-              return temp;
-            });
-            break;
-          }
-          case -1: {
-            setConfig(() => {
-              let temp = { ...config };
-              temp.data = res.data.data.filter((item, index) => item.count < 0);
-              return temp;
-            });
-            break;
-          }
+    const promise = (() => {
+      switch (m) {
+        case 'oil':
+          return get('/oil/getVisualData');
+        case 'waveBox':
+          return get('/waveBox/getVisualData');
+        case 'financial':
+          return get('/financial/getVisualData');
+        default:
+          return null;
+      }
+    })
+    promise().then((res: { data: { count: number }[] }) => {
+      //根据selectKey决定表格显示正负
+      switch (show) {
+        case 1:
+          setConfig(() => {
+            let temp = { ...config };
+            temp.data = res.data.filter((item, index) => item.count > 0);
+            return temp;
+          });
+          break;
+        case 0: {
+          setConfig(() => {
+            let temp = { ...config };
+            temp.data = res.data;
+            return temp;
+          });
+          break;
         }
-      });
+        case -1: {
+          setConfig(() => {
+            let temp = { ...config };
+            temp.data = res.data.filter((item, index) => item.count < 0);
+            return temp;
+          });
+          break;
+        }
+      }
+    });
   };
 
   //切换表格

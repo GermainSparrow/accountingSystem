@@ -29,7 +29,7 @@ interface Item {
 }
 type InnerType = Item[]
 export const OilSale: React.FC = () => {
-  const { get, post, loading } = useFetch(
+  const { post, loading } = useFetch(
     '',
     { cachePolicy: CachePolicies.NO_CACHE }
   )
@@ -54,9 +54,9 @@ export const OilSale: React.FC = () => {
     return <Card><Table columns={columns} dataSource={data} pagination={false} size='small' /></Card>;
   };
   const loadData = () => {
-    post('crud/search',{
-      table:'oil_sale',
-      keyword:searchVal
+    post('crud/search', {
+      table: 'oil_sale',
+      keyword: searchVal
     }).then(res => {
       if (showUncollect) {
         let account = 0
@@ -102,7 +102,7 @@ export const OilSale: React.FC = () => {
     if (showUncollect) {
       let account = 0
       setData(data.filter(items => {
-        !items.collection || items.collection < items.real_sales ? account += (parseFloat(items.real_sales)-parseFloat(items.collection?items.collection:"0")) : null
+        !items.collection || items.collection < items.real_sales ? account += (parseFloat(items.real_sales) - parseFloat(items.collection ? items.collection : "0")) : null
         return items.real_sales && (!items.collection || items.collection < items.real_sales)
       }))
       setUncollectMoney(account)

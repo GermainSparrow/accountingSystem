@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  FileExcelTwoTone,
+  FileExcelOutlined,
   LineChartOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, theme, } from 'antd';
+import { Layout, Menu, theme, Typography } from 'antd';
 import { Outlet } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
@@ -22,6 +22,7 @@ export const Dashboard: React.FC = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
         <Menu
+          title='宏粤汽修'
           onClick={val => {
             navigate(val.key)
           }}
@@ -32,13 +33,13 @@ export const Dashboard: React.FC = () => {
           items={[
             {
               key: '/dashboard/reserves',
-              icon: <FileExcelTwoTone />,
+              icon: <FileExcelOutlined />,
               label: '表格',
             },
             {
               key: '/dashboard/visual',
               icon: <LineChartOutlined />,
-              label: '数据可视化',
+              label: '业绩',
             },
           ]}
         />
