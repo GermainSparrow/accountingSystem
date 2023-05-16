@@ -3,9 +3,11 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   FileExcelOutlined,
-  LineChartOutlined
+  LineChartOutlined,
+  UserOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, theme, Typography } from 'antd';
+import { Layout, Menu, theme, Popover, Space, Button } from 'antd';
 import { Outlet } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
@@ -16,7 +18,11 @@ export const Dashboard: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
+  const logOutFc = () => {
+    navigate('/')
+    localStorage.removeItem('ac-jwt-token')
+    localStorage.removeItem('auth')
+  }
   return (
     <Layout style={{ height: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -28,7 +34,7 @@ export const Dashboard: React.FC = () => {
           }}
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['/dashboard/reserves']}
           style={{ paddingTop: '30%' }}
           items={[
             {
@@ -51,6 +57,9 @@ export const Dashboard: React.FC = () => {
             className: 'trigger',
             onClick: () => setCollapsed(!collapsed),
           })}
+          <Space style={{ float: 'right', marginRight: '30px' }}>
+            <Popover trigger='click' placement='bottom' content={<Space><Button onClick={logOutFc} type='dashed' size='small'><LogoutOutlined />退出登录</Button></Space>}><UserOutlined /></Popover>
+          </Space>
         </Header>
 
         <Content
