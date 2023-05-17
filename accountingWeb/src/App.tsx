@@ -1,15 +1,16 @@
 import "./App.css";
 import React from "react";
-import { Routes, Route, BrowserRouter, useNavigate } from "react-router-dom";
-import { message } from "antd";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import {
   routesArr
 } from './routes'
 import {
   Dashboard, Login
 } from './pages'
+import {
+  ChatRoom
+} from './pages/components'
 import { Provider as HttpProvider, IncomingOptions } from "use-http";
-
 
 function App() {
   const url = 'http://1.14.74.199:7001'
@@ -33,6 +34,7 @@ function App() {
   return (
     <HttpProvider url={url} options={options}>
       <div className="App" style={{ height: "100vh", width: "100vw" }}>
+        <ChatRoom />
         <React.Suspense fallback={<div>正在加载中</div>}>
           <BrowserRouter>
             <Routes>
