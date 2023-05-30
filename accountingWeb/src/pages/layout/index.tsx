@@ -5,7 +5,10 @@ import {
   FileExcelOutlined,
   LineChartOutlined,
   UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  ApartmentOutlined,
+  UsergroupAddOutlined,
+  EditOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, theme, Popover, Space, Button } from 'antd';
 import { Outlet } from 'react-router';
@@ -38,15 +41,39 @@ export const Dashboard: React.FC = () => {
           style={{ paddingTop: '30%' }}
           items={[
             {
-              key: '/dashboard/reserves',
-              icon: <FileExcelOutlined />,
-              label: '表格',
+              key: '01',
+              icon: <ApartmentOutlined />,
+              label: '快捷工作',
+              children: [
+                {
+                  key: '/dashboard/reserves',
+                  icon: <FileExcelOutlined />,
+                  label: '表格',
+                },
+                {
+                  key: '/dashboard/visual',
+                  icon: <LineChartOutlined />,
+                  label: '业绩',
+                },
+              ]
             },
             {
-              key: '/dashboard/visual',
-              icon: <LineChartOutlined />,
-              label: '业绩',
-            },
+              key: '02',
+              icon:<UserOutlined />,
+              label: '人员管理',
+              children: [
+                {
+                  key: '/dashboard/userAdd',
+                  icon: <UsergroupAddOutlined />,
+                  label: '新增人员',
+                },
+                {
+                  key: '/dashboard/userEdit',
+                  icon: <EditOutlined />,
+                  label: '权限管理',
+                },
+              ]
+            }
           ]}
         />
       </Sider>

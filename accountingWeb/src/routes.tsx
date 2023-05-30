@@ -6,6 +6,8 @@ import {
   Reserves,
   AntG2,
   WaveBox,
+  UserAdd,
+  UserEdit
 } from './pages'
 interface IRoutesType {
   id: string,
@@ -52,5 +54,15 @@ export const routesArr: IRoutesType[] = [
     element: <WaveBox />,
     path: '/dashboard/waveBox',
   },
+  {
+    id:'userAdd',
+    element: <UserAdd/>,
+    path:'/dashboard/userAdd',
+  },
+  {
+    id:'userEdit',
+    element: <UserEdit/>,
+    path:'/dashboard/userEdit',
+  }
 ]
 
